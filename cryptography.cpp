@@ -1,9 +1,12 @@
 // ---------------------------------------------------------------------------
 #pragma hdrstop
 
+#include <iostream>
 #include "Cryptography.h"
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
+
+using namespace std;
 
 // ---------------------------------------------------------------------------
 Cryptography::Cryptography( )
@@ -11,7 +14,7 @@ Cryptography::Cryptography( )
 	inputHandle_ = 0;
 	outputHandle_ = 0;
 	keyHandle_ = 0;
-	key_ = NULL;
+    hSessionKey_ = NULL;
 	hCryptProvider_ = NULL;
 }
 // ---------------------------------------------------------------------------
@@ -110,36 +113,42 @@ bool Cryptography::writeBlock(
 // ---------------------------------------------------------------------------
 bool Cryptography::encyptBlock(
 	BYTE *      bytes,
-	std::wstring password )
+    BYTE *      enc_bytes,
+    CHAR *szPassword )
 {
-	generateKey(password);
-	DWORD count=strlen(bytes);
-	if(!CryptEncrypt(hKey,0,true,0,bytes,&count,strlen(bytes)))                       //Шифрование и вывод результата
+	generateKey(szPassword);
+	DWORD count=BLOCK_LENGTH;
+    memcpy(enc_bytes, bytes, BLOCK_LENGTH);
+	if(!CryptEncrypt(hSessionKey_,0,true,0,enc_bytes,&count,BLOCK_LENGTH))                       //Шифрование и вывод результата
 	{
 		HandleError("Error CryptEncrypt");
 		return false;
 	}
 	else
 	{
-		cout << string << endl;
+        cout << "Encryption Success!!" << endl;
+	    cout << enc_bytes << endl;
 	}
 	return true;
 }
 // ---------------------------------------------------------------------------
 bool Cryptography::decryptBlock(
-	BYTE *      bytes,
-	std::string key )
+	BYTE *      enc_bytes,
+    BYTE *      dec_bytes,
+    CHAR *szPassword )
 {
-	generateKey(password);
-	DWORD count=strlen(bytes);
-	if(!CryptDecrypt(hKey,0,true,0,bytes,&count))                       //Дешифровка и вывод результата
+	generateKey(szPassword);
+	DWORD count=BLOCK_LENGTH;
+	memcpy(dec_bytes, enc_bytes, BLOCK_LENGTH);
+	if(!CryptDecrypt(hSessionKey_,0,true,0,dec_bytes,&count))                       //Дешифровка и вывод результата
 	{
 		HandleError("Error CryptEncrypt");
 		return false;
 	}
 	else
 	{
-		cout << string << endl;
+	    cout << "Decryption Success!!" << endl;
+		cout << dec_bytes << endl;
 	}
 	return true;
 }
@@ -154,9 +163,9 @@ bool Cryptography::loadKey( )
 	return true;
 }
 // ---------------------------------------------------------------------------
-bool Cryptography::generateKey( std::wstring password )
+bool Cryptography::generateKey( CHAR *szPassword )
 {
-	CHAR szPassword[] = password.c_str();
+    HCRYPTHASH hHash;
 	DWORD dwLength = (DWORD)strlen(szPassword);
 	//--------------------------------------------------------------------
 	// Получение дескриптора контекста криптографического провайдера.

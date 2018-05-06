@@ -19,10 +19,12 @@ public:
 	bool close( );
 	bool encyptBlock(
 		BYTE *      bytes,
-		std::wstring password );
+        BYTE *      enc_bytes,
+        CHAR *szPassword );
 	bool decryptBlock(
-		BYTE *      bytes,
-		std::string key );
+		BYTE *      enc_bytes,
+        BYTE *      dec_bytes,
+        CHAR *szPassword );
 	bool readBlock(
 		ULONGLONG numberBlock,
 		DWORD     blockSize,
@@ -41,9 +43,9 @@ private:
 	HANDLE outputHandle_;
 	HANDLE keyHandle_;
 	DWORD hProvType;
-	const DWORD BLOCK_LENGTH = 4096;
+	const DWORD BLOCK_LENGTH = 16;
 	void HandleError(char *s);
-	bool generateKey( std::wstring password );
+	bool generateKey( CHAR *szPassword );
 
 } ;
 
