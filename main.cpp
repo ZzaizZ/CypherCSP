@@ -266,7 +266,7 @@ int main(void)
 
     printf("The program to derive a key completed without error. \n");
 
-    Cryptography c = new Cryptography();
+    Cryptography *c = new Cryptography();
 
     //wstring password = L"123456";
     //c.encyptBlock((BYTE *)string, password);
