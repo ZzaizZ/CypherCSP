@@ -105,6 +105,6 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 		i++ ;
 	}
 	crypt->close( );
-	delete[ ]buffer;
+	delete[ ] buffer;
 }
 // ---------------------------------------------------------------------------

@@ -32,7 +32,7 @@ bool cryptography::open(
 		return false;
 	}
 	outputHandle_ = CreateFileW( outputPath.c_str( ), GENERIC_WRITE,
-		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_NEW | OPEN_EXISTING,
+		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
 		FILE_ATTRIBUTE_NORMAL, NULL );
 	if ( outputHandle_ == INVALID_HANDLE_VALUE )
 	{
