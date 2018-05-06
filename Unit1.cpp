@@ -13,6 +13,7 @@ TmainForm * mainForm;
 __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 {
 	crypt = new cryptography( );
+    algorithmComboBox->ItemIndex = 0;
 }
 // ---------------------------------------------------------------------------
 
@@ -23,6 +24,7 @@ void __fastcall TmainForm::inputEditDblClick( TObject * Sender )
 		return;
 	}
 	inputEdit->Text = inputOpenDialog->FileName;
+	outputEdit->Text = inputEdit->Text + ".enc";
 }
 // ---------------------------------------------------------------------------
 
