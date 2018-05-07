@@ -91,7 +91,6 @@ void __fastcall TmainForm::encryptButtonClick( TObject * Sender )
 		crypt->close( );
 	}
 
-	delete[ ]buffer;
 }
 
 // ---------------------------------------------------------------------------
@@ -115,6 +114,5 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 		crypt->close( );
 	}
 
-	delete[ ]buffer;
 }
 // ---------------------------------------------------------------------------

@@ -46,7 +46,7 @@ bool cryptography::close( )
 {
 	CloseHandle( inputHandle_ );
 	CloseHandle( outputHandle_ );
-	CloseHandle( keyHandle_ );
+
 	return true;
 }
 // ---------------------------------------------------------------------------
