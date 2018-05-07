@@ -46,7 +46,14 @@ bool cryptography::close( )
 {
 	CloseHandle( inputHandle_ );
 	CloseHandle( outputHandle_ );
-
+	if ( hCryptProvider_ )
+	{
+		CryptReleaseContext( hCryptProvider_, 0 );
+	}
+	if ( hSessionKey_ )
+	{
+		CryptDestroyKey( hSessionKey_ );
+	}
 	return true;
 }
 // ---------------------------------------------------------------------------
@@ -187,6 +194,17 @@ bool cryptography::decryptBlock(
 // ---------------------------------------------------------------------------
 bool cryptography::saveKey( )
 {
+	keyHandle_ = CreateFileW( keyPath.c_str( ), GENERIC_WRITE,
+		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL, NULL );
+	if ( keyHandle_ == INVALID_HANDLE_VALUE )
+	{
+		return false;
+	}
+	if ( !CryptExportKey( hSessionKey_, ) )
+	{
+		return false;
+	}
 	return true;
 }
 
