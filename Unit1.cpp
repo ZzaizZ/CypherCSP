@@ -24,7 +24,14 @@ void __fastcall TmainForm::inputEditDblClick( TObject * Sender )
 		return;
 	}
 	inputEdit->Text = inputOpenDialog->FileName;
-	outputEdit->Text = inputEdit->Text + ".enc";
+	if (!inputEdit->Text.Pos(".enc")) {
+		outputEdit->Text = inputEdit->Text + ".enc";
+	}
+	else
+	{
+		outputEdit->Text = inputEdit->Text.SubString(0, inputEdit->Text.Length()-4);
+    }
+
 }
 // ---------------------------------------------------------------------------
 
@@ -89,6 +96,7 @@ void __fastcall TmainForm::encryptButtonClick( TObject * Sender )
 			i++ ;
 		}
 		crypt->close( );
+		MessageBoxW( NULL, L"Файл зашифрован", L"Готово", MB_OK);
 	}
 
 }
@@ -112,6 +120,7 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 			i++ ;
 		}
 		crypt->close( );
+		MessageBoxW( NULL, L"Расшифровка окончена успешно", L"Готово", MB_OK);
 	}
 
 }
