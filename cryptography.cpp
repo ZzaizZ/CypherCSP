@@ -196,34 +196,34 @@ bool cryptography::decryptBlock(
 // ---------------------------------------------------------------------------
 bool cryptography::saveKey( std::wstring keyPath )
 {
-	DWORD dwBlobLenSimple;
-	BYTE * pbKeyBlobSimple;
+	/* DWORD dwBlobLenSimple;
+	 BYTE * pbKeyBlobSimple;
 
-	keyHandle_ = CreateFileW( keyPath.c_str( ), GENERIC_WRITE,
-		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL );
-	if ( keyHandle_ == INVALID_HANDLE_VALUE )
-	{
-		return false;
-	}
-	if ( !CryptExportKey( hSessionKey_, 0, SIMPLEBLOB, 0, NULL,
-		&dwBlobLenSimple ) )
-	{
-		// MessageBox( NULL, SysErrorMessage( GetLastError( ) ).c_str( ),
-		// "GetLastError", MB_ICONINFORMATION );
-		return false;
-	}
-	pbKeyBlobSimple = new BYTE[ dwBlobLenSimple ];
-	if ( !CryptExportKey( hSessionKey_, 0, SIMPLEBLOB, 0, pbKeyBlobSimple,
-		&dwBlobLenSimple ) )
-	{
-		// MessageBox( NULL, SysErrorMessage( GetLastError( ) ).c_str( ),
-		// "GetLastError", MB_ICONINFORMATION );
-		return false;
-	}
+	 keyHandle_ = CreateFileW( keyPath.c_str( ), GENERIC_WRITE,
+	 FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
+	 FILE_ATTRIBUTE_NORMAL, NULL );
+	 if ( keyHandle_ == INVALID_HANDLE_VALUE )
+	 {
+	 return false;
+	 }
+	 if ( !CryptExportKey( hSessionKey_, 0, SIMPLEBLOB, 0, NULL,
+	 &dwBlobLenSimple ) )
+	 {
+	 // MessageBox( NULL, SysErrorMessage( GetLastError( ) ).c_str( ),
+	 // "GetLastError", MB_ICONINFORMATION );
+	 return false;
+	 }
+	 pbKeyBlobSimple = new BYTE[ dwBlobLenSimple ];
+	 if ( !CryptExportKey( hSessionKey_, 0, SIMPLEBLOB, 0, pbKeyBlobSimple,
+	 &dwBlobLenSimple ) )
+	 {
+	 // MessageBox( NULL, SysErrorMessage( GetLastError( ) ).c_str( ),
+	 // "GetLastError", MB_ICONINFORMATION );
+	 return false;
+	 }
 
-	delete[ ]pbKeyBlobSimple;
-	CloseHandle( keyHandle_ );
+	 delete[ ]pbKeyBlobSimple;
+	 CloseHandle( keyHandle_ ); */
 	return true;
 }
 
@@ -248,6 +248,7 @@ bool cryptography::loadKey( std::wstring keyPath )
 // ---------------------------------------------------------------------------
 bool cryptography::generateKey( CHAR * szPassword )
 {
+
 	HCRYPTHASH hHash;
 	DWORD dwLength = ( DWORD )strlen( szPassword );
 	// --------------------------------------------------------------------

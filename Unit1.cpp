@@ -77,6 +77,8 @@ void __fastcall TmainForm::encryptButtonClick( TObject * Sender )
 	BYTE buffer[ 4096 ];
 	int i = 0;
 	bool sucsess = true;
+	UnicodeString unicodeLine = passwordEdit->Text;
+	std::string password( AnsiString( unicodeLine ).c_str( ) );
 	if ( !crypt->open( inputEdit->Text.w_str( ), outputEdit->Text.w_str( ) ) )
 	{
 		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error", MB_OK );
@@ -85,8 +87,7 @@ void __fastcall TmainForm::encryptButtonClick( TObject * Sender )
 	{
 		while ( crypt->readBlock( i, 4096, buffer ) )
 		{
-			if ( !crypt->encryptBlock( buffer,
-				( char * )passwordEdit->Text.c_str( ) ) )
+			if ( !crypt->encryptBlock( buffer, ( char * )password.c_str( ) ) )
 			{
 				sucsess = false;
 				break;
@@ -107,11 +108,13 @@ void __fastcall TmainForm::encryptButtonClick( TObject * Sender )
 // ---------------------------------------------------------------------------
 void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 {
+
 	BYTE buffer[ 4096 ];
 	int i = 0;
 	int selectChoise = 0;
 	bool sucsess = true;
-
+	UnicodeString unicodeLine = passwordEdit->Text;
+	std::string password( AnsiString( unicodeLine ).c_str( ) );
 	if ( !outputEdit->Text.Pos( ".enc" ) )
 	{
 		selectChoise =
@@ -132,7 +135,7 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 			while ( crypt->readBlock( i, 4096, buffer ) )
 			{
 				if ( !crypt->decryptBlock( buffer,
-					( char * )passwordEdit->Text.c_str( ) ) )
+					( char * )password.c_str( ) ) )
 				{
 					sucsess = false;
 					break;
@@ -163,8 +166,9 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 		{
 			while ( crypt->readBlock( i, 4096, buffer ) )
 			{
+
 				if ( !crypt->decryptBlock( buffer,
-					( char * )passwordEdit->Text.c_str( ) ) )
+					( char * )password.c_str( ) ) )
 				{
 					sucsess = false;
 					break;
