@@ -206,15 +206,19 @@ bool cryptography::saveKey( std::wstring keyPath )
 	{
 		return false;
 	}
-	if ( !CryptExportKey( hSessionKey_, 1, SIMPLEBLOB, 0, NULL,
+	if ( !CryptExportKey( hSessionKey_, 0, SIMPLEBLOB, 0, NULL,
 		&dwBlobLenSimple ) )
 	{
+		// MessageBox( NULL, SysErrorMessage( GetLastError( ) ).c_str( ),
+		// "GetLastError", MB_ICONINFORMATION );
 		return false;
 	}
 	pbKeyBlobSimple = new BYTE[ dwBlobLenSimple ];
-	if ( !CryptExportKey( hSessionKey_, 1, SIMPLEBLOB, 0, pbKeyBlobSimple,
+	if ( !CryptExportKey( hSessionKey_, 0, SIMPLEBLOB, 0, pbKeyBlobSimple,
 		&dwBlobLenSimple ) )
 	{
+		// MessageBox( NULL, SysErrorMessage( GetLastError( ) ).c_str( ),
+		// "GetLastError", MB_ICONINFORMATION );
 		return false;
 	}
 

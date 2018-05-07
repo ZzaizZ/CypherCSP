@@ -25,9 +25,9 @@ object mainForm: TmainForm
   object outputLabel: TLabel
     Left = 8
     Top = 80
-    Width = 80
+    Width = 103
     Height = 13
-    Caption = #1050#1086#1085#1077#1095#1085#1099#1081' '#1092#1072#1081#1083
+    Caption = #1064#1080#1092#1088#1086#1074#1072#1085#1085#1099#1081' '#1092#1072#1081#1083
   end
   object keyLabel: TLabel
     Left = 8
@@ -57,6 +57,7 @@ object mainForm: TmainForm
     Width = 180
     Height = 35
     Caption = #1047#1072#1096#1080#1092#1088#1086#1074#1072#1090#1100
+    Enabled = False
     TabOrder = 0
     OnClick = encryptButtonClick
   end
@@ -66,6 +67,7 @@ object mainForm: TmainForm
     Width = 180
     Height = 37
     Caption = #1056#1072#1089#1096#1080#1092#1088#1086#1074#1072#1090#1100
+    Enabled = False
     TabOrder = 1
     OnClick = decryptButtonClick
   end
@@ -78,6 +80,7 @@ object mainForm: TmainForm
     ParentShowHint = False
     ShowHint = True
     TabOrder = 2
+    OnChange = inputEditChange
     OnDblClick = inputEditDblClick
   end
   object outputEdit: TEdit
@@ -89,6 +92,7 @@ object mainForm: TmainForm
     ParentShowHint = False
     ShowHint = True
     TabOrder = 3
+    OnChange = outputEditChange
     OnDblClick = outputEditDblClick
   end
   object keyEdit: TEdit
@@ -109,6 +113,7 @@ object mainForm: TmainForm
     Width = 361
     Height = 21
     TabOrder = 5
+    OnChange = passwordEditChange
   end
   object loadKeyButton: TButton
     Left = 375
@@ -144,6 +149,7 @@ object mainForm: TmainForm
     Width = 170
     Height = 17
     Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
+    Enabled = False
     TabOrder = 9
     OnClick = chooseKeyCheckBoxClick
   end

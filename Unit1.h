@@ -42,6 +42,9 @@ __published: // IDE-managed Components
 	void __fastcall encryptButtonClick(TObject *Sender);
 	void __fastcall decryptButtonClick(TObject *Sender);
 	void __fastcall saveKeyButtonClick(TObject *Sender);
+	void __fastcall inputEditChange(TObject *Sender);
+	void __fastcall outputEditChange(TObject *Sender);
+	void __fastcall passwordEditChange(TObject *Sender);
 
 private: // User declarations
 		public : // User declarations

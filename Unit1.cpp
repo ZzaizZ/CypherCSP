@@ -24,15 +24,7 @@ void __fastcall TmainForm::inputEditDblClick( TObject * Sender )
 		return;
 	}
 	inputEdit->Text = inputOpenDialog->FileName;
-	if ( !inputEdit->Text.Pos( ".enc" ) )
-	{
-		outputEdit->Text = inputEdit->Text + ".enc";
-	}
-	else
-	{
-		outputEdit->Text = inputEdit->Text.SubString( 0,
-			inputEdit->Text.Length( ) - 4 );
-	}
+	outputEdit->Text = inputEdit->Text + ".enc";
 
 }
 // ---------------------------------------------------------------------------
@@ -84,21 +76,30 @@ void __fastcall TmainForm::encryptButtonClick( TObject * Sender )
 {
 	BYTE buffer[ 4096 ];
 	int i = 0;
+	bool sucsess = true;
 	if ( !crypt->open( inputEdit->Text.w_str( ), outputEdit->Text.w_str( ) ) )
 	{
-		MessageBoxW( NULL, L"Ошибка открытия", L"Error", MB_OK );
+		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error", MB_OK );
 	}
 	else
 	{
 		while ( crypt->readBlock( i, 4096, buffer ) )
 		{
-			crypt->encryptBlock( buffer,
-				( char * )passwordEdit->Text.c_str( ) );
+			if ( !crypt->encryptBlock( buffer,
+				( char * )passwordEdit->Text.c_str( ) ) )
+			{
+				sucsess = false;
+				break;
+			}
 			crypt->writeBlock( i, 4096, buffer );
 			i++ ;
 		}
 		crypt->close( );
-		MessageBoxW( NULL, L"Файл зашифрован", L"Готово", MB_OK );
+		if ( sucsess )
+		{
+			MessageBoxW( NULL, L"Файл зашифрован", L"Готово", MB_OK );
+		}
+
 	}
 
 }
@@ -108,21 +109,77 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 {
 	BYTE buffer[ 4096 ];
 	int i = 0;
-	if ( !crypt->open( inputEdit->Text.w_str( ), outputEdit->Text.w_str( ) ) )
+	int selectChoise = 0;
+	bool sucsess = true;
+
+	if ( !outputEdit->Text.Pos( ".enc" ) )
 	{
-		MessageBoxW( NULL, L"Ошибка открытия", L"Error", MB_OK );
+		selectChoise =
+			MessageBoxW( NULL,
+			L"Вы уверены, что файл является шифрованным, в противном случае возможна потеря данных",
+			L"Внимание", MB_YESNOCANCEL );
 	}
-	else
+	switch ( selectChoise )
 	{
-		while ( crypt->readBlock( i, 4096, buffer ) )
+	case IDYES:
+		if ( !crypt->open( outputEdit->Text.w_str( ),
+			inputEdit->Text.w_str( ) ) )
 		{
-			crypt->decryptBlock( buffer,
-				( char * )passwordEdit->Text.c_str( ) );
-			crypt->writeBlock( i, 4096, buffer );
-			i++ ;
+			MessageBoxW( NULL, L"Ошибка открытия файла", L"Error", MB_OK );
 		}
-		crypt->close( );
-		MessageBoxW( NULL, L"Расшифровка окончена успешно", L"Готово", MB_OK );
+		else
+		{
+			while ( crypt->readBlock( i, 4096, buffer ) )
+			{
+				if ( !crypt->decryptBlock( buffer,
+					( char * )passwordEdit->Text.c_str( ) ) )
+				{
+					sucsess = false;
+					break;
+				}
+				crypt->writeBlock( i, 4096, buffer );
+				i++ ;
+			}
+			crypt->close( );
+			if ( sucsess )
+			{
+				MessageBoxW( NULL, L"Файл расшифрован", L"Готово", MB_OK );
+			}
+
+		}
+		break;
+	case IDNO:
+		MessageBoxW( NULL, L"Повторите выбор", L"Ошибка", MB_OK );
+		break;
+	case IDCANCEL:
+		break;
+	default:
+		if ( !crypt->open( outputEdit->Text.w_str( ),
+			inputEdit->Text.w_str( ) ) )
+		{
+			MessageBoxW( NULL, L"Ошибка открытия файла", L"Error", MB_OK );
+		}
+		else
+		{
+			while ( crypt->readBlock( i, 4096, buffer ) )
+			{
+				if ( !crypt->decryptBlock( buffer,
+					( char * )passwordEdit->Text.c_str( ) ) )
+				{
+					sucsess = false;
+					break;
+				}
+				crypt->writeBlock( i, 4096, buffer );
+				i++ ;
+			}
+			crypt->close( );
+			if ( sucsess )
+			{
+				MessageBoxW( NULL, L"Файл расшифрован", L"Готово", MB_OK );
+			}
+
+		}
+		break;
 	}
 
 }
@@ -131,5 +188,53 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 void __fastcall TmainForm::saveKeyButtonClick( TObject * Sender )
 {
 	crypt->saveKey( keyEdit->Text.c_str( ) );
+}
+
+// ---------------------------------------------------------------------------"
+void __fastcall TmainForm::inputEditChange( TObject * Sender )
+{
+	if ( !inputEdit->Text.IsEmpty( ) && !outputEdit->Text.IsEmpty( )
+		&& !passwordEdit->Text.IsEmpty( ) )
+	{
+		encryptButton->Enabled = true;
+		decryptButton->Enabled = true;
+	}
+	else
+	{
+		encryptButton->Enabled = false;
+		decryptButton->Enabled = false;
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TmainForm::outputEditChange( TObject * Sender )
+{
+	if ( !inputEdit->Text.IsEmpty( ) && !outputEdit->Text.IsEmpty( )
+		&& !passwordEdit->Text.IsEmpty( ) )
+	{
+		encryptButton->Enabled = true;
+		decryptButton->Enabled = true;
+	}
+	else
+	{
+		encryptButton->Enabled = false;
+		decryptButton->Enabled = false;
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TmainForm::passwordEditChange( TObject * Sender )
+{
+	if ( !inputEdit->Text.IsEmpty( ) && !outputEdit->Text.IsEmpty( )
+		&& !passwordEdit->Text.IsEmpty( ) )
+	{
+		encryptButton->Enabled = true;
+		decryptButton->Enabled = true;
+	}
+	else
+	{
+		encryptButton->Enabled = false;
+		decryptButton->Enabled = false;
+	}
 }
 // ---------------------------------------------------------------------------
