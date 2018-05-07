@@ -30,8 +30,8 @@ public:
 		ULONGLONG numberBlock,
 		DWORD     blockSize,
 		BYTE *    writeBuffer );
-	bool loadKey( );
-	bool saveKey( );
+	bool loadKey( std::wstring );
+	bool saveKey( std::wstring );
 
 private:
 	HCRYPTKEY hSessionKey_;

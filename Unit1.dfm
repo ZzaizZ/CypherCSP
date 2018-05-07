@@ -127,6 +127,7 @@ object mainForm: TmainForm
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
     TabOrder = 7
     Visible = False
+    OnClick = saveKeyButtonClick
   end
   object algorithmComboBox: TComboBox
     Left = 8

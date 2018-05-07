@@ -41,6 +41,7 @@ __published: // IDE-managed Components
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall encryptButtonClick(TObject *Sender);
 	void __fastcall decryptButtonClick(TObject *Sender);
+	void __fastcall saveKeyButtonClick(TObject *Sender);
 
 private: // User declarations
 		public : // User declarations

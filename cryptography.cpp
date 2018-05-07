@@ -146,7 +146,8 @@ bool cryptography::encryptBlock(
 {
 	if ( !generateKey( szPassword ) )
 	{
-		MessageBoxW( NULL, L"Ошибка генерации ключа", L"Error", MB_OK );
+		// MessageBoxW( NULL, L"Ошибка генерации ключа", L"Error", MB_OK );
+		return false;
 	}
 	DWORD count = BLOCK_LENGTH;
 	// memcpy_s( enc_bytes, count, bytes, BLOCK_LENGTH );
@@ -172,7 +173,8 @@ bool cryptography::decryptBlock(
 {
 	if ( !generateKey( szPassword ) )
 	{
-		MessageBoxW( NULL, L"Ошибка генерации ключа", L"Error", MB_OK );
+		// MessageBoxW( NULL, L"Ошибка генерации ключа", L"Error", MB_OK );
+		return false;
 	}
 	DWORD count = BLOCK_LENGTH;
 	// memcpy_s( dec_bytes, count, enc_bytes, BLOCK_LENGTH );
@@ -192,8 +194,11 @@ bool cryptography::decryptBlock(
 }
 
 // ---------------------------------------------------------------------------
-bool cryptography::saveKey( )
+bool cryptography::saveKey( std::wstring keyPath )
 {
+	DWORD dwBlobLenSimple;
+	BYTE * pbKeyBlobSimple;
+
 	keyHandle_ = CreateFileW( keyPath.c_str( ), GENERIC_WRITE,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
 		FILE_ATTRIBUTE_NORMAL, NULL );
@@ -201,16 +206,38 @@ bool cryptography::saveKey( )
 	{
 		return false;
 	}
-	if ( !CryptExportKey( hSessionKey_, ) )
+	if ( !CryptExportKey( hSessionKey_, 1, SIMPLEBLOB, 0, NULL,
+		&dwBlobLenSimple ) )
 	{
 		return false;
 	}
+	pbKeyBlobSimple = new BYTE[ dwBlobLenSimple ];
+	if ( !CryptExportKey( hSessionKey_, 1, SIMPLEBLOB, 0, pbKeyBlobSimple,
+		&dwBlobLenSimple ) )
+	{
+		return false;
+	}
+
+	delete[ ]pbKeyBlobSimple;
+	CloseHandle( keyHandle_ );
 	return true;
 }
 
 // ---------------------------------------------------------------------------
-bool cryptography::loadKey( )
+bool cryptography::loadKey( std::wstring keyPath )
 {
+	/* keyHandle_ = CreateFileW( keyPath.c_str( ), GENERIC_READ,
+	 FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
+	 FILE_ATTRIBUTE_NORMAL, NULL );
+	 if ( keyHandle_ == INVALID_HANDLE_VALUE )
+	 {
+	 return false;
+	 }
+	 if ( !CryptImportKey( hSessionKey_, ) )
+	 {
+	 return false;
+	 }
+	 CloseHandle( keyHandle_ ); */
 	return true;
 }
 
