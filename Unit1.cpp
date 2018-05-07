@@ -13,7 +13,7 @@ TmainForm * mainForm;
 __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 {
 	crypt = new cryptography( );
-    algorithmComboBox->ItemIndex = 0;
+	algorithmComboBox->ItemIndex = 0;
 }
 // ---------------------------------------------------------------------------
 
@@ -79,13 +79,18 @@ void __fastcall TmainForm::encryptButtonClick( TObject * Sender )
 	{
 		MessageBoxW( NULL, L"Ошибка открытия", L"Error", MB_OK );
 	}
-	while ( crypt->readBlock( i, 4096, buffer ) )
+	else
 	{
-		crypt->encryptBlock( buffer, ( char * )passwordEdit->Text.c_str( ) );
-		crypt->writeBlock( i, 4096, buffer );
-		i++ ;
+		while ( crypt->readBlock( i, 4096, buffer ) )
+		{
+			crypt->encryptBlock( buffer,
+				( char * )passwordEdit->Text.c_str( ) );
+			crypt->writeBlock( i, 4096, buffer );
+			i++ ;
+		}
+		crypt->close( );
 	}
-	crypt->close( );
+
 	delete[ ]buffer;
 }
 
@@ -98,13 +103,18 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 	{
 		MessageBoxW( NULL, L"Ошибка открытия", L"Error", MB_OK );
 	}
-	while ( crypt->readBlock( i, 4096, buffer ) )
+	else
 	{
-		crypt->decryptBlock( buffer, ( char * )passwordEdit->Text.c_str( ) );
-		crypt->writeBlock( i, 4096, buffer );
-		i++ ;
+		while ( crypt->readBlock( i, 4096, buffer ) )
+		{
+			crypt->decryptBlock( buffer,
+				( char * )passwordEdit->Text.c_str( ) );
+			crypt->writeBlock( i, 4096, buffer );
+			i++ ;
+		}
+		crypt->close( );
 	}
-	crypt->close( );
-	delete[ ] buffer;
+
+	delete[ ]buffer;
 }
 // ---------------------------------------------------------------------------

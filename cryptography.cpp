@@ -86,13 +86,17 @@ bool cryptography::readBlock(
 		return false;
 	}
 	memset( readBuffer, 0, blockSize );
-	bool ReadResult = ReadFile( inputHandle_, readBuffer, BytesToRead,
+	BYTE * innerBuffer = new BYTE[ BytesToRead ];
+	bool ReadResult = ReadFile( inputHandle_, innerBuffer, BytesToRead,
 		&BytesRead, NULL );
 
 	if ( !ReadResult || BytesRead != BytesToRead )
 	{
+		delete[ ]innerBuffer;
 		return false;
 	}
+	memcpy_s( readBuffer, blockSize, innerBuffer, BytesToRead );
+	delete[ ]innerBuffer;
 	return true;
 }
 
