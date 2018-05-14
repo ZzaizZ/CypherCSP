@@ -33,6 +33,7 @@ __published: // IDE-managed Components
 	void __fastcall passwordEditChange( TObject * Sender );
 	void __fastcall encryptButtonClick( TObject * Sender );
 	void __fastcall decryptButtonClick( TObject * Sender );
+	void __fastcall algorithmComboBoxChange(TObject *Sender);
 
 private: // User declarations
 		public : // User declarations

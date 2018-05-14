@@ -72,6 +72,7 @@ object mainForm: TmainForm
     Width = 361
     Height = 21
     TabOrder = 4
+    OnChange = algorithmComboBoxChange
     Items.Strings = (
       #1043#1054#1057#1058' 28147-89 '#1050#1088#1080#1087#1090#1086#1055#1088#1086' CSP')
   end

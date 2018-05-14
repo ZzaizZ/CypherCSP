@@ -15,8 +15,8 @@ TmainForm * mainForm;
 // ---------------------------------------------------------------------------
 __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 {
-	crypt = new ProviderCryptography( PROV_GOST_2012_256 );
 	algorithmComboBox->ItemIndex = 0;
+	crypt = new ProviderCryptography( PROV_GOST_2012_256 );
 	passwordEdit->PasswordChar = L'*';
 	this->Height = 210;
 	this->Position = poDesktopCenter;
@@ -133,3 +133,22 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 
 }
 // ---------------------------------------------------------------------------
+void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
+{
+	if (algorithmComboBox->ItemIndex == 0) { // На первой позиции - КриптоПРО крипропровайдер
+		// делаем тестовое создание контекста криптопровайдера
+        // если создаётся ок, то работа будет дальше, иначе интерфейс неактивен
+        HCRYPTPROV hCryptProvider_;
+		if ( !CryptAcquireContext( &hCryptProvider_, NULL, NULL, 80,
+			CRYPT_VERIFYCONTEXT ) )
+		{
+			MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера. Возможно, не установлена КриптоПРО 4.", L"Error",
+				MB_OK );
+			saveKeyButton->Enabled = false;
+			chooseKeyCheckBox->Enabled = false;
+            passwordEdit->Enabled = false;
+		}
+	}
+}
+//---------------------------------------------------------------------------
+
