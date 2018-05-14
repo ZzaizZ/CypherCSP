@@ -9,7 +9,7 @@
 #include <Vcl.Forms.hpp>
 #include <Vcl.Dialogs.hpp>
 
-#include "cryptography.h"
+#include "ProviderCryptography.h"
 
 // ---------------------------------------------------------------------------
 class TmainForm : public TForm
@@ -18,39 +18,27 @@ __published: // IDE-managed Components
 
 	TButton * encryptButton;
 	TButton * decryptButton;
-	TEdit * inputEdit;
-	TEdit * outputEdit;
-	TLabel * inputLabel;
-	TLabel * outputLabel;
 	TOpenDialog * inputOpenDialog;
-	TLabel * keyLabel;
-	TEdit * keyEdit;
 	TLabel * passwordLabel;
 	TEdit * passwordEdit;
 	TOpenDialog * outputOpenDialog;
 	TOpenDialog * keyOpenDialog;
-	TButton * loadKeyButton;
 	TButton * saveKeyButton;
 	TLabel * algorithmLabel;
 	TComboBox * algorithmComboBox;
 	TCheckBox * chooseKeyCheckBox;
 
-	void __fastcall inputEditDblClick( TObject * Sender );
-	void __fastcall keyEditDblClick( TObject * Sender );
-	void __fastcall outputEditDblClick( TObject * Sender );
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
-	void __fastcall encryptButtonClick(TObject *Sender);
-	void __fastcall decryptButtonClick(TObject *Sender);
-	void __fastcall saveKeyButtonClick(TObject *Sender);
-	void __fastcall inputEditChange(TObject *Sender);
-	void __fastcall outputEditChange(TObject *Sender);
-	void __fastcall passwordEditChange(TObject *Sender);
+	void __fastcall saveKeyButtonClick( TObject * Sender );
+	void __fastcall passwordEditChange( TObject * Sender );
+	void __fastcall encryptButtonClick( TObject * Sender );
+	void __fastcall decryptButtonClick( TObject * Sender );
 
 private: // User declarations
 		public : // User declarations
 	__fastcall TmainForm( TComponent * Owner );
 
-	cryptography * crypt;
+	ProviderCryptography * crypt;
 } ;
 
 // ---------------------------------------------------------------------------

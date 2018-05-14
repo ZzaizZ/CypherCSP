@@ -6,7 +6,7 @@
         <AppType>Application</AppType>
         <MainSource>Project1.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
     </PropertyGroup>
@@ -124,9 +124,9 @@
         <BCC_PCHName_Clang>Project1PCH1.h</BCC_PCHName_Clang>
     </PropertyGroup>
     <ItemGroup>
-        <CppCompile Include="cryptography.cpp">
-            <DependentOn>cryptography.h</DependentOn>
-            <BuildOrder>3</BuildOrder>
+        <CppCompile Include="Cryptography.cpp">
+            <DependentOn>Cryptography.h</DependentOn>
+            <BuildOrder>11</BuildOrder>
         </CppCompile>
         <None Include="include\cpdrvlib.h">
             <BuildOrder>4</BuildOrder>
@@ -155,6 +155,10 @@
         <PCHCompile Include="Project1PCH1.h">
             <BuildOrder>1</BuildOrder>
         </PCHCompile>
+        <CppCompile Include="ProviderCryptography.cpp">
+            <DependentOn>ProviderCryptography.h</DependentOn>
+            <BuildOrder>3</BuildOrder>
+        </CppCompile>
         <CppCompile Include="Unit1.cpp">
             <Form>mainForm</Form>
             <FormType>dfm</FormType>
