@@ -1,33 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.580,C:\ProjectRAD\CypherTest\Cryptography_class.h=C:\ProjectRAD\CypherTest\Unit2.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.948,C:\ProjectRAD\CypherTest\Unit1.cpp=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.201,=C:\ProjectRAD\CypherTest\include\cspvtable.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.195,=C:\ProjectRAD\CypherTest\include\cspmm.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.227,=C:\ProjectRAD\CypherTest\include\wincsp.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.280,C:\ProjectRAD\CypherTest\CryptoPro.h=C:\ProjectRAD\CypherTest\ProviderCryptography.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.948,C:\ProjectRAD\CypherTest\Unit1.cpp=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.776,=C:\Users\Никита\Documents\RAD Studio\Projects\Project1PCH1.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.732,C:\ProjectRAD\CypherTest\Project1PCH1.h=C:\Users\Никита\Documents\RAD Studio\Projects\Project1PCH1.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.227,=C:\ProjectRAD\CypherTest\include\wincsp.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.821,C:\ProjectRAD\CypherTest\cryptography.h=C:\ProjectRAD\CypherTest\CryptoPro.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.384,C:\ProjectRAD\CypherTest\cryptography.cpp=C:\ProjectRAD\CypherTest\Cryptography_class.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.580,C:\ProjectRAD\CypherTest\Cryptography_class.h=C:\ProjectRAD\CypherTest\Unit2.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.821,C:\ProjectRAD\CypherTest\cryptography.cpp=C:\ProjectRAD\CypherTest\CryptoPro.cpp</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.280,C:\ProjectRAD\CypherTest\CryptoPro.h=C:\ProjectRAD\CypherTest\ProviderCryptography.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.540,=C:\ProjectRAD\CypherTest\Unit3.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.195,=C:\ProjectRAD\CypherTest\include\cspmm.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.384,C:\ProjectRAD\CypherTest\cryptography.cpp=C:\ProjectRAD\CypherTest\Cryptography_class.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.107,C:\ProjectRAD\CypherTest\Project1.cbproj=C:\Users\Никита\Documents\RAD Studio\Projects\Project1.cbproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.384,C:\ProjectRAD\CypherTest\cryptography.h=C:\ProjectRAD\CypherTest\Cryptography_class.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.233,=C:\ProjectRAD\CypherTest\include\wincspc.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.821,C:\ProjectRAD\CypherTest\cryptography.h=C:\ProjectRAD\CypherTest\CryptoPro.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.580,C:\ProjectRAD\CypherTest\Cryptography_class.cpp=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.726,C:\ProjectRAD\CypherTest\Unit2.h=C:\ProjectRAD\CypherTest\Cryptography.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.185,=C:\ProjectRAD\CypherTest\include\cpdrvlib.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.796,=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.cpp</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.948,C:\ProjectRAD\CypherTest\Unit1.h=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.948,C:\ProjectRAD\CypherTest\Unit1.dfm=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.280,C:\ProjectRAD\CypherTest\CryptoPro.cpp=C:\ProjectRAD\CypherTest\ProviderCryptography.cpp</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.321,=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.138,=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.948,C:\ProjectRAD\CypherTest\Unit1.h=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.796,=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.233,=C:\ProjectRAD\CypherTest\include\wincspc.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.948,C:\ProjectRAD\CypherTest\Unit1.dfm=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.207,=C:\ProjectRAD\CypherTest\include\lfmm.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.580,C:\ProjectRAD\CypherTest\Cryptography_class.cpp=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.138,=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.321,=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.221,=C:\ProjectRAD\CypherTest\include\WinCryptEx.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.726,C:\ProjectRAD\CypherTest\Unit2.cpp=C:\ProjectRAD\CypherTest\Cryptography.cpp</Transaction>
-    <Transaction>2018.05.14 20:40:25.047,=C:\ProjectRAD\CypherTest\SaveKeyWindow.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.047,=C:\ProjectRAD\CypherTest\SaveKeyWindow.cpp</Transaction>
+    <Transaction>2018.05.14 21:27:13.265,C:\ProjectRAD\CypherTest\Unit1.cpp=</Transaction>
+    <Transaction>2018.05.14 21:27:18.233,=C:\ProjectRAD\CypherTest\Unit1.cpp</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="include"/>
@@ -46,13 +49,13 @@
     <File Path="ProviderCryptography.h"/>
     <File Path="Project1.cpp"/>
     <File Path="Project1PCH1.h"/>
-    <File Path="Unit1.cpp"/>
-    <File Path="Unit1.cpp"/>
-    <File Path="Unit1.dfm"/>
-    <File Path="Unit1.h"/>
     <File Path="SaveKeyWindow.cpp"/>
     <File Path="SaveKeyWindow.cpp"/>
     <File Path="SaveKeyWindow.dfm"/>
     <File Path="SaveKeyWindow.h"/>
+    <File Path="Unit1.cpp"/>
+    <File Path="Unit1.cpp"/>
+    <File Path="Unit1.dfm"/>
+    <File Path="Unit1.h"/>
   </ProjectSortOrder>
 </BorlandProject>

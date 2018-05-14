@@ -63,10 +63,6 @@ object mainForm: TmainForm
     Width = 361
     Height = 37
     Caption = #1057#1075#1077#1085#1077#1088#1080#1088#1086#1074#1072#1090#1100' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
-<<<<<<< HEAD
-    Enabled = False
-=======
->>>>>>> 26c689c8a6e1abe2d8eca3c20e89e8e7edffddf9
     TabOrder = 3
     OnClick = saveKeyButtonClick
   end
