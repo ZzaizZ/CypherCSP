@@ -16,6 +16,7 @@ TmainForm * mainForm;
 __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 {
 	algorithmComboBox->ItemIndex = 0;
+    checkCryptoProvider(0);
 	crypt = new ProviderCryptography( PROV_GOST_2012_256 );
 	passwordEdit->PasswordChar = L'*';
 	this->Height = 210;
@@ -133,12 +134,12 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 
 }
 // ---------------------------------------------------------------------------
-void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
+bool TmainForm::checkCryptoProvider(int index)
 {
-	if (algorithmComboBox->ItemIndex == 0) { // На первой позиции - КриптоПРО крипропровайдер
+    if (algorithmComboBox->ItemIndex == index) { // На первой позиции - КриптоПРО крипропровайдер
 		// делаем тестовое создание контекста криптопровайдера
-        // если создаётся ок, то работа будет дальше, иначе интерфейс неактивен
-        HCRYPTPROV hCryptProvider_;
+		// если создаётся ок, то работа будет дальше, иначе интерфейс неактивен
+		HCRYPTPROV hCryptProvider_;
 		if ( !CryptAcquireContext( &hCryptProvider_, NULL, NULL, 80,
 			CRYPT_VERIFYCONTEXT ) )
 		{
@@ -146,9 +147,14 @@ void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
 				MB_OK );
 			saveKeyButton->Enabled = false;
 			chooseKeyCheckBox->Enabled = false;
-            passwordEdit->Enabled = false;
+			passwordEdit->Enabled = false;
 		}
 	}
+}
+// ---------------------------------------------------------------------------
+void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
+{
+    checkCryptoProvider(0);
 }
 //---------------------------------------------------------------------------
 

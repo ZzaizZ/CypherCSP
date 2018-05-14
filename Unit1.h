@@ -38,6 +38,7 @@ __published: // IDE-managed Components
 private: // User declarations
 		public : // User declarations
 	__fastcall TmainForm( TComponent * Owner );
+    bool checkCryptoProvider(int index);
 
 	ProviderCryptography * crypt;
 } ;
