@@ -19,6 +19,7 @@ __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 	algorithmComboBox->ItemIndex = 0;
 	passwordEdit->PasswordChar = L'*';
 	this->Height = 210;
+	this->Position = poDesktopCenter;
 	keyOpenDialog->Filter = "Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
 }
 // ---------------------------------------------------------------------------
@@ -47,7 +48,6 @@ void __fastcall TmainForm::saveKeyButtonClick( TObject * Sender )
 {
 	TForm2 *save = new TForm2(Owner);
 	save->Show();
-    delete save;
 }
 
 // ---------------------------------------------------------------------------"

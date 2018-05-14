@@ -16,7 +16,8 @@ __fastcall TForm2::TForm2(TComponent* Owner)
 {
 	tedPassPhrase->PasswordChar = L'*';
 	tedApprovePassPhrase->PasswordChar = L'*';
-    keySaveDialog->Filter = "Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
+	keySaveDialog->Filter = "Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
+    this->Position = poDesktopCenter;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::btnSaveKeyClick(TObject *Sender)
