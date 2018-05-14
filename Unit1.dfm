@@ -3,7 +3,7 @@ object mainForm: TmainForm
   Top = 0
   BorderStyle = bsDialog
   Caption = #1064#1080#1092#1088#1072#1090#1086#1088'/'#1044#1077#1096#1080#1092#1088#1072#1090#1086#1088
-  ClientHeight = 189
+  ClientHeight = 200
   ClientWidth = 376
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -63,9 +63,11 @@ object mainForm: TmainForm
     Width = 361
     Height = 37
     Caption = #1057#1075#1077#1085#1077#1088#1080#1088#1086#1074#1072#1090#1100' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
+<<<<<<< HEAD
     Enabled = False
+=======
+>>>>>>> 26c689c8a6e1abe2d8eca3c20e89e8e7edffddf9
     TabOrder = 3
-    Visible = False
     OnClick = saveKeyButtonClick
   end
   object algorithmComboBox: TComboBox
@@ -74,6 +76,7 @@ object mainForm: TmainForm
     Width = 361
     Height = 21
     TabOrder = 4
+    OnChange = algorithmComboBoxChange
     Items.Strings = (
       #1043#1054#1057#1058' 28147-89 '#1050#1088#1080#1087#1090#1086#1055#1088#1086' CSP')
   end
@@ -99,6 +102,6 @@ object mainForm: TmainForm
   object keyOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
     Left = 7
-    Top = 179
+    Top = 180
   end
 end

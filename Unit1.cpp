@@ -4,6 +4,8 @@
 #pragma hdrstop
 
 #include "Unit1.h"
+
+#include "SaveKeyWindow.h"
 #include "include/WinCryptEx.h"
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -13,8 +15,12 @@ TmainForm * mainForm;
 // ---------------------------------------------------------------------------
 __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 {
-	crypt = new ProviderCryptography( PROV_GOST_2012_256 );
 	algorithmComboBox->ItemIndex = 0;
+	crypt = new ProviderCryptography( PROV_GOST_2012_256 );
+	passwordEdit->PasswordChar = L'*';
+	this->Height = 210;
+	this->Position = poDesktopCenter;
+	keyOpenDialog->Filter = "Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
 }
 // ---------------------------------------------------------------------------
 
@@ -22,13 +28,13 @@ void __fastcall TmainForm::chooseKeyCheckBoxClick( TObject * Sender )
 {
 	if ( chooseKeyCheckBox->Checked )
 	{
-		saveKeyButton->Visible = true;
+		passwordEdit->Enabled = false;
 		encryptButton->Enabled = true;
 		decryptButton->Enabled = true;
 	}
 	else
 	{
-		saveKeyButton->Visible = false;
+		passwordEdit->Enabled = true;
 		if ( passwordEdit->Text.IsEmpty( ) )
 		{
 			encryptButton->Enabled = false;
@@ -40,16 +46,8 @@ void __fastcall TmainForm::chooseKeyCheckBoxClick( TObject * Sender )
 // ---------------------------------------------------------------------------
 void __fastcall TmainForm::saveKeyButtonClick( TObject * Sender )
 {
-
-	if ( !keyOpenDialog->Execute( ) )
-	{
-		return;
-	}
-	UnicodeString unicodeLine = passwordEdit->Text;
-	std::string password( AnsiString( unicodeLine ).c_str( ) );
-	crypt->GenerateKey( ( char * )password.c_str( ) );
-	crypt->SaveKey( keyOpenDialog->FileName.c_str( ) );
-
+	TForm2 *save = new TForm2(Owner);
+	save->Show();
 }
 
 // ---------------------------------------------------------------------------"
@@ -135,3 +133,22 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 
 }
 // ---------------------------------------------------------------------------
+void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
+{
+	if (algorithmComboBox->ItemIndex == 0) { // На первой позиции - КриптоПРО крипропровайдер
+		// делаем тестовое создание контекста криптопровайдера
+        // если создаётся ок, то работа будет дальше, иначе интерфейс неактивен
+        HCRYPTPROV hCryptProvider_;
+		if ( !CryptAcquireContext( &hCryptProvider_, NULL, NULL, 80,
+			CRYPT_VERIFYCONTEXT ) )
+		{
+			MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера. Возможно, не установлена КриптоПРО 4.", L"Error",
+				MB_OK );
+			saveKeyButton->Enabled = false;
+			chooseKeyCheckBox->Enabled = false;
+            passwordEdit->Enabled = false;
+		}
+	}
+}
+//---------------------------------------------------------------------------
+
