@@ -159,6 +159,12 @@
             <DependentOn>ProviderCryptography.h</DependentOn>
             <BuildOrder>3</BuildOrder>
         </CppCompile>
+        <CppCompile Include="SaveKeyWindow.cpp">
+            <Form>Form2</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>SaveKeyWindow.h</DependentOn>
+            <BuildOrder>12</BuildOrder>
+        </CppCompile>
         <CppCompile Include="Unit1.cpp">
             <Form>mainForm</Form>
             <FormType>dfm</FormType>
@@ -166,6 +172,7 @@
             <BuildOrder>2</BuildOrder>
         </CppCompile>
         <FormResources Include="Unit1.dfm"/>
+        <FormResources Include="SaveKeyWindow.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

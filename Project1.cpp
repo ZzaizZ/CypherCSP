@@ -5,6 +5,7 @@
 #include <tchar.h>
 // ---------------------------------------------------------------------------
 USEFORM("Unit1.cpp", mainForm);
+USEFORM("SaveKeyWindow.cpp", Form2);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(
 	HINSTANCE,
@@ -17,6 +18,7 @@ int WINAPI _tWinMain(
 		Application->Initialize( );
 		Application->MainFormOnTaskBar = true;
 		Application->CreateForm(__classid(TmainForm), &mainForm);
+		Application->CreateForm(__classid(TForm2), &Form2);
 		Application->Run( );
 	}
 	catch ( Exception & exception )
