@@ -1,3 +1,9 @@
 
-*.stackdump
+.idea/
+CMakeLists.txt
+Project1.stat
 Win32/
+__astcache/
+__history/
+cmake-build-debug/
+
