@@ -4,6 +4,8 @@
 #pragma hdrstop
 
 #include "Unit1.h"
+
+#include "SaveKeyWindow.h"
 #include "include/WinCryptEx.h"
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -15,6 +17,9 @@ __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 {
 	crypt = new ProviderCryptography( PROV_GOST_2012_256 );
 	algorithmComboBox->ItemIndex = 0;
+	passwordEdit->PasswordChar = L'*';
+	this->Height = 210;
+	keyOpenDialog->Filter = "Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
 }
 // ---------------------------------------------------------------------------
 
@@ -22,13 +27,13 @@ void __fastcall TmainForm::chooseKeyCheckBoxClick( TObject * Sender )
 {
 	if ( chooseKeyCheckBox->Checked )
 	{
-		saveKeyButton->Visible = true;
+		passwordEdit->Enabled = false;
 		encryptButton->Enabled = true;
 		decryptButton->Enabled = true;
 	}
 	else
 	{
-		saveKeyButton->Visible = false;
+		passwordEdit->Enabled = true;
 		if ( passwordEdit->Text.IsEmpty( ) )
 		{
 			encryptButton->Enabled = false;
@@ -40,16 +45,9 @@ void __fastcall TmainForm::chooseKeyCheckBoxClick( TObject * Sender )
 // ---------------------------------------------------------------------------
 void __fastcall TmainForm::saveKeyButtonClick( TObject * Sender )
 {
-
-	if ( !keyOpenDialog->Execute( ) )
-	{
-		return;
-	}
-	UnicodeString unicodeLine = passwordEdit->Text;
-	std::string password( AnsiString( unicodeLine ).c_str( ) );
-	crypt->GenerateKey( ( char * )password.c_str( ) );
-	crypt->SaveKey( keyOpenDialog->FileName.c_str( ) );
-
+	TForm2 *save = new TForm2(Owner);
+	save->Show();
+    delete save;
 }
 
 // ---------------------------------------------------------------------------"

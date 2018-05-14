@@ -22,11 +22,11 @@ __published: // IDE-managed Components
 	TLabel * passwordLabel;
 	TEdit * passwordEdit;
 	TOpenDialog * outputOpenDialog;
-	TOpenDialog * keyOpenDialog;
 	TButton * saveKeyButton;
 	TLabel * algorithmLabel;
 	TComboBox * algorithmComboBox;
 	TCheckBox * chooseKeyCheckBox;
+	TOpenDialog *keyOpenDialog;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
