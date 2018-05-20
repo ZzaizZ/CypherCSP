@@ -3,7 +3,7 @@ object mainForm: TmainForm
   Top = 0
   BorderStyle = bsDialog
   Caption = #1064#1080#1092#1088#1072#1090#1086#1088'/'#1044#1077#1096#1080#1092#1088#1072#1090#1086#1088
-  ClientHeight = 200
+  ClientHeight = 518
   ClientWidth = 376
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -84,6 +84,32 @@ object mainForm: TmainForm
     Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
     TabOrder = 5
     OnClick = chooseKeyCheckBoxClick
+  end
+  object btnGenerateKeyPair: TButton
+    Left = 8
+    Top = 248
+    Width = 180
+    Height = 37
+    Caption = #1043#1077#1085#1077#1088#1072#1094#1080#1103' '#1082#1083#1102#1095#1077#1074#1086#1081' '#1087#1072#1088#1099
+    TabOrder = 6
+    OnClick = btnGenerateKeyPairClick
+  end
+  object btnLoadResponderKey: TButton
+    Left = 8
+    Top = 291
+    Width = 361
+    Height = 37
+    Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1086#1090#1082#1088#1099#1090#1099#1081' '#1082#1083#1102#1095' '#1074#1090#1086#1088#1086#1075#1086' '#1072#1073#1086#1085#1077#1085#1090#1072
+    TabOrder = 7
+  end
+  object btnLoadKeyPair: TButton
+    Left = 189
+    Top = 248
+    Width = 180
+    Height = 37
+    Caption = #1047#1072#1075#1088#1091#1079#1082#1072' '#1082#1083#1102#1095#1077#1074#1086#1075#1086' '#1085#1086#1089#1080#1090#1077#1083#1103
+    TabOrder = 8
+    OnClick = btnLoadKeyPairClick
   end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083

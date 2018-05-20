@@ -31,6 +31,7 @@ public:
 private:
 	HCRYPTPROV hCryptProvider_;
 	HCRYPTPROV keyPairProvider_;
+    HCRYPTKEY keypair;
 	DWORD hProvType_;
 	HANDLE sourceHandle_;
 	HANDLE destinationHandle_;

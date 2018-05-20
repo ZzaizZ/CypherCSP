@@ -19,7 +19,7 @@ __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
     checkCryptoProvider(0);
 	crypt = new ProviderCryptography( PROV_GOST_2012_256 );
 	passwordEdit->PasswordChar = L'*';
-	this->Height = 210;
+	//this->Height = 210;
 	this->Position = poDesktopCenter;
 	keyOpenDialog->Filter = "Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
 }
@@ -155,6 +155,19 @@ bool TmainForm::checkCryptoProvider(int index)
 void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
 {
     checkCryptoProvider(0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::btnGenerateKeyPairClick(TObject *Sender)
+{
+	crypt->GenKeyPair(L"ContainerName");
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TmainForm::btnLoadKeyPairClick(TObject *Sender)
+{
+	crypt->LoadKeyPair(L"ContainerName");
 }
 //---------------------------------------------------------------------------
 
