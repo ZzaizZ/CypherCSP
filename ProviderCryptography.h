@@ -24,7 +24,7 @@ public:
 	bool GenerateKey( std::wstring keyFile );
 	bool SaveKey( std::wstring );
 
-	bool GenKeyPair(const wchar_t *containerName);
+	bool GenKeyPair(const wchar_t *containerName, wchar_t *pkPath);
 	bool LoadKeyPair(const wchar_t *containerName);
     bool ExportPublicKeyToFile(const wchar_t *path);
 

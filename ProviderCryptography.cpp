@@ -447,10 +447,14 @@ bool ProviderCryptography::DecryptFile(
 }
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::GenKeyPair(const wchar_t *containerName)
+bool ProviderCryptography::GenKeyPair(const wchar_t *containerName, wchar_t *pkPath)
 {
-	if ( !CryptAcquireContext( &keyPairProvider_, containerName, NULL, hProvType_,
-							   CRYPT_NEWKEYSET ) )
+	if ( !CryptAcquireContext(
+		&keyPairProvider_,
+		containerName,
+		NULL,
+		hProvType_,
+		CRYPT_NEWKEYSET  ) )
 	{
 		MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера", L"Error",
 					 MB_OK );
@@ -464,21 +468,31 @@ bool ProviderCryptography::GenKeyPair(const wchar_t *containerName)
 	}
 	MessageBoxW( NULL, L"Ключи сгенерированы", L"Error",
 					 MB_OK );
-    ExportPublicKeyToFile(L"E:\\123123.pub");
+    ExportPublicKeyToFile(pkPath);
 	return true;
 }
 
 bool ProviderCryptography::LoadKeyPair(const wchar_t *containerName)
 {
-	if ( !CryptAcquireContext( &keyPairProvider_, containerName, NULL, hProvType_,
+	if ( !CryptAcquireContext( &keyPairProvider_, L"ContainerName", NULL, hProvType_,
 							   0 ) )
 	{
-		MessageBoxW( NULL, L"Ошибка открытия криптопровайдера", L"Error",
+		MessageBoxW( NULL, L"Указанный криптоконтейнер не существует", L"Error",
 					 MB_OK );
 		return false;
 	}
+	if(!CryptGetUserKey(
+		keyPairProvider_,
+        AT_KEYEXCHANGE,
+        &keypair))
+	{
+		MessageBoxW( NULL, L"Ошибка экспорта ключа", L"Error",
+				 MB_OK );
+        long e = GetLastError();
+		return false;
+	}
 	MessageBoxW( NULL, L"Ключи загружены!", L"Error",
-					 MB_OK );
+				 MB_OK );
 	return true;
 }
 
@@ -494,7 +508,7 @@ bool ProviderCryptography::ExportPublicKeyToFile(const wchar_t *path)
 		NULL,
 		&cbKeyBlob);
 	// указатель на ключевой BLOB
-	BYTE pbKeyBlob[101];
+	BYTE *pbKeyBlob = new BYTE[cbKeyBlob];
 	long error = GetLastError();
 	// Экспортирование открытого ключа в BLOB открытого ключа.
 	if(!CryptExportKey(

@@ -101,6 +101,7 @@ object mainForm: TmainForm
     Height = 37
     Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1086#1090#1082#1088#1099#1090#1099#1081' '#1082#1083#1102#1095' '#1074#1090#1086#1088#1086#1075#1086' '#1072#1073#1086#1085#1077#1085#1090#1072
     TabOrder = 7
+    OnClick = btnLoadResponderKeyClick
   end
   object btnLoadKeyPair: TButton
     Left = 189
@@ -113,17 +114,21 @@ object mainForm: TmainForm
   end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083
-    Left = 56
-    Top = 179
+    Left = 128
+    Top = 187
   end
   object outputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1082#1086#1085#1077#1095#1085#1099#1081' '#1092#1072#1081#1083
-    Left = 32
+    Left = 56
     Top = 179
   end
   object keyOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
     Left = 7
     Top = 180
+  end
+  object sdPublicKeySave: TOpenDialog
+    Left = 304
+    Top = 192
   end
 end

@@ -160,14 +160,19 @@ void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
 
 void __fastcall TmainForm::btnGenerateKeyPairClick(TObject *Sender)
 {
-	crypt->GenKeyPair(L"ContainerName");
+	wchar_t *containerName = L"MyContainerName"; // имя создаваемого контейнера
+	wchar_t *pkPath = L"E:\\MyContainerName.pub"; // путь сохранения открытого ключа
+	crypt->GenKeyPair(containerName, pkPath);
 }
 //---------------------------------------------------------------------------
-
-
 void __fastcall TmainForm::btnLoadKeyPairClick(TObject *Sender)
 {
-	crypt->LoadKeyPair(L"ContainerName");
+	crypt->LoadKeyPair(L"KC1_test");
+}
+//---------------------------------------------------------------------------
+void __fastcall TmainForm::btnLoadResponderKeyClick(TObject *Sender)
+{
+	crypt->ExportPublicKeyToFile(L"321.pub");
 }
 //---------------------------------------------------------------------------
 

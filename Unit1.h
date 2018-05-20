@@ -30,6 +30,7 @@ __published: // IDE-managed Components
 	TButton *btnGenerateKeyPair;
 	TButton *btnLoadResponderKey;
 	TButton *btnLoadKeyPair;
+	TOpenDialog *sdPublicKeySave;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
@@ -39,6 +40,7 @@ __published: // IDE-managed Components
 	void __fastcall algorithmComboBoxChange(TObject *Sender);
 	void __fastcall btnGenerateKeyPairClick(TObject *Sender);
 	void __fastcall btnLoadKeyPairClick(TObject *Sender);
+	void __fastcall btnLoadResponderKeyClick(TObject *Sender);
 
 private: // User declarations
 		public : // User declarations
