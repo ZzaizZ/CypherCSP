@@ -4,8 +4,8 @@
 #pragma hdrstop
 #include <tchar.h>
 // ---------------------------------------------------------------------------
-USEFORM("SaveKeyWindow.cpp", Form2);
 USEFORM("Unit1.cpp", mainForm);
+USEFORM("SaveKeyWindow.cpp", Form2);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(
 	HINSTANCE,

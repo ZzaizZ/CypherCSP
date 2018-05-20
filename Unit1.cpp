@@ -15,13 +15,15 @@ TmainForm * mainForm;
 // ---------------------------------------------------------------------------
 __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 {
+
 	algorithmComboBox->ItemIndex = 0;
-    checkCryptoProvider(0);
+	checkCryptoProvider( 0 );
 	crypt = new ProviderCryptography( PROV_GOST_2012_256 );
 	passwordEdit->PasswordChar = L'*';
-	this->Height = 210;
+	this->Height = 310;
 	this->Position = poDesktopCenter;
-	keyOpenDialog->Filter = "Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
+	keyOpenDialog->Filter =
+		"Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
 }
 // ---------------------------------------------------------------------------
 
@@ -47,8 +49,8 @@ void __fastcall TmainForm::chooseKeyCheckBoxClick( TObject * Sender )
 // ---------------------------------------------------------------------------
 void __fastcall TmainForm::saveKeyButtonClick( TObject * Sender )
 {
-	TForm2 *save = new TForm2(Owner);
-	save->Show();
+	TForm2 * save = new TForm2( Owner );
+	save->Show( );
 }
 
 // ---------------------------------------------------------------------------"
@@ -133,28 +135,55 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 	}
 
 }
+
 // ---------------------------------------------------------------------------
-bool TmainForm::checkCryptoProvider(int index)
+void TmainForm::checkCryptoProvider( int index )
 {
-    if (algorithmComboBox->ItemIndex == index) { // На первой позиции - КриптоПРО крипропровайдер
+	if ( algorithmComboBox->ItemIndex == index )
+	{ // На первой позиции - КриптоПРО крипропровайдер
 		// делаем тестовое создание контекста криптопровайдера
 		// если создаётся ок, то работа будет дальше, иначе интерфейс неактивен
 		HCRYPTPROV hCryptProvider_;
 		if ( !CryptAcquireContext( &hCryptProvider_, NULL, NULL, 80,
 			CRYPT_VERIFYCONTEXT ) )
 		{
-			MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера. Возможно, не установлена КриптоПРО 4.", L"Error",
-				MB_OK );
+			MessageBoxW( NULL,
+				L"Ошибка инициализации криптопровайдера. Возможно, не установлена КриптоПРО 4.",
+				L"Error", MB_OK );
 			saveKeyButton->Enabled = false;
 			chooseKeyCheckBox->Enabled = false;
 			passwordEdit->Enabled = false;
 		}
 	}
 }
-// ---------------------------------------------------------------------------
-void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
-{
-    checkCryptoProvider(0);
-}
-//---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+void __fastcall TmainForm::algorithmComboBoxChange( TObject * Sender )
+{
+	checkCryptoProvider( 0 );
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TmainForm::sendButtonClick( TObject * Sender )
+{
+	if ( !sendOpenDialog->Execute( ) )
+	{
+		return;
+	}
+	UnicodeString unicodeLine = ipEdit->Text;
+	std::string ipaddr( AnsiString( unicodeLine ).c_str( ) );
+	clientThread = new ClientThread( sendOpenDialog->FileName.c_str( ), ipaddr,
+		false );
+
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TmainForm::serverButtonClick( TObject * Sender )
+{
+	if ( serverButton->Enabled )
+	{
+		serverThread = new ServerThread( false );
+		serverButton->Enabled = false;
+	}
+}
+// ---------------------------------------------------------------------------

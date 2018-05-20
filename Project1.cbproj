@@ -52,7 +52,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <AllPackageLibs>rtl.lib;vcl.lib</AllPackageLibs>
+        <AllPackageLibs>rtl.lib;vcl.lib;FireDAC.lib;FireDACSqliteDriver.lib;FireDACCommonDriver.lib;FireDACCommon.lib;xmlrtl.lib;dbrtl.lib</AllPackageLibs>
         <ProjectType>CppVCLApplication</ProjectType>
         <IncludePath>include\;C:\ProjectRAD\CypherTest\;$(IncludePath)</IncludePath>
         <ILINK_LibraryPath>include\;C:\ProjectRAD\CypherTest\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
@@ -107,7 +107,7 @@
         <ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\debug\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <LinkPackageImports>rtl.bpi;vcl.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;FireDAC.bpi;FireDACSqliteDriver.bpi;FireDACCommonDriver.bpi;FireDACCommon.bpi;xmlrtl.bpi;dbrtl.bpi</LinkPackageImports>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -124,6 +124,18 @@
         <BCC_PCHName_Clang>Project1PCH1.h</BCC_PCHName_Clang>
     </PropertyGroup>
     <ItemGroup>
+        <CppCompile Include="Client.cpp">
+            <DependentOn>Client.h</DependentOn>
+            <BuildOrder>15</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="ClientThread.cpp">
+            <DependentOn>ClientThread.h</DependentOn>
+            <BuildOrder>17</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="Communication.cpp">
+            <DependentOn>Communication.h</DependentOn>
+            <BuildOrder>14</BuildOrder>
+        </CppCompile>
         <CppCompile Include="Cryptography.cpp">
             <DependentOn>Cryptography.h</DependentOn>
             <BuildOrder>11</BuildOrder>
@@ -165,14 +177,22 @@
             <DependentOn>SaveKeyWindow.h</DependentOn>
             <BuildOrder>12</BuildOrder>
         </CppCompile>
+        <CppCompile Include="Server.cpp">
+            <DependentOn>Server.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="ServerThread.cpp">
+            <DependentOn>ServerThread.h</DependentOn>
+            <BuildOrder>16</BuildOrder>
+        </CppCompile>
         <CppCompile Include="Unit1.cpp">
             <Form>mainForm</Form>
             <FormType>dfm</FormType>
             <DependentOn>Unit1.h</DependentOn>
             <BuildOrder>12</BuildOrder>
         </CppCompile>
-        <FormResources Include="SaveKeyWindow.dfm"/>
         <FormResources Include="Unit1.dfm"/>
+        <FormResources Include="SaveKeyWindow.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

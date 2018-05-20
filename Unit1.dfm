@@ -3,7 +3,7 @@ object mainForm: TmainForm
   Top = 0
   BorderStyle = bsDialog
   Caption = #1064#1080#1092#1088#1072#1090#1086#1088'/'#1044#1077#1096#1080#1092#1088#1072#1090#1086#1088
-  ClientHeight = 200
+  ClientHeight = 265
   ClientWidth = 376
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -28,6 +28,13 @@ object mainForm: TmainForm
     Width = 115
     Height = 13
     Caption = #1040#1083#1075#1086#1088#1080#1090#1084' '#1096#1080#1092#1088#1086#1074#1072#1085#1080#1103
+  end
+  object ipLabel: TLabel
+    Left = 8
+    Top = 176
+    Width = 172
+    Height = 13
+    Caption = 'IP '#1072#1076#1088#1077#1089' '#1091#1076#1072#1083#1077#1085#1085#1086#1075#1086' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
   end
   object encryptButton: TButton
     Left = 8
@@ -85,19 +92,49 @@ object mainForm: TmainForm
     TabOrder = 5
     OnClick = chooseKeyCheckBoxClick
   end
+  object sendButton: TButton
+    Left = 7
+    Top = 224
+    Width = 361
+    Height = 33
+    Caption = #1055#1077#1088#1077#1076#1072#1090#1100' '#1092#1072#1081#1083
+    TabOrder = 6
+    OnClick = sendButtonClick
+  end
+  object serverButton: TButton
+    Left = 196
+    Top = 185
+    Width = 172
+    Height = 33
+    Caption = #1047#1072#1087#1091#1089#1090#1080#1090#1100' '#1089#1077#1088#1074#1077#1088
+    TabOrder = 7
+    OnClick = serverButtonClick
+  end
+  object ipEdit: TEdit
+    Left = 8
+    Top = 195
+    Width = 172
+    Height = 21
+    TabOrder = 8
+    Text = '127.0.0.1'
+  end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083
     Left = 56
-    Top = 179
+    Top = 267
   end
   object outputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1082#1086#1085#1077#1095#1085#1099#1081' '#1092#1072#1081#1083
     Left = 32
-    Top = 179
+    Top = 267
   end
   object keyOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
     Left = 7
-    Top = 180
+    Top = 268
+  end
+  object sendOpenDialog: TOpenDialog
+    Left = 104
+    Top = 272
   end
 end

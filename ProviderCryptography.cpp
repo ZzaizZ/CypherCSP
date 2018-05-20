@@ -410,6 +410,7 @@ bool ProviderCryptography::EncryptFile(
 			return true;
 		}
 	}
+	return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -444,6 +445,7 @@ bool ProviderCryptography::DecryptFile(
 			return true;
 		}
 	}
+	return false;
 }
 
 // ---------------------------------------------------------------------------
