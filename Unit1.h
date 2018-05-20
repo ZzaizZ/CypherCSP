@@ -8,6 +8,7 @@
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
 #include <Vcl.Dialogs.hpp>
+#include <FileCtrl.hpp>
 
 #include "ProviderCryptography.h"
 #include "ServerThread.h"
@@ -34,7 +35,9 @@ __published: // IDE-managed Components
 	TOpenDialog * sendOpenDialog;
 	TLabel * ipLabel;
 	TButton * serverButton;
-	TEdit *ipEdit;
+	TEdit * ipEdit;
+	TLabel *portLabel;
+	TEdit *portEdit;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );

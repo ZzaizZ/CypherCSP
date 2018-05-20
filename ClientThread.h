@@ -16,13 +16,15 @@ protected:
 public:
 	__fastcall ClientThread(
 		std::wstring sourceFile,
-		std::string  ipaddr,
+		std::wstring ipaddr,
+		std::wstring port,
 		bool         CreateSuspended );
 
 	Client * client_;
 
 	std::wstring sourceFile_;
-	std::string ipaddr_;
+	std::wstring ipaddr_;
+	std::wstring port_;
 } ;
 // ---------------------------------------------------------------------------
 #endif

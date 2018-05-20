@@ -22,21 +22,30 @@
 
 __fastcall ClientThread::ClientThread(
 	std::wstring sourceFile,
-	std::string  ipaddr,
+	std::wstring ipaddr,
+	std::wstring port,
 	bool         CreateSuspended ) : TThread(
 	             CreateSuspended )
 {
 	FreeOnTerminate = true;
 	sourceFile_ = sourceFile;
 	ipaddr_ = ipaddr;
+	port_ = port;
 }
 
 // ---------------------------------------------------------------------------
 void __fastcall ClientThread::Execute( )
 {
 	// ---- Place thread code here ----
-	client_ = new Client( );
-	if ( !client_->Init( ipaddr_ ) )
+	client_ = new Client( ipaddr_, port_ );
+	if ( !client_->Init( ) )
+	{
+		MessageBoxW( NULL,
+			L"Ошибка инициализации Winsock",
+			L"Error", MB_OK );
+		return;
+	}
+	if ( !client_->Connect( ) )
 	{
 		MessageBoxW( NULL,
 			L"Ошибка подключения к серверу, убедитесь что он запущен или доступен",
@@ -48,6 +57,7 @@ void __fastcall ClientThread::Execute( )
 		MessageBoxW( NULL, L"Ошибка отправки файла", L"Error", MB_OK );
 		return;
 	}
+	client_->CleanUp( );
 	MessageBoxW( NULL, L"Файл передан", L"Информация", MB_OK );
 	delete client_;
 

@@ -9,15 +9,19 @@
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
 
-Client::Client( ) : Communication( )
+Client::Client(
+	std::wstring ipaddr,
+	std::wstring port ) : Communication( )
 {
 	connectSocket_ = INVALID_SOCKET;
 	result_ = NULL;
 	ptr_ = NULL;
+	ipaddr_ = ipaddr;
+	port_ = port;
 }
 
 // ---------------------------------------------------------------------------
-bool Client::Init( std::string ipaddr )
+bool Client::Init( )
 {
 	int iResult;
 	iResult = WSAStartup( REQ_WINSOCK_VER, &wsaData_ );
@@ -31,22 +35,27 @@ bool Client::Init( std::string ipaddr )
 	hints_.ai_socktype = SOCK_STREAM;
 	hints_.ai_protocol = IPPROTO_TCP;
 
-	iResult = getaddrinfo( ipaddr.c_str( ), DEFAULT_PORT, &hints_, &result_ );
+	iResult = GetAddrInfoW( ipaddr_.c_str( ), port_.c_str( ), &hints_,
+		&result_ );
 	if ( iResult != 0 )
 	{
-		MessageBoxW( NULL, L"Ошибка функции getaddrinfo", L"Error", MB_OK );
 		WSACleanup( );
 		return false;
 	}
+	return true;
 
+}
+
+// ---------------------------------------------------------------------------
+bool Client::Connect( )
+{
+	int iResult;
 	for ( ptr_ = result_; ptr_ != NULL; ptr_ = ptr_->ai_next )
 	{
 		connectSocket_ = socket( ptr_->ai_family, ptr_->ai_socktype,
 			ptr_->ai_protocol );
 		if ( connectSocket_ == INVALID_SOCKET )
 		{
-			MessageBoxW( NULL, L"Ошибка создания сокета", L"Error", MB_OK );
-			WSACleanup( );
 			return false;
 		}
 
@@ -55,16 +64,19 @@ bool Client::Init( std::string ipaddr )
 			( int )ptr_->ai_addrlen );
 		if ( iResult == SOCKET_ERROR )
 		{
-			MessageBoxW( NULL, L"Ошибка подключения к серверу", L"Error",
-			MB_OK );
 			closesocket( connectSocket_ );
 			connectSocket_ = INVALID_SOCKET;
 			continue;
 		}
 		break;
 	}
+	return true;
+}
 
-	freeaddrinfo( result_ );
+// ---------------------------------------------------------------------------
+bool Client::CleanUp( )
+{
+	FreeAddrInfoW( result_ );
 
 	if ( connectSocket_ == INVALID_SOCKET )
 	{

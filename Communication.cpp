@@ -96,7 +96,7 @@ bool Communication::SendFile( std::wstring sourceFile )
 }
 
 // ---------------------------------------------------------------------------
-bool Communication::RecieveFile( )
+bool Communication::RecieveFile( std::wstring destinationPath )
 {
 	char bufferFileName[ DEFAULT_FN ];
 	char bufferData[ DEFAULT_BUFLEN ];
@@ -130,8 +130,10 @@ bool Communication::RecieveFile( )
 
 	MultiByteToWideChar( CP_UTF8, NULL, bufferFileName,
 		sizeof( bufferFileName ), bufferFileNameW, sizeof( bufferFileNameW ) );
+	destinationPath.append( L"\\" );
+	destinationPath.append( bufferFileNameW );
 
-	FileHandle = CreateFileW( bufferFileNameW, GENERIC_WRITE,
+	FileHandle = CreateFileW( destinationPath.c_str( ), GENERIC_WRITE,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
 		FILE_ATTRIBUTE_NORMAL, NULL );
 	if ( FileHandle == 0 || FileHandle == INVALID_HANDLE_VALUE )
@@ -178,8 +180,7 @@ bool Communication::RecieveFile( )
 	}
 
 	// Стандартная очистка
-	closesocket( connectSocket_ );
-	WSACleanup( );
+
 	CloseHandle( FileHandle );
 	return true;
 }

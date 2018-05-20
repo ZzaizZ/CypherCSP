@@ -19,14 +19,14 @@ class Communication
 public:
 	Communication( );
 	bool SendFile( std::wstring sourceFile );
-	bool RecieveFile( );
+	bool RecieveFile( std::wstring destinationPath );
 
 protected:
 	WSADATA wsaData_;
 	SOCKET connectSocket_;
 
-	struct addrinfo * result_;
-	struct addrinfo hints_;
+	struct addrinfoW * result_;
+	struct addrinfoW hints_;
 
 	char bufferFileName_[ DEFAULT_FN ];
 	char bufferData_[ DEFAULT_BUFLEN ];

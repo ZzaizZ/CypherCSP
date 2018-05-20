@@ -3,7 +3,7 @@ object mainForm: TmainForm
   Top = 0
   BorderStyle = bsDialog
   Caption = #1064#1080#1092#1088#1072#1090#1086#1088'/'#1044#1077#1096#1080#1092#1088#1072#1090#1086#1088
-  ClientHeight = 265
+  ClientHeight = 272
   ClientWidth = 376
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -32,9 +32,16 @@ object mainForm: TmainForm
   object ipLabel: TLabel
     Left = 8
     Top = 176
-    Width = 172
+    Width = 87
     Height = 13
-    Caption = 'IP '#1072#1076#1088#1077#1089' '#1091#1076#1072#1083#1077#1085#1085#1086#1075#1086' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
+    Caption = 'IP '#1072#1076#1088#1077#1089' '#1089#1077#1088#1074#1077#1088#1072
+  end
+  object portLabel: TLabel
+    Left = 101
+    Top = 176
+    Width = 69
+    Height = 13
+    Caption = #1055#1086#1088#1090' '#1089#1077#1088#1074#1077#1088#1072
   end
   object encryptButton: TButton
     Left = 8
@@ -113,10 +120,18 @@ object mainForm: TmainForm
   object ipEdit: TEdit
     Left = 8
     Top = 195
-    Width = 172
+    Width = 89
     Height = 21
     TabOrder = 8
     Text = '127.0.0.1'
+  end
+  object portEdit: TEdit
+    Left = 101
+    Top = 195
+    Width = 89
+    Height = 21
+    TabOrder = 9
+    Text = '4444'
   end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083
@@ -134,7 +149,7 @@ object mainForm: TmainForm
     Top = 268
   end
   object sendOpenDialog: TOpenDialog
-    Left = 104
+    Left = 88
     Top = 272
   end
 end

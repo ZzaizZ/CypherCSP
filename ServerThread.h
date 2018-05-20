@@ -14,9 +14,15 @@ protected:
 	void __fastcall Execute( );
 
 public:
-	__fastcall ServerThread( bool CreateSuspended );
+	__fastcall ServerThread(
+		std::wstring destinationPath,
+		std::wstring port,
+		bool         CreateSuspended );
 
 	Server * server_;
+
+	std::wstring destinationPath_;
+	std::wstring port_;
 } ;
 // ---------------------------------------------------------------------------
 #endif
