@@ -445,5 +445,91 @@ bool ProviderCryptography::DecryptFile(
 		}
 	}
 }
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+bool ProviderCryptography::GenKeyPair(const wchar_t *containerName)
+{
+	HCRYPTKEY keypair;
+	if ( !CryptAcquireContext( &keyPairProvider_, containerName, NULL, hProvType_,
+							   CRYPT_NEWKEYSET ) )
+	{
+		MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера", L"Error",
+					 MB_OK );
+		return false;
+	} else
+	if ( !CryptGenKey(keyPairProvider_, AT_KEYEXCHANGE, CRYPT_EXPORTABLE, &keypair))
+	{
+		MessageBoxW( NULL, L"Ошибка генерации ключевой пары", L"Error",
+					 MB_OK );
+		return false;
+	}
+	MessageBoxW( NULL, L"Ключи сгенерированы", L"Error",
+					 MB_OK );
+	return true;
+}
 
+bool ProviderCryptography::LoadKeyPair(const wchar_t *containerName)
+{
+}
+
+bool ProviderCryptography::ExportPublicKeyToFile(const wchar_t *path)
+{
+	HCRYPTKEY keypair = 0;
+	//--------------------------------------------------------------------
+	// Получение дескриптора открытого ключа.
+	if(!CryptGetUserKey(
+		keyPairProvider_,
+		AT_KEYEXCHANGE,
+		&keypair))
+	{
+		MessageBoxW( NULL, L"Ошибка получения дескриптора открытого ключа", L"Error",
+					 MB_OK );
+		return false;
+	}
+	// Определение размера BLOBа открытого ключа и распределение памяти.
+	DWORD cbKeyBlob;
+	CryptExportKey(
+		keypair,
+		0,
+		PUBLICKEYBLOB,
+		0,
+		NULL,
+		&cbKeyBlob);
+	// указатель на ключевой BLOB
+	BYTE *pbKeyBlob = NULL;
+	pbKeyBlob = (BYTE*)malloc(cbKeyBlob);
+	// Экспортирование открытого ключа в BLOB открытого ключа.
+	if(CryptExportKey(
+		keypair,
+		0,
+		PUBLICKEYBLOB,
+		0,
+		pbKeyBlob,
+		&cbKeyBlob))
+	{
+		MessageBoxW( NULL, L"Ошибка при экспорте открытого ключа в BLOB", L"Error",
+					 MB_OK );
+		return false;
+	}
+	// Открытие файла на запись в него BLOB-а
+	FILE *file;
+	if(!(file = fopen("E:\\public_key.pub", "wb")))
+	{
+		MessageBoxW( NULL, L"Ошибка при открытии файла", L"Error",
+					 MB_OK );
+		return false;
+	}
+	// Запись BLOB-а в файл
+	if(!fwrite(pbKeyBlob, 1, cbKeyBlob, file))
+	{
+		MessageBoxW( NULL, L"Ошибка при записи открытого ключа в файл", L"Error",
+					 MB_OK );
+		free(pbKeyBlob);
+		return false;
+	}
+	MessageBoxW( NULL, L"Открытый ключ экспортирован!", L"Error",
+					 MB_OK );
+	free(pbKeyBlob);
+	return true;
+}
 // ---------------------------------------------------------------------------
