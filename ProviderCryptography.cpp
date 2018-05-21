@@ -496,11 +496,14 @@ bool ProviderCryptography::LoadPublicKey(BYTE *pbBlob, DWORD *pcbBlob, char *szK
 bool ProviderCryptography::EncryptSessionKey(char *sessionKeyPath, std::wstring keyFile, const wchar_t *path)
 {
 	// МЕТОД шифрования сессионного ключа на открытом ключе
-    // и запись результата в файл
+	// и запись результата в файл
+
+	// чтение открытого ключа получателя из файла в блоб
 	char pkBlob[101];
 	DWORD pcsBlob = 101;
-	LoadPublicKey(pkBlob, &pcsBlob, "E:\\MyContainerName.pub");
+	LoadPublicKey(pkBlob, &pcsBlob, "E:\\MyContainerName.pub"); // юзать переменную
 
+     // чтение сессионного ключа из уже заранее созданеного файла
 	 GenerateKey(keyFile);
 	 DWORD BufLen = 32;
 
@@ -638,6 +641,114 @@ bool ProviderCryptography::EncryptSessionKey(char *sessionKeyPath, std::wstring 
 		&dwBytesWritten, // number of bytes that were written
 		NULL);
 	return true;
+}
+
+bool ProviderCryptography::DecryptSessionKey(const wchar_t *path)
+{
+
+
+	// Получение дескриптора контейнера получателя с именем "Responder",
+	// находящегося в рамках провайдера.
+
+	BYTE  pbKeyBlob[200];    // Указатель на ключевой BLOB
+	DWORD dwBlobLen = 200;   // Длина ключевого BLOBа
+	LoadPublicKey(pbKeyBlob, &dwBlobLen, "E:\\MyContainerName.pub");
+
+	HCRYPTPROV hProv = 0;            // Дескриптор CSP
+	HCRYPTKEY hKey = 0;              // Дескриптор закрытого ключа
+	HCRYPTKEY hAgreeKey = 0;        // Дескриптор ключа согласования
+
+    if(!CryptAcquireContext(
+        &hProv,
+        L"MyContainerName",
+        NULL,
+        PROV_GOST_2012_256,
+        0))
+    {
+		printf("Error during CryptAcquireContext");
+		return false;
+	}
+    // Получение дескриптора закрытого ключа получателя.
+    if(CryptGetUserKey(
+        hProv,
+        AT_KEYEXCHANGE,
+        &hKey))
+    {
+        printf("The private key has been acquired. \n");
+    }
+    else
+    {
+		printf("Error during CryptGetUserKey private key.");
+		return false;
+	}
+    // Получение ключа согласования импортом открытого ключа отправителя
+    // на закрытом ключе получателя.
+    if(CryptImportKey(
+        hProv,
+        pbKeyBlob,
+        dwBlobLen,
+        hKey,
+        0,
+        &hAgreeKey))
+    {
+        printf("The sender public key has been imported. \n");
+    }
+    else
+    {
+		printf("Error during CryptImportKey public key.");
+		return false;
+	}
+	// Установление PRO12_EXPORT алгоритма ключа согласования
+	ALG_ID ke_alg = CALG_PRO12_EXPORT;
+    if(CryptSetKeyParam(
+        hAgreeKey,
+        KP_ALGID,
+        (LPBYTE)&ke_alg,
+        0))
+    {
+        printf("PRO12_EXPORT agree key algorithm has been set. \n");
+    }
+    else
+    {
+		printf("Error during CryptSetKeyParam agree key.");
+		return false;
+	}
+	// Чтение зашифрованного ключа из файла
+
+    HANDLE readF = CreateFileW( path, GENERIC_READ,
+		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, NULL );
+	BYTE pbKeyBlobSimple[76];
+	DWORD cbBlobLenSimple = 76;
+	DWORD BytesRead;
+	ReadFile( readF, pbKeyBlobSimple, cbBlobLenSimple,
+		&BytesRead, NULL );
+
+
+
+	// Получение сессионного ключа импортом зашифрованного сессионного ключа
+    // на ключе Agree.
+    if(CryptImportKey(
+        hProv,
+		pbKeyBlobSimple,
+		cbBlobLenSimple,
+        hAgreeKey,
+        0,
+        &hSessionKey_))
+    {
+        printf("The session key has been imported. \n");
+    }
+    else
+    {
+		printf("Error during CryptImportKey session key.");
+        return false;
+	}
+
+	printf( "CryptSetKeyParam succeeded. \n");
+	MessageBoxW( NULL, L"Круто", L"Error",
+					 MB_OK );
+    SaveKey(L"E:\\1q2w3e.dec");
+    return true;
 }
 
 bool ProviderCryptography::ExportPublicKeyToFile(const wchar_t *path)
