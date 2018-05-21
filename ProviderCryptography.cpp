@@ -493,19 +493,18 @@ bool ProviderCryptography::LoadPublicKey(BYTE *pbBlob, DWORD *pcbBlob, char *szK
     return true;
 }
 
-bool ProviderCryptography::EncryptSessionKey(char *sessionKeyPath, std::wstring keyFile, const wchar_t *path)
+bool ProviderCryptography::EncryptSessionKey(wchar_t *container_name, char *sessionKeyPath, std::wstring keyFile, const wchar_t *path)
 {
 	// МЕТОД шифрования сессионного ключа на открытом ключе
 	// и запись результата в файл
 
 	// чтение открытого ключа получателя из файла в блоб
-	char pkBlob[101];
-	DWORD pcsBlob = 101;
-	LoadPublicKey(pkBlob, &pcsBlob, "E:\\MyContainerName.pub"); // юзать переменную
+	char pkBlob[200];
+	DWORD pcsBlob = 200;
+	LoadPublicKey(pkBlob, &pcsBlob, sessionKeyPath); // юзать переменную
 
      // чтение сессионного ключа из уже заранее созданеного файла
 	 GenerateKey(keyFile);
-	 DWORD BufLen = 32;
 
 	HCRYPTPROV hProv;		// Дескриптор CSP
 	HCRYPTKEY hKey; 		// Дескриптор закрытого ключа
@@ -514,7 +513,7 @@ bool ProviderCryptography::EncryptSessionKey(char *sessionKeyPath, std::wstring 
     // находящегося в рамках провайдера.
     if(CryptAcquireContext(
         &hProv,
-        L"MyContainerName",
+        container_name,
         NULL,
         PROV_GOST_2012_256,
         0))
@@ -640,10 +639,11 @@ bool ProviderCryptography::EncryptSessionKey(char *sessionKeyPath, std::wstring 
 		dwBlobLenSimple,  // number of bytes to write
 		&dwBytesWritten, // number of bytes that were written
 		NULL);
+	CloseHandle(keyPairHandle);
 	return true;
 }
 
-bool ProviderCryptography::DecryptSessionKey(const wchar_t *path)
+bool ProviderCryptography::DecryptSessionKey(const wchar_t *path, char *senderPublicKeyPath, wchar_t *responderContainerName )
 {
 
 
@@ -652,7 +652,7 @@ bool ProviderCryptography::DecryptSessionKey(const wchar_t *path)
 
 	BYTE  pbKeyBlob[200];    // Указатель на ключевой BLOB
 	DWORD dwBlobLen = 200;   // Длина ключевого BLOBа
-	LoadPublicKey(pbKeyBlob, &dwBlobLen, "E:\\MyContainerName.pub");
+	LoadPublicKey(pbKeyBlob, &dwBlobLen, senderPublicKeyPath);
 
 	HCRYPTPROV hProv = 0;            // Дескриптор CSP
 	HCRYPTKEY hKey = 0;              // Дескриптор закрытого ключа
@@ -660,7 +660,7 @@ bool ProviderCryptography::DecryptSessionKey(const wchar_t *path)
 
     if(!CryptAcquireContext(
         &hProv,
-        L"MyContainerName",
+        responderContainerName,
         NULL,
         PROV_GOST_2012_256,
         0))
@@ -723,6 +723,7 @@ bool ProviderCryptography::DecryptSessionKey(const wchar_t *path)
 	DWORD BytesRead;
 	ReadFile( readF, pbKeyBlobSimple, cbBlobLenSimple,
 		&BytesRead, NULL );
+	CloseHandle(readF);
 
 	// Получение сессионного ключа импортом зашифрованного сессионного ключа
     // на ключе Agree.
@@ -745,8 +746,6 @@ bool ProviderCryptography::DecryptSessionKey(const wchar_t *path)
 	printf( "CryptSetKeyParam succeeded. \n");
 	MessageBoxW( NULL, L"Круто", L"Error",
 					 MB_OK );
-	// сессионный ключ теперь хранится в оперативной памяти
-    DecryptFileW(L"E:\\pic.enc", L"E:\\123.jpg");
     return true;
 }
 
@@ -801,6 +800,7 @@ bool ProviderCryptography::ExportPublicKeyToFile(const wchar_t *path)
 					 MB_OK );
 		return false;
 	}
+	CloseHandle(keyPairHandle);
 	MessageBoxW( NULL, L"Открытый ключ экспортирован успешно!", L"Error",
 					 MB_OK );
 	return true;

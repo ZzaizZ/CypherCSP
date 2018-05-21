@@ -6,6 +6,7 @@
 #include "Unit1.h"
 
 #include "SaveKeyWindow.h"
+#include "GenerateKeyPairWindow.h"
 #include "include/WinCryptEx.h"
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -160,21 +161,29 @@ void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
 
 void __fastcall TmainForm::btnGenerateKeyPairClick(TObject *Sender)
 {
-	wchar_t *containerName = L"Sender"; // имя создаваемого контейнера
-	wchar_t *pkPath = L"E:\\Sender.pub"; // путь сохранения открытого ключа
-	crypt->GenKeyPair(containerName, pkPath);
+    // сделать через всплывающее окошко
+	wchar_t *containerName = L"Responder"; // имя создаваемого контейнера
+	wchar_t *pkPath = L"E:\\Responder.pub"; // путь сохранения открытого ключа
+
+	TForm3 *generate = new TForm3(Owner);
+	generate->Show();
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::btnLoadKeyPairClick(TObject *Sender)
 {
-	//crypt->EncryptSessionKey("E:\\MyContainerName.pub", L"E:\\new.symkey", L"E:\\new.encr");
-	crypt->DecryptSessionKey(L"E:\\new.encr");
-	//crypt->LoadKeyPair(L"KC1_test");
+	// Имя контейнера - контейнер отправителя.
+	// Имя открытого ключа - открытый ключ получаеля
+	crypt->EncryptSessionKey(L"MyContainerName", "E:\\Responder.pub", L"E:\\new.symkey", L"E:\\new.symkey.encr");
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::btnLoadResponderKeyClick(TObject *Sender)
 {
-	crypt->ExportPublicKeyToFile(L"321.pub");
+    // Имя файла - путь до файла зашифрованного симметричного ключа
+	// Имя открытого ключа - открытый ключ отправителя
+	// Имя контейнера - контейнер получателя
+	crypt->DecryptSessionKey(L"E:\\new.symkey.encr", "E:\\MyContainerName.pub", L"Responder");
+	// сессионный ключ теперь хранится в оперативной памяти
+    crypt->DecryptFileW(L"E:\\pic.enc", L"E:\\123.jpg");
 }
 //---------------------------------------------------------------------------
 
