@@ -28,9 +28,23 @@ __published: // IDE-managed Components
 	TCheckBox * chooseKeyCheckBox;
 	TOpenDialog *keyOpenDialog;
 	TButton *btnGenerateKeyPair;
-	TButton *btnLoadResponderKey;
-	TButton *btnLoadKeyPair;
+	TButton *btnDecryptSessionKey;
+	TButton *btnEncSessionKey;
 	TOpenDialog *sdPublicKeySave;
+	TEdit *tedSenderContainerName;
+	TEdit *tedResponderPKPath;
+	TEdit *tedInSessionKey;
+	TEdit *tedOutSessionKey;
+	TLabel *Label1;
+	TLabel *Label2;
+	TLabel *Label3;
+	TLabel *Label4;
+	TEdit *Edit1;
+	TEdit *Edit2;
+	TEdit *Edit3;
+	TLabel *Label5;
+	TLabel *Label6;
+	TLabel *Label7;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
@@ -39,8 +53,8 @@ __published: // IDE-managed Components
 	void __fastcall decryptButtonClick( TObject * Sender );
 	void __fastcall algorithmComboBoxChange(TObject *Sender);
 	void __fastcall btnGenerateKeyPairClick(TObject *Sender);
-	void __fastcall btnLoadKeyPairClick(TObject *Sender);
-	void __fastcall btnLoadResponderKeyClick(TObject *Sender);
+	void __fastcall btnEncSessionKeyClick(TObject *Sender);
+	void __fastcall btnDecryptSessionKeyClick(TObject *Sender);
 
 private: // User declarations
 		public : // User declarations

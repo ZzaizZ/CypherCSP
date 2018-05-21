@@ -471,29 +471,23 @@ bool ProviderCryptography::GenKeyPair(const wchar_t *containerName, wchar_t *pkP
 	return true;
 }
 
-bool ProviderCryptography::LoadPublicKey(BYTE *pbBlob, DWORD *pcbBlob, char *szKeyFile)
+bool ProviderCryptography::LoadPublicKey(BYTE *pbBlob, DWORD pcbBlob, wchar_t *szKeyFile)
 {
     // метод загрузки открытого ключа получателя из файла
 	// Открытие файла, в котором содержится открытый ключ получателя.
-	FILE *publicf;
-	if(!(publicf = fopen(szKeyFile, "rb")))
-	{
-		MessageBoxW( NULL, L"Ошибка загрузки открытого ключа", L"Error",
-					 MB_OK );
-		return false;
-	}
 
-	*pcbBlob = (DWORD)fread(pbBlob, 1, *pcbBlob, publicf);
-	if(!*pcbBlob)
-	{
-		MessageBoxW( NULL, L"Ошибка чтения блоба открытого ключа", L"Error",
-					 MB_OK );
-		return false;
-	}
+	HANDLE readF = CreateFileW( szKeyFile, GENERIC_READ,
+		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, NULL );
+	DWORD BytesRead;
+	ReadFile( readF, pbBlob, pcbBlob,
+		&BytesRead, NULL );
+	CloseHandle(readF);
+
     return true;
 }
 
-bool ProviderCryptography::EncryptSessionKey(wchar_t *container_name, char *sessionKeyPath, std::wstring keyFile, const wchar_t *path)
+bool ProviderCryptography::EncryptSessionKey(wchar_t *container_name, wchar_t *sessionKeyPath, std::wstring keyFile, const wchar_t *path)
 {
 	// МЕТОД шифрования сессионного ключа на открытом ключе
 	// и запись результата в файл
@@ -501,7 +495,7 @@ bool ProviderCryptography::EncryptSessionKey(wchar_t *container_name, char *sess
 	// чтение открытого ключа получателя из файла в блоб
 	char pkBlob[200];
 	DWORD pcsBlob = 200;
-	LoadPublicKey(pkBlob, &pcsBlob, sessionKeyPath); // юзать переменную
+	LoadPublicKey(pkBlob, pcsBlob, sessionKeyPath); // юзать переменную
 
      // чтение сессионного ключа из уже заранее созданеного файла
 	 GenerateKey(keyFile);
@@ -643,7 +637,7 @@ bool ProviderCryptography::EncryptSessionKey(wchar_t *container_name, char *sess
 	return true;
 }
 
-bool ProviderCryptography::DecryptSessionKey(const wchar_t *path, char *senderPublicKeyPath, wchar_t *responderContainerName )
+bool ProviderCryptography::DecryptSessionKey(const wchar_t *path, wchar_t *senderPublicKeyPath, wchar_t *responderContainerName )
 {
 
 
@@ -652,7 +646,7 @@ bool ProviderCryptography::DecryptSessionKey(const wchar_t *path, char *senderPu
 
 	BYTE  pbKeyBlob[200];    // Указатель на ключевой BLOB
 	DWORD dwBlobLen = 200;   // Длина ключевого BLOBа
-	LoadPublicKey(pbKeyBlob, &dwBlobLen, senderPublicKeyPath);
+	LoadPublicKey(pbKeyBlob, dwBlobLen, senderPublicKeyPath);
 
 	HCRYPTPROV hProv = 0;            // Дескриптор CSP
 	HCRYPTKEY hKey = 0;              // Дескриптор закрытого ключа
