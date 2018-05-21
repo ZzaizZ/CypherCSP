@@ -7,6 +7,7 @@
 
 #include "SaveKeyWindow.h"
 #include "include/WinCryptEx.h"
+#include <set>
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -166,63 +167,114 @@ void __fastcall TmainForm::algorithmComboBoxChange( TObject * Sender )
 
 void __fastcall TmainForm::sendButtonClick( TObject * Sender )
 {
-	testClient = new Client( ipEdit->Text.c_str( ), portEdit->Text.c_str( ) );
-	if ( !testClient->Init( ) )
+	if ( ipEdit->Text.IsEmpty( ) || portEdit->Text.IsEmpty( ) )
 	{
-		MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error", MB_OK );
-		delete testClient;
-	}
-	if ( !testClient->Connect( ) )
-	{
-		MessageBoxW( NULL, L"Ошибка подключения к серверу, проверьте IP адрес",
-			L"Error", MB_OK );
-		delete testClient;
+		MessageBoxW( NULL, L"Ошибка укажите IP адрес и порт сервера", L"Error",
+			MB_OK );
 	}
 	else
 	{
-		testClient->Shutdown( );
-		testClient->CleanUp( );
-		delete testClient;
-		if ( !sendOpenDialog->Execute( ) )
+		testClient = new Client( ipEdit->Text.c_str( ),
+		portEdit->Text.c_str( ) );
+		if ( !testClient->Init( ) )
 		{
-			return;
+			MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error",
+			MB_OK );
+			delete testClient;
 		}
-		clientThread = new ClientThread( sendOpenDialog->FileName.c_str( ),
-			ipEdit->Text.c_str( ), portEdit->Text.c_str( ), false );
+		if ( !testClient->Connect( ) )
+		{
+			MessageBoxW( NULL,
+				L"TCP-сервер недоступен! Убедитесь в правильности указанного IP адреса и номера порта",
+				L"Error", MB_OK );
+			delete testClient;
+		}
+		else
+		{
+			testClient->Shutdown( );
+			testClient->CleanUp( );
+			delete testClient;
+			if ( !sendOpenDialog->Execute( ) )
+			{
+				return;
+			}
+			clientThread = new ClientThread( sendOpenDialog->FileName.c_str( ),
+				ipEdit->Text.c_str( ), portEdit->Text.c_str( ), false );
+		}
+
 	}
 
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TmainForm::serverButtonClick( TObject * Sender )
+void __fastcall TmainForm::serverOnButtonClick( TObject * Sender )
 {
-	testServer = new Server( portEdit->Text.c_str( ) );
-	if ( !testServer->Init( ) )
+	if ( portEdit->Text.IsEmpty( ) )
 	{
-		MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error", MB_OK );
-		delete testServer;
-	}
-	if ( !testServer->Listen( ) )
-	{
-		MessageBoxW( NULL,
-			L"Ошибка прослушивания порта, проверьте свободен ли он", L"Error",
-			MB_OK );
-		delete testServer;
+		MessageBoxW( NULL, L"Ошибка укажите номер порта", L"Error", MB_OK );
 	}
 	else
 	{
-		testServer->CleanUp( );
-		delete testServer;
-		UnicodeString Dir;
-		SelectDirectory( "Выберетие папку для хранения полученных файлов",
-			"Desktop", Dir,
-			TSelectDirExtOpts( ) << sdNewFolder << sdShowEdit, NULL );
-		if ( serverButton->Enabled )
+		testServer = new Server( portEdit->Text.c_str( ) );
+		if ( !testServer->Init( ) )
 		{
-			serverThread = new ServerThread( Dir.c_str( ),
-				portEdit->Text.c_str( ), false );
-			serverButton->Enabled = false;
+			MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error",
+			MB_OK );
+			delete testServer;
 		}
+		if ( !testServer->Listen( ) )
+		{
+			MessageBoxW( NULL,
+				L"Ошибка при запуске TCP-сервера: невозможно выполнить привязку к указанному порту!",
+				L"Error", MB_OK );
+			delete testServer;
+		}
+		else
+		{
+			testServer->CleanUp( );
+			delete testServer;
+			UnicodeString Dir;
+			SelectDirectory( "Выберетие папку для хранения полученных файлов",
+				"Desktop", Dir,
+				TSelectDirExtOpts( ) << sdNewFolder << sdShowEdit, NULL );
+
+			if ( serverOnButton->Enabled && !Dir.IsEmpty( ) )
+			{
+				serverThread = new ServerThread( Dir.c_str( ),
+					portEdit->Text.c_str( ), false );
+				serverOnButton->Visible = false;
+				serverOffButton->Visible = true;
+			}
+		}
+	}
+
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TmainForm::serverOffButtonClick( TObject * Sender )
+{
+	if ( serverOffButton->Visible == true )
+	{
+		serverThread->Terminate( );
+		serverOnButton->Visible = true;
+		serverOffButton->Visible = false;
+	}
+
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ipEditKeyPress(
+	TObject *          Sender,
+	System::WideChar & Key )
+
+{
+
+	Set < char, '.', '9' > Dig;
+	Dig << '0' << '1' << '2' << '3' << '4' << '5' << '6' << '7' << '8' <<
+		'9' << '.';
+	if ( !Dig.Contains( Key ) && Key != 8 )
+	{
+		Key = '\0';
 	}
 
 }

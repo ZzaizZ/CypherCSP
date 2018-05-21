@@ -108,14 +108,14 @@ object mainForm: TmainForm
     TabOrder = 6
     OnClick = sendButtonClick
   end
-  object serverButton: TButton
+  object serverOnButton: TButton
     Left = 196
     Top = 185
     Width = 172
     Height = 33
     Caption = #1047#1072#1087#1091#1089#1090#1080#1090#1100' '#1089#1077#1088#1074#1077#1088
     TabOrder = 7
-    OnClick = serverButtonClick
+    OnClick = serverOnButtonClick
   end
   object ipEdit: TEdit
     Left = 8
@@ -124,14 +124,26 @@ object mainForm: TmainForm
     Height = 21
     TabOrder = 8
     Text = '127.0.0.1'
+    OnKeyPress = ipEditKeyPress
   end
   object portEdit: TEdit
     Left = 101
     Top = 195
     Width = 89
     Height = 21
+    NumbersOnly = True
     TabOrder = 9
     Text = '4444'
+  end
+  object serverOffButton: TButton
+    Left = 196
+    Top = 185
+    Width = 172
+    Height = 33
+    Caption = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1089#1077#1088#1074#1077#1088
+    TabOrder = 10
+    Visible = False
+    OnClick = serverOffButtonClick
   end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083

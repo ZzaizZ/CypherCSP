@@ -34,10 +34,11 @@ __published: // IDE-managed Components
 	TButton * sendButton;
 	TOpenDialog * sendOpenDialog;
 	TLabel * ipLabel;
-	TButton * serverButton;
+	TButton *serverOnButton;
 	TEdit * ipEdit;
 	TLabel * portLabel;
 	TEdit * portEdit;
+	TButton *serverOffButton;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
@@ -46,7 +47,9 @@ __published: // IDE-managed Components
 	void __fastcall decryptButtonClick( TObject * Sender );
 	void __fastcall algorithmComboBoxChange( TObject * Sender );
 	void __fastcall sendButtonClick( TObject * Sender );
-	void __fastcall serverButtonClick( TObject * Sender );
+	void __fastcall serverOnButtonClick( TObject * Sender );
+	void __fastcall serverOffButtonClick(TObject *Sender);
+	void __fastcall ipEditKeyPress(TObject *Sender, System::WideChar &Key);
 
 private: // User declarations
 		public : // User declarations

@@ -121,7 +121,9 @@ bool Communication::RecieveFile( std::wstring destinationPath )
 	{
 		if ( iResult != 0 )
 		{
+			int err = WSAGetLastError( );
 			closesocket( connectSocket_ );
+
 			WSACleanup( );
 			return false;
 		}
@@ -196,7 +198,6 @@ bool Communication::RecieveFile( std::wstring destinationPath )
 	}
 
 	// Стандартная очистка
-
 	CloseHandle( FileHandle );
 	return true;
 }

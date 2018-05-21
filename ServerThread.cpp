@@ -48,14 +48,9 @@ void __fastcall ServerThread::Execute( )
 	}
 	while ( !Terminated )
 	{
-		if ( !server_->Accept( ) )
+		if ( !server_->Accept( destinationPath_ ) )
 		{
 			MessageBoxW( NULL, L"Ошибка подключения клиента", L"Error", MB_OK );
-			break;
-		}
-		if ( !server_->RecieveFile( destinationPath_ ) )
-		{
-			MessageBoxW( NULL, L"Ошибка приема файла", L"Error", MB_OK );
 			break;
 		}
 	}
