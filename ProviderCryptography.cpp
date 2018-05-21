@@ -724,8 +724,6 @@ bool ProviderCryptography::DecryptSessionKey(const wchar_t *path)
 	ReadFile( readF, pbKeyBlobSimple, cbBlobLenSimple,
 		&BytesRead, NULL );
 
-
-
 	// Получение сессионного ключа импортом зашифрованного сессионного ключа
     // на ключе Agree.
     if(CryptImportKey(
@@ -747,7 +745,8 @@ bool ProviderCryptography::DecryptSessionKey(const wchar_t *path)
 	printf( "CryptSetKeyParam succeeded. \n");
 	MessageBoxW( NULL, L"Круто", L"Error",
 					 MB_OK );
-    SaveKey(L"E:\\1q2w3e.dec");
+	// сессионный ключ теперь хранится в оперативной памяти
+    DecryptFileW(L"E:\\pic.enc", L"E:\\123.jpg");
     return true;
 }
 
