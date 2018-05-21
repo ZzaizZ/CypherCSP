@@ -17,6 +17,7 @@ public:
 	bool Listen( );
 	bool Accept( );
 	bool CleanUp( );
+	bool Shutdown( );
 
 private:
 

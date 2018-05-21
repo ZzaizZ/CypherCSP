@@ -50,7 +50,7 @@ void __fastcall ServerThread::Execute( )
 	{
 		if ( !server_->Accept( ) )
 		{
-			MessageBoxW( NULL, L"Ошибка приема соединения", L"Error", MB_OK );
+			MessageBoxW( NULL, L"Ошибка подключения клиента", L"Error", MB_OK );
 			break;
 		}
 		if ( !server_->RecieveFile( destinationPath_ ) )

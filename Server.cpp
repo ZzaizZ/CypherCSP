@@ -103,4 +103,17 @@ bool Server::CleanUp( )
 	WSACleanup( );
 	return true;
 }
+
 // ---------------------------------------------------------------------------
+bool Server::Shutdown( )
+{
+	int iResult;
+	iResult = shutdown( connectSocket_, SD_BOTH );
+	if ( iResult == SOCKET_ERROR )
+	{
+		closesocket( connectSocket_ );
+		WSACleanup( );
+		return false;
+	}
+	return true;
+}

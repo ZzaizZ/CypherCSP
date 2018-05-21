@@ -89,8 +89,6 @@ bool Communication::SendFile( std::wstring sourceFile )
 	}
 	// Производим стандартную деинициализацию Winsock и закрытие файла
 
-	closesocket( connectSocket_ );
-	WSACleanup( );
 	CloseHandle( FileHandle );
 	return true;
 }
@@ -101,6 +99,7 @@ bool Communication::RecieveFile( std::wstring destinationPath )
 	char bufferFileName[ DEFAULT_FN ];
 	char bufferData[ DEFAULT_BUFLEN ];
 	wchar_t bufferFileNameW[ MAX_PATH ];
+	bool recievedFileName = false;
 	HANDLE FileHandle;
 	int iResult, iSendResult;
 	// Осуществляем прием имени файла, которое отправляется первым делом отправляющим лицом
@@ -116,6 +115,7 @@ bool Communication::RecieveFile( std::wstring destinationPath )
 			WSACleanup( );
 			return false;
 		}
+		recievedFileName = true;
 	}
 	else
 	{
@@ -127,48 +127,64 @@ bool Communication::RecieveFile( std::wstring destinationPath )
 		}
 	}
 	// Производим создание файла с заданным именем
-
-	MultiByteToWideChar( CP_UTF8, NULL, bufferFileName,
-		sizeof( bufferFileName ), bufferFileNameW, sizeof( bufferFileNameW ) );
-	destinationPath.append( L"\\" );
-	destinationPath.append( bufferFileNameW );
-
-	FileHandle = CreateFileW( destinationPath.c_str( ), GENERIC_WRITE,
-		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL );
-	if ( FileHandle == 0 || FileHandle == INVALID_HANDLE_VALUE )
+	if ( recievedFileName )
 	{
-		closesocket( connectSocket_ );
-		WSACleanup( );
-		return false;
-	}
-	// Затем начинаем принимать сам файл и записывать его в соданный файл
-	int i = 0;
-	DWORD BytesToWrite = DEFAULT_BUFLEN;
-	DWORD BytesWrite;
-	do
-	{
-		iResult = recv( connectSocket_, bufferData, sizeof( bufferData ), 0 );
-		if ( iResult > 0 )
+
+		MultiByteToWideChar( CP_UTF8, NULL, bufferFileName,
+			sizeof( bufferFileName ), bufferFileNameW,
+		sizeof( bufferFileNameW ) );
+
+		if ( destinationPath.empty( ) || destinationPath.size( ) -
+			1 == destinationPath.find_last_of( L"\\" ) )
 		{
-			if ( !WriteBlock( i, sizeof( bufferData ), FileHandle, bufferData,
-				&BytesWrite ) )
-			{
-				return false;
-			}
-			i++ ;
+			destinationPath.append( bufferFileNameW );
 		}
 		else
 		{
-			if ( iResult != 0 )
+			destinationPath.append( L"\\" );
+			destinationPath.append( bufferFileNameW );
+		}
+
+		FileHandle = CreateFileW( destinationPath.c_str( ), GENERIC_WRITE,
+			FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
+			FILE_ATTRIBUTE_NORMAL, NULL );
+		if ( FileHandle == 0 || FileHandle == INVALID_HANDLE_VALUE )
+		{
+			closesocket( connectSocket_ );
+			WSACleanup( );
+			return false;
+		}
+		// Затем начинаем принимать сам файл и записывать его в соданный файл
+		int i = 0;
+		DWORD BytesToWrite = DEFAULT_BUFLEN;
+		DWORD BytesWrite;
+		do
+		{
+			iResult = recv( connectSocket_, bufferData,
+				sizeof( bufferData ), 0 );
+			if ( iResult > 0 )
 			{
-				closesocket( connectSocket_ );
-				WSACleanup( );
-				return false;
+				if ( !WriteBlock( i, sizeof( bufferData ), FileHandle,
+					bufferData, &BytesWrite ) )
+				{
+					closesocket( connectSocket_ );
+					WSACleanup( );
+					return false;
+				}
+				i++ ;
+			}
+			else
+			{
+				if ( iResult != 0 )
+				{
+					closesocket( connectSocket_ );
+					WSACleanup( );
+					return false;
+				}
 			}
 		}
+		while ( iResult > 0 );
 	}
-	while ( iResult > 0 );
 
 	// Производим разрыв соединения
 	iResult = shutdown( connectSocket_, SD_BOTH );

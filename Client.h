@@ -19,6 +19,7 @@ public:
 	bool Init( );
 	bool Connect( );
 	bool CleanUp( );
+	bool Shutdown( );
 
 private:
 

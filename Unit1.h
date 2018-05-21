@@ -36,8 +36,8 @@ __published: // IDE-managed Components
 	TLabel * ipLabel;
 	TButton * serverButton;
 	TEdit * ipEdit;
-	TLabel *portLabel;
-	TEdit *portEdit;
+	TLabel * portLabel;
+	TEdit * portEdit;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
@@ -57,6 +57,8 @@ private: // User declarations
 	ProviderCryptography * crypt;
 	ServerThread * serverThread;
 	ClientThread * clientThread;
+	Client * testClient;
+	Server * testServer;
 
 } ;
 

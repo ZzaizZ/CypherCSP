@@ -56,6 +56,8 @@ bool Client::Connect( )
 			ptr_->ai_protocol );
 		if ( connectSocket_ == INVALID_SOCKET )
 		{
+			closesocket( connectSocket_ );
+			WSACleanup( );
 			return false;
 		}
 
@@ -66,9 +68,16 @@ bool Client::Connect( )
 		{
 			closesocket( connectSocket_ );
 			connectSocket_ = INVALID_SOCKET;
+			WSACleanup( );
 			continue;
 		}
 		break;
+	}
+	if ( connectSocket_ == INVALID_SOCKET )
+	{
+		closesocket( connectSocket_ );
+		WSACleanup( );
+		return false;
 	}
 	return true;
 }
@@ -80,6 +89,20 @@ bool Client::CleanUp( )
 
 	if ( connectSocket_ == INVALID_SOCKET )
 	{
+		WSACleanup( );
+		return false;
+	}
+	return true;
+}
+
+// ---------------------------------------------------------------------------
+bool Client::Shutdown( )
+{
+	int iResult;
+	iResult = shutdown( connectSocket_, SD_BOTH );
+	if ( iResult == SOCKET_ERROR )
+	{
+		closesocket( connectSocket_ );
 		WSACleanup( );
 		return false;
 	}

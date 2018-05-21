@@ -148,7 +148,7 @@ void TmainForm::checkCryptoProvider( int index )
 			CRYPT_VERIFYCONTEXT ) )
 		{
 			MessageBoxW( NULL,
-				L"Ошибка инициализации криптопровайдера. Проверьте установлена ли КриптоПРО 4.",
+				L"Ошибка инициализации криптопровайдера. Проверьте, установлен ли пакет КриптоПРО CSP 4",
 				L"Error", MB_OK );
 			saveKeyButton->Enabled = false;
 			chooseKeyCheckBox->Enabled = false;
@@ -166,26 +166,64 @@ void __fastcall TmainForm::algorithmComboBoxChange( TObject * Sender )
 
 void __fastcall TmainForm::sendButtonClick( TObject * Sender )
 {
-	if ( !sendOpenDialog->Execute( ) )
+	testClient = new Client( ipEdit->Text.c_str( ), portEdit->Text.c_str( ) );
+	if ( !testClient->Init( ) )
 	{
-		return;
+		MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error", MB_OK );
+		delete testClient;
 	}
-	clientThread = new ClientThread( sendOpenDialog->FileName.c_str( ),
-		ipEdit->Text.c_str( ), portEdit->Text.c_str( ), false );
+	if ( !testClient->Connect( ) )
+	{
+		MessageBoxW( NULL, L"Ошибка подключения к серверу, проверьте IP адрес",
+			L"Error", MB_OK );
+		delete testClient;
+	}
+	else
+	{
+		testClient->Shutdown( );
+		testClient->CleanUp( );
+		delete testClient;
+		if ( !sendOpenDialog->Execute( ) )
+		{
+			return;
+		}
+		clientThread = new ClientThread( sendOpenDialog->FileName.c_str( ),
+			ipEdit->Text.c_str( ), portEdit->Text.c_str( ), false );
+	}
 
 }
 
 // ---------------------------------------------------------------------------
 void __fastcall TmainForm::serverButtonClick( TObject * Sender )
 {
-	UnicodeString Dir;
-	SelectDirectory( "Выберетие папку для хранения полученных файлов", "", Dir,
-		TSelectDirExtOpts( ) << sdNewFolder << sdShowEdit, NULL );
-	if ( serverButton->Enabled )
+	testServer = new Server( portEdit->Text.c_str( ) );
+	if ( !testServer->Init( ) )
 	{
-		serverThread = new ServerThread( Dir.c_str( ), portEdit->Text.c_str( ),
-			false );
-		serverButton->Enabled = false;
+		MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error", MB_OK );
+		delete testServer;
 	}
+	if ( !testServer->Listen( ) )
+	{
+		MessageBoxW( NULL,
+			L"Ошибка прослушивания порта, проверьте свободен ли он", L"Error",
+			MB_OK );
+		delete testServer;
+	}
+	else
+	{
+		testServer->CleanUp( );
+		delete testServer;
+		UnicodeString Dir;
+		SelectDirectory( "Выберетие папку для хранения полученных файлов",
+			"Desktop", Dir,
+			TSelectDirExtOpts( ) << sdNewFolder << sdShowEdit, NULL );
+		if ( serverButton->Enabled )
+		{
+			serverThread = new ServerThread( Dir.c_str( ),
+				portEdit->Text.c_str( ), false );
+			serverButton->Enabled = false;
+		}
+	}
+
 }
 // ---------------------------------------------------------------------------
