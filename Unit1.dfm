@@ -3,7 +3,7 @@ object mainForm: TmainForm
   Top = 0
   BorderStyle = bsDialog
   Caption = #1064#1080#1092#1088#1072#1090#1086#1088'/'#1044#1077#1096#1080#1092#1088#1072#1090#1086#1088
-  ClientHeight = 583
+  ClientHeight = 638
   ClientWidth = 376
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -78,6 +78,20 @@ object mainForm: TmainForm
     Height = 13
     Caption = #1048#1084#1103' '#1082#1086#1085#1090#1077#1081#1085#1077#1088#1072'  '#1087#1086#1083#1091#1095#1072#1090#1077#1083#1103
   end
+  object Label8: TLabel
+    Left = 8
+    Top = 538
+    Width = 165
+    Height = 13
+    Caption = #1055#1091#1090#1100' '#1076#1086' '#1079#1072#1096#1080#1092#1088#1086#1074#1072#1085#1085#1086#1075#1086' '#1092#1072#1081#1083#1072
+  end
+  object Label9: TLabel
+    Left = 8
+    Top = 563
+    Width = 171
+    Height = 13
+    Caption = #1055#1091#1090#1100' '#1076#1086' '#1088#1072#1089#1096#1080#1092#1088#1086#1074#1072#1085#1085#1086#1075#1086' '#1092#1072#1081#1083#1072
+  end
   object encryptButton: TButton
     Left = 8
     Top = 90
@@ -145,7 +159,7 @@ object mainForm: TmainForm
   end
   object btnDecryptSessionKey: TButton
     Left = 8
-    Top = 535
+    Top = 593
     Width = 360
     Height = 37
     Caption = #1056#1072#1089#1096#1080#1092#1088#1086#1074#1072#1090#1100' '#1089#1080#1084#1084#1077#1090#1088#1080#1095#1085#1099#1081' '#1082#1083#1102#1095' '#1080' '#1088#1072#1089#1096#1080#1092#1088#1086#1074#1072#1090#1100' '#1080#1084' '#1092#1072#1081#1083
@@ -216,6 +230,22 @@ object mainForm: TmainForm
     Height = 21
     TabOrder = 15
     Text = 'Responder'
+  end
+  object Edit4: TEdit
+    Left = 189
+    Top = 535
+    Width = 179
+    Height = 21
+    TabOrder = 16
+    Text = 'E:\\pic.enc'
+  end
+  object Edit5: TEdit
+    Left = 189
+    Top = 562
+    Width = 179
+    Height = 21
+    TabOrder = 17
+    Text = 'E:\\123.jpg'
   end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083

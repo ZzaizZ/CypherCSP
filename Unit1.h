@@ -45,6 +45,10 @@ __published: // IDE-managed Components
 	TLabel *Label5;
 	TLabel *Label6;
 	TLabel *Label7;
+	TEdit *Edit4;
+	TEdit *Edit5;
+	TLabel *Label8;
+	TLabel *Label9;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
