@@ -445,113 +445,97 @@ bool ProviderCryptography::DecryptFile(
 		}
 	}
 }
+
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::GenKeyPair(const wchar_t *containerName, wchar_t *pkPath)
+bool ProviderCryptography::GenKeyPair(
+	const wchar_t * containerName,
+	wchar_t *       pkPath )
 {
-	if ( !CryptAcquireContext(
-		&keyPairProvider_,
-		containerName,
-		NULL,
-		hProvType_,
-		CRYPT_NEWKEYSET  ) )
+	if ( !CryptAcquireContext( &keyPairProvider_, containerName, NULL,
+		hProvType_, CRYPT_NEWKEYSET ) )
 	{
 		MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера", L"Error",
-					 MB_OK );
-		return false;
-	} else
-	if ( !CryptGenKey(keyPairProvider_, AT_KEYEXCHANGE, CRYPT_EXPORTABLE, &keypair))
-	{
-		MessageBoxW( NULL, L"Ошибка генерации ключевой пары", L"Error",
-					 MB_OK );
+			MB_OK );
 		return false;
 	}
-	MessageBoxW( NULL, L"Ключи сгенерированы", L"Error",
-					 MB_OK );
-    ExportPublicKeyToFile(pkPath);
+	else
+	{
+		if ( !CryptGenKey( keyPairProvider_, AT_KEYEXCHANGE, CRYPT_EXPORTABLE,
+			&keypair_ ) )
+		{
+			MessageBoxW( NULL, L"Ошибка генерации ключевой пары", L"Error",
+				MB_OK );
+			return false;
+		}
+	}
+	MessageBoxW( NULL, L"Ключи сгенерированы", L"Информация", MB_OK );
+	ExportPublicKeyToFile( pkPath );
 	return true;
 }
 
-bool ProviderCryptography::LoadKeyPair(const wchar_t *containerName)
+// ---------------------------------------------------------------------------
+bool ProviderCryptography::LoadKeyPair( const wchar_t * containerName )
 {
-	if ( !CryptAcquireContext( &keyPairProvider_, L"ContainerName", NULL, hProvType_,
-							   0 ) )
+	if ( !CryptAcquireContext( &keyPairProvider_, L"MyContainerName", NULL,
+		hProvType_, 0 ) )
 	{
 		MessageBoxW( NULL, L"Указанный криптоконтейнер не существует", L"Error",
-					 MB_OK );
+			MB_OK );
 		return false;
 	}
-	if(!CryptGetUserKey(
-		keyPairProvider_,
-        AT_KEYEXCHANGE,
-        &keypair))
+	if ( !CryptGetUserKey( keyPairProvider_, AT_KEYEXCHANGE, &keypair_ ) )
 	{
-		MessageBoxW( NULL, L"Ошибка экспорта ключа", L"Error",
-				 MB_OK );
-        long e = GetLastError();
+		MessageBoxW( NULL, L"Ошибка экспорта ключа", L"Error", MB_OK );
+		long e = GetLastError( );
 		return false;
 	}
-	MessageBoxW( NULL, L"Ключи загружены!", L"Error",
-				 MB_OK );
+	MessageBoxW( NULL, L"Ключи загружены!", L"Информация", MB_OK );
 	return true;
 }
 
-bool ProviderCryptography::ExportPublicKeyToFile(const wchar_t *path)
+// ---------------------------------------------------------------------------
+bool ProviderCryptography::ExportPublicKeyToFile( const wchar_t * path )
 {
 	// Определение размера BLOBа открытого ключа и распределение памяти.
 	DWORD cbKeyBlob;
-	CryptExportKey(
-		keypair,
-		0,
-		PUBLICKEYBLOB,
-		0,
-		NULL,
-		&cbKeyBlob);
+	CryptExportKey( keypair_, 0, PUBLICKEYBLOB, 0, NULL, & cbKeyBlob );
 	// указатель на ключевой BLOB
-	BYTE *pbKeyBlob = new BYTE[cbKeyBlob];
-	long error = GetLastError();
+	BYTE * pbKeyBlob = new BYTE[ cbKeyBlob ];
+	long error = GetLastError( );
 	// Экспортирование открытого ключа в BLOB открытого ключа.
-	if(!CryptExportKey(
-		keypair,
-		0,
-		PUBLICKEYBLOB,
-		0,
-		pbKeyBlob,
-		&cbKeyBlob))
+	if ( !CryptExportKey( keypair_, 0, PUBLICKEYBLOB, 0, pbKeyBlob,
+		&cbKeyBlob ) )
 	{
-		MessageBoxW( NULL, L"Ошибка при экспорте открытого ключа в BLOB", L"Error",
-					 MB_OK );
-		long error = GetLastError();
+		MessageBoxW( NULL, L"Ошибка при экспорте открытого ключа в BLOB",
+			L"Error", MB_OK );
+		long error = GetLastError( );
 		return false;
 	}
 	HANDLE keyPairHandle = 0;
-	if (!(keyPairHandle = CreateFileW(
-		path,
-		GENERIC_WRITE,
+	if ( !( keyPairHandle = CreateFileW( path, GENERIC_WRITE,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL)))
+		FILE_ATTRIBUTE_NORMAL, NULL ) ) )
 	{
-		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error",
-					 MB_OK );
-		long error = GetLastError();
-		return false;
-    }
-
-	DWORD dwBytesWritten;
-	if (!WriteFile(
-		keyPairHandle,           // open file handle
-		pbKeyBlob,      // start of data to write
-		cbKeyBlob,  // number of bytes to write
-		&dwBytesWritten, // number of bytes that were written
-		NULL))
-	{
-		MessageBoxW( NULL, L"Ошибка записи открытого ключа в файл", L"Error",
-					 MB_OK );
-		long error = GetLastError();
+		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error", MB_OK );
+		long error = GetLastError( );
 		return false;
 	}
-    MessageBoxW( NULL, L"Открытый ключ экспортирован успешно!", L"Error",
-					 MB_OK );
+
+	DWORD dwBytesWritten;
+	if ( !WriteFile( keyPairHandle, // open file handle
+		pbKeyBlob, // start of data to write
+		cbKeyBlob, // number of bytes to write
+		&dwBytesWritten, // number of bytes that were written
+		NULL ) )
+	{
+		MessageBoxW( NULL, L"Ошибка записи открытого ключа в файл", L"Error",
+			MB_OK );
+		long error = GetLastError( );
+		return false;
+	}
+	MessageBoxW( NULL, L"Открытый ключ экспортирован успешно!", L"Информация",
+		MB_OK );
 	return true;
 }
 // ---------------------------------------------------------------------------

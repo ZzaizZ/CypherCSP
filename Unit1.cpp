@@ -161,7 +161,7 @@ void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
 void __fastcall TmainForm::btnGenerateKeyPairClick(TObject *Sender)
 {
 	wchar_t *containerName = L"MyContainerName"; // имя создаваемого контейнера
-	wchar_t *pkPath = L"E:\\MyContainerName.pub"; // путь сохранения открытого ключа
+	wchar_t *pkPath = L"С:\\MyContainerName.pub"; // путь сохранения открытого ключа
 	crypt->GenKeyPair(containerName, pkPath);
 }
 //---------------------------------------------------------------------------
