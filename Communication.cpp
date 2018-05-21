@@ -189,13 +189,13 @@ bool Communication::RecieveFile( std::wstring destinationPath )
 	}
 
 	// Производим разрыв соединения
-	iResult = shutdown( connectSocket_, SD_BOTH );
-	if ( iResult == SOCKET_ERROR )
-	{
-		closesocket( connectSocket_ );
-		WSACleanup( );
-		return false;
-	}
+	/* iResult = shutdown( connectSocket_, SD_BOTH );
+	 if ( iResult == SOCKET_ERROR )
+	 {
+	 closesocket( connectSocket_ );
+	 WSACleanup( );
+	 return false;
+	 } */
 
 	// Стандартная очистка
 	CloseHandle( FileHandle );

@@ -120,7 +120,7 @@ bool Server::Accept( std::wstring destinationPath )
 			if ( FD_ISSET( connectSocket_, &read_fd_set ) )
 			{
 				// Запускается функция приема и после должен очиститься fd_setd
-				if ( !RecieveFile( destinationPath ) )
+				if ( RecieveFile( destinationPath ) )
 				{
 					FD_CLR( connectSocket_, & active_fd_set );
 				}
