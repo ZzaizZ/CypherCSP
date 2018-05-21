@@ -446,7 +446,6 @@ bool ProviderCryptography::DecryptFile(
 	}
 }
 // ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
 bool ProviderCryptography::GenKeyPair(const wchar_t *containerName, wchar_t *pkPath)
 {
 	if ( !CryptAcquireContext(
@@ -472,27 +471,172 @@ bool ProviderCryptography::GenKeyPair(const wchar_t *containerName, wchar_t *pkP
 	return true;
 }
 
-bool ProviderCryptography::LoadKeyPair(const wchar_t *containerName)
+bool ProviderCryptography::LoadPublicKey(BYTE *pbBlob, DWORD *pcbBlob, char *szKeyFile)
 {
-	if ( !CryptAcquireContext( &keyPairProvider_, L"ContainerName", NULL, hProvType_,
-							   0 ) )
+    // метод загрузки открытого ключа получателя из файла
+	// Открытие файла, в котором содержится открытый ключ получателя.
+	FILE *publicf;
+	if(!(publicf = fopen(szKeyFile, "rb")))
 	{
-		MessageBoxW( NULL, L"Указанный криптоконтейнер не существует", L"Error",
+		MessageBoxW( NULL, L"Ошибка загрузки открытого ключа", L"Error",
 					 MB_OK );
 		return false;
 	}
-	if(!CryptGetUserKey(
-		keyPairProvider_,
-        AT_KEYEXCHANGE,
-        &keypair))
+
+	*pcbBlob = (DWORD)fread(pbBlob, 1, *pcbBlob, publicf);
+	if(!*pcbBlob)
 	{
-		MessageBoxW( NULL, L"Ошибка экспорта ключа", L"Error",
-				 MB_OK );
-        long e = GetLastError();
+		MessageBoxW( NULL, L"Ошибка чтения блоба открытого ключа", L"Error",
+					 MB_OK );
 		return false;
 	}
-	MessageBoxW( NULL, L"Ключи загружены!", L"Error",
-				 MB_OK );
+    return true;
+}
+
+bool ProviderCryptography::EncryptSessionKey(char *sessionKeyPath, std::wstring keyFile, const wchar_t *path)
+{
+	// МЕТОД шифрования сессионного ключа на открытом ключе
+    // и запись результата в файл
+	char pkBlob[101];
+	DWORD pcsBlob = 101;
+	LoadPublicKey(pkBlob, &pcsBlob, "E:\\MyContainerName.pub");
+
+	 GenerateKey(keyFile);
+	 DWORD BufLen = 32;
+
+	HCRYPTPROV hProv;		// Дескриптор CSP
+	HCRYPTKEY hKey; 		// Дескриптор закрытого ключа
+	HCRYPTKEY hAgreeKey;    // Дескриптор ключа согласования
+	// Получение дескриптора контейнера получателя с именем "Sender",
+    // находящегося в рамках провайдера.
+    if(CryptAcquireContext(
+        &hProv,
+        L"MyContainerName",
+        NULL,
+        PROV_GOST_2012_256,
+        0))
+    {
+        printf("The key container \"Sender\" has been acquired. \n");
+    }
+    else
+    {
+		printf("Error during CryptAcquireContext.");
+        return false;
+    }
+
+    // Получение дескриптора закрытого ключа отправителя.
+    if(CryptGetUserKey(
+        hProv,
+        AT_KEYEXCHANGE,
+        &hKey))
+    {printf("The private key has been acquired. \n");
+    }
+    else
+    {
+        MessageBoxW( NULL, L"Ошибка получения закрытого ключа", L"Error",
+					 MB_OK );
+		return false;
+    }
+
+    // Получение ключа согласования импортом открытого ключа получателя
+    // на закрытом ключе отправителя
+    if(CryptImportKey(
+        hProv,
+        pkBlob,
+        pcsBlob,
+        hKey,
+        0,
+        &hAgreeKey))
+    {
+        printf("The responder public key has been imported. \n");
+    }
+    else
+    {
+        MessageBoxW( NULL, L"Ошибка при импорте открытого ключа из BLOB'a", L"Error",
+					 MB_OK );
+		return false;
+    }
+    ALG_ID ke_alg = CALG_PRO12_EXPORT;
+    // Установление PRO12_EXPORT алгоритма ключа согласования
+    if(CryptSetKeyParam(
+        hAgreeKey,
+        KP_ALGID,
+		(LPBYTE)&ke_alg,
+        0))
+    {
+        printf("PRO12_EXPORT agree key algorithm has been set. \n");
+    }
+    else
+    {
+		printf("Error during CryptSetKeyParam agree key.");
+	}
+
+    //--------------------------------------------------------------------
+    // Зашифрование сессионного ключа.
+    //--------------------------------------------------------------------
+
+    //--------------------------------------------------------------------
+    // Определение размера BLOBа сессионного ключа и распределение памяти.
+    DWORD dwBlobLenSimple;
+    if(CryptExportKey(
+        hSessionKey_,
+        hAgreeKey,
+        SIMPLEBLOB,
+        0,
+        NULL,
+        &dwBlobLenSimple))
+    {
+        printf("Size of the BLOB for the sender session key determined. \n");
+    }
+    else
+    {
+        MessageBoxW( NULL, L"Ошибка при вычислении длины BLOB'a", L"Error",
+					 MB_OK );
+		return false;
+	}
+	BYTE *pbKeyBlobSimple = new BYTE[dwBlobLenSimple];
+
+    // Зашифрование сессионного ключа на ключе Agree.
+
+    if(CryptExportKey(
+		hSessionKey_,
+        hAgreeKey,
+        SIMPLEBLOB,
+        0,
+        pbKeyBlobSimple,
+		&dwBlobLenSimple))
+    {
+        printf("Contents have been written to the BLOB. \n");
+    }
+    else
+    {
+		MessageBoxW( NULL, L"Ошибка при шифровании сессионного ключа", L"Error",
+					 MB_OK );
+		return false;
+	}
+	MessageBoxW( NULL, L"Круто", L"Error",
+					 MB_OK );
+
+    // Запись зашифрованного сессионного ключа в файл
+	HANDLE keyPairHandle = 0;
+	if (!(keyPairHandle = CreateFileW(
+		path,
+		GENERIC_WRITE,
+		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL, NULL)))
+	{
+		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error",
+					 MB_OK );
+		return false;
+	}
+
+	DWORD dwBytesWritten;
+	WriteFile(
+		keyPairHandle,           // open file handle
+		pbKeyBlobSimple,      // start of data to write
+		dwBlobLenSimple,  // number of bytes to write
+		&dwBytesWritten, // number of bytes that were written
+		NULL);
 	return true;
 }
 
@@ -521,7 +665,6 @@ bool ProviderCryptography::ExportPublicKeyToFile(const wchar_t *path)
 	{
 		MessageBoxW( NULL, L"Ошибка при экспорте открытого ключа в BLOB", L"Error",
 					 MB_OK );
-		long error = GetLastError();
 		return false;
 	}
 	HANDLE keyPairHandle = 0;
@@ -533,9 +676,8 @@ bool ProviderCryptography::ExportPublicKeyToFile(const wchar_t *path)
 	{
 		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error",
 					 MB_OK );
-		long error = GetLastError();
 		return false;
-    }
+	}
 
 	DWORD dwBytesWritten;
 	if (!WriteFile(
@@ -547,10 +689,9 @@ bool ProviderCryptography::ExportPublicKeyToFile(const wchar_t *path)
 	{
 		MessageBoxW( NULL, L"Ошибка записи открытого ключа в файл", L"Error",
 					 MB_OK );
-		long error = GetLastError();
 		return false;
 	}
-    MessageBoxW( NULL, L"Открытый ключ экспортирован успешно!", L"Error",
+	MessageBoxW( NULL, L"Открытый ключ экспортирован успешно!", L"Error",
 					 MB_OK );
 	return true;
 }

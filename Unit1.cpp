@@ -167,7 +167,8 @@ void __fastcall TmainForm::btnGenerateKeyPairClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::btnLoadKeyPairClick(TObject *Sender)
 {
-	crypt->LoadKeyPair(L"KC1_test");
+	crypt->EncryptSessionKey("E:\\MyContainerName.pub", L"E:\\1q2w3e.symkey", L"E:\\1q2w3e.encr");
+	//crypt->LoadKeyPair(L"KC1_test");
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::btnLoadResponderKeyClick(TObject *Sender)

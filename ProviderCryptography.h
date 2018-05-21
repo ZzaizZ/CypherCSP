@@ -25,8 +25,10 @@ public:
 	bool SaveKey( std::wstring );
 
 	bool GenKeyPair(const wchar_t *containerName, wchar_t *pkPath);
-	bool LoadKeyPair(const wchar_t *containerName);
-    bool ExportPublicKeyToFile(const wchar_t *path);
+	bool LoadPublicKey(BYTE *pbBlob, DWORD *pcbBlob, char *szKeyFile);
+	bool ExportPublicKeyToFile(const wchar_t *path);
+	bool EncryptSessionKey(char *sessionKeyPath, std::wstring keyFile, const wchar_t *path);
+	bool DecryptSessionKey(char *sessionKeyPath, std::wstring keyFile, const wchar_t *path);
 
 private:
 	HCRYPTPROV hCryptProvider_;
