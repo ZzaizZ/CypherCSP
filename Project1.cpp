@@ -20,7 +20,7 @@ int WINAPI _tWinMain(
 		Application->MainFormOnTaskBar = true;
 		Application->CreateForm(__classid(TmainForm), &mainForm);
 		Application->CreateForm(__classid(TForm2), &Form2);
-		Application->CreateForm(__classid(TmainForm), &mainForm);
+		//Application->CreateForm(__classid(TmainForm), &mainForm);
 		Application->CreateForm(__classid(TForm3), &Form3);
 		Application->Run( );
 	}
