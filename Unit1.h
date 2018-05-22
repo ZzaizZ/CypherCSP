@@ -35,20 +35,20 @@ __published: // IDE-managed Components
 	TEdit *tedResponderPKPath;
 	TEdit *tedInSessionKey;
 	TEdit *tedOutSessionKey;
-	TLabel *Label1;
-	TLabel *Label2;
-	TLabel *Label3;
-	TLabel *Label4;
-	TEdit *Edit1;
-	TEdit *Edit2;
-	TEdit *Edit3;
-	TLabel *Label5;
-	TLabel *Label6;
-	TLabel *Label7;
-	TEdit *Edit4;
-	TEdit *Edit5;
-	TLabel *Label8;
-	TLabel *Label9;
+	TLabel *contSendLabel;
+	TLabel *pathOpenRespondLabel;
+	TLabel *pathSymkeyLabel;
+	TLabel *pathEncrSymkeyLabel;
+	TEdit *encrSymkeyEdit;
+	TEdit *pathSendPubEdit;
+	TEdit *contRespondEdit;
+	TLabel *pathEncrSymkeyDecrLabel;
+	TLabel *pathOpenSendLabel;
+	TLabel *contResponderLabel;
+	TEdit *encrFileEdit;
+	TEdit *decrFileEdit;
+	TLabel *pathEncrFileLabel;
+	TLabel *pathDecryptFileLabel;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
@@ -63,7 +63,7 @@ __published: // IDE-managed Components
 private: // User declarations
 		public : // User declarations
 	__fastcall TmainForm( TComponent * Owner );
-    bool checkCryptoProvider(int index);
+    void checkCryptoProvider(int index);
 
 	ProviderCryptography * crypt;
 } ;

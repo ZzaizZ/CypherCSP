@@ -409,6 +409,7 @@ bool ProviderCryptography::EncryptFile(
 			MessageBoxW( NULL, L"Файл зашифрован", L"Готово", MB_OK );
 			return true;
 		}
+		return false;
 	}
 }
 
@@ -440,9 +441,10 @@ bool ProviderCryptography::DecryptFile(
 		Close( );
 		if ( sucsess )
 		{
-			MessageBoxW( NULL, L"Файл расшифрован", L"Готово", MB_OK );
+			MessageBoxW( NULL, L"Файл расшифрован", L"Info", MB_OK );
 			return true;
 		}
+		return false;
 	}
 }
 
@@ -450,13 +452,16 @@ bool ProviderCryptography::DecryptFile(
 
 bool ProviderCryptography::GenKeyPair(
 	const wchar_t * containerName,
-	wchar_t *       pkPath )
+	const wchar_t * pkPath )
 {
+	CryptAcquireContext( & keyPairProvider_, containerName, NULL, hProvType_,
+		CRYPT_DELETEKEYSET | CRYPT_SILENT );
+	// CryptReleaseContext( keyPairProvider_, 0 );
 	if ( !CryptAcquireContext( &keyPairProvider_, containerName, NULL,
 		hProvType_, CRYPT_NEWKEYSET ) )
 	{
-		MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера", L"Error",
-			MB_OK );
+		/* MessageBoxW( NULL, L"Не удалось создать контейнер",
+		 L"Error", MB_OK ); */
 		return false;
 	}
 	else
@@ -469,11 +474,13 @@ bool ProviderCryptography::GenKeyPair(
 			return false;
 		}
 	}
-	MessageBoxW( NULL, L"Ключи сгенерированы", L"Информация", MB_OK );
+
+	MessageBoxW( NULL, L"Ключи сгенерированы", L"Info", MB_OK );
 	ExportPublicKeyToFile( pkPath );
 	return true;
 }
 
+// ---------------------------------------------------------------------------
 bool ProviderCryptography::LoadPublicKey(
 	BYTE *    pbBlob,
 	DWORD     pcbBlob,
@@ -492,6 +499,7 @@ bool ProviderCryptography::LoadPublicKey(
 	return true;
 }
 
+// ---------------------------------------------------------------------------
 bool ProviderCryptography::EncryptSessionKey(
 	wchar_t *       container_name,
 	wchar_t *       sessionKeyPath,
@@ -593,7 +601,8 @@ bool ProviderCryptography::EncryptSessionKey(
 			MB_OK );
 		return false;
 	}
-	MessageBoxW( NULL, L"Круто", L"Error", MB_OK );
+	MessageBoxW( NULL, L"Симметричный ключ успешно зашифрован", L"Info",
+		MB_OK );
 
 	// Запись зашифрованного сессионного ключа в файл
 	HANDLE keyPairHandle = 0;
@@ -606,15 +615,24 @@ bool ProviderCryptography::EncryptSessionKey(
 	}
 
 	DWORD dwBytesWritten;
-	WriteFile( keyPairHandle, // open file handle
+	bool WriteResult = WriteFile( keyPairHandle, // open file handle
 		pbKeyBlobSimple, // start of data to write
 		dwBlobLenSimple, // number of bytes to write
-		& dwBytesWritten, // number of bytes that were written
+		&dwBytesWritten, // number of bytes that were written
 		NULL );
+	if ( !WriteResult || dwBytesWritten != dwBlobLenSimple )
+	{
+
+		DWORD err = GetLastError( );
+		MessageBoxW( NULL, L"Чтения из файла открытого ключа", L"Error",
+			MB_OK );
+		return false;
+	}
 	CloseHandle( keyPairHandle );
 	return true;
 }
 
+// ---------------------------------------------------------------------------
 bool ProviderCryptography::DecryptSessionKey(
 	const wchar_t * path,
 	wchar_t *       senderPublicKeyPath,
@@ -671,14 +689,30 @@ bool ProviderCryptography::DecryptSessionKey(
 		return false;
 	}
 	// Чтение зашифрованного ключа из файла
-
-	HANDLE readF = CreateFileW( path, GENERIC_READ,
+	// std::wstring path_ = L"C:\\\\Users\\Никита\\Desktop\\key.symkey.encr";
+	HANDLE readF = CreateFileW( senderPublicKeyPath, GENERIC_READ,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL );
+	if ( readF == INVALID_HANDLE_VALUE )
+	{
+		DWORD err = GetLastError( );
+		MessageBoxW( NULL, L"Ошибка открытия файла симметричного ключа",
+			L"Error", MB_OK );
+		return false;
+	}
 	BYTE pbKeyBlobSimple[ 76 ];
 	DWORD cbBlobLenSimple = 76;
 	DWORD BytesRead;
-	ReadFile( readF, pbKeyBlobSimple, cbBlobLenSimple, & BytesRead, NULL );
+	bool ReadResult = ReadFile( readF, pbKeyBlobSimple, cbBlobLenSimple,
+		&BytesRead, NULL );
+	if ( !ReadResult || BytesRead != cbBlobLenSimple )
+	{
+
+		DWORD err = GetLastError( );
+		MessageBoxW( NULL, L"Чтения из файла открытого ключа", L"Error",
+			MB_OK );
+		return false;
+	}
 	CloseHandle( readF );
 
 	// Получение сессионного ключа импортом зашифрованного сессионного ключа
@@ -690,15 +724,16 @@ bool ProviderCryptography::DecryptSessionKey(
 	}
 	else
 	{
-		printf( "Error during CryptImportKey session key." );
+		MessageBoxW( NULL, L"Ошибка при импорте симметричного ключа в BLOB",
+			L"Error", MB_OK );
 		return false;
 	}
 
 	printf( "CryptSetKeyParam succeeded. \n" );
-	MessageBoxW( NULL, L"Круто", L"Error", MB_OK );
 	return true;
 }
 
+// ---------------------------------------------------------------------------
 bool ProviderCryptography::ExportPublicKeyToFile( const wchar_t * path )
 {
 	// Определение размера BLOBа открытого ключа и распределение памяти.
@@ -738,7 +773,7 @@ bool ProviderCryptography::ExportPublicKeyToFile( const wchar_t * path )
 		return false;
 	}
 	CloseHandle( keyPairHandle );
-	MessageBoxW( NULL, L"Открытый ключ экспортирован успешно!", L"Error",
+	MessageBoxW( NULL, L"Открытый ключ экспортирован успешно!", L"Info",
 		MB_OK );
 
 	return true;

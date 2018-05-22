@@ -17,7 +17,7 @@ object Form3: TForm3
     Left = 15
     Top = 24
     Width = 82
-    Height = 17
+    Height = 13
     Caption = #1048#1084#1103' '#1082#1086#1085#1090#1077#1081#1085#1077#1088#1072
   end
   object tedContainerName: TEdit

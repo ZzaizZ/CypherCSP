@@ -25,7 +25,7 @@ public:
 	bool SaveKey( std::wstring );
 
 
-	bool GenKeyPair(const wchar_t *containerName, wchar_t *pkPath);
+	bool GenKeyPair(const wchar_t *containerName,const wchar_t *pkPath);
 
 	bool ExportPublicKeyToFile(const wchar_t *path);
 	bool EncryptSessionKey(wchar_t *container_name, wchar_t *sessionKeyPath, std::wstring keyFile, const wchar_t *path);
