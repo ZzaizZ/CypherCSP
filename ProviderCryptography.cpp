@@ -634,9 +634,9 @@ bool ProviderCryptography::EncryptSessionKey(
 
 // ---------------------------------------------------------------------------
 bool ProviderCryptography::DecryptSessionKey(
-	const wchar_t * path,
-	wchar_t *       senderPublicKeyPath,
-	wchar_t *       responderContainerName )
+	wchar_t * senderPublicKeyPath,
+	wchar_t * pathSimKey,
+	wchar_t * responderContainerName )
 {
 
 	// Получение дескриптора контейнера получателя с именем "Responder",
@@ -653,7 +653,8 @@ bool ProviderCryptography::DecryptSessionKey(
 	if ( !CryptAcquireContext( &hProv, responderContainerName, NULL,
 		PROV_GOST_2012_256, 0 ) )
 	{
-		printf( "Error during CryptAcquireContext" );
+		MessageBoxW( NULL, L"Ошбка инициализации криптопровайдера", L"Error",
+			MB_OK );
 		return false;
 	}
 	// Получение дескриптора закрытого ключа получателя.
@@ -664,6 +665,8 @@ bool ProviderCryptography::DecryptSessionKey(
 	else
 	{
 		printf( "Error during CryptGetUserKey private key." );
+		MessageBoxW( NULL, L"Ошибка получения ключа пользователя", L"Error",
+			MB_OK );
 		return false;
 	}
 	// Получение ключа согласования импортом открытого ключа отправителя
@@ -675,6 +678,7 @@ bool ProviderCryptography::DecryptSessionKey(
 	else
 	{
 		printf( "Error during CryptImportKey public key." );
+		MessageBoxW( NULL, L"Ошибка импорта файла ключа", L"Error", MB_OK );
 		return false;
 	}
 	// Установление PRO12_EXPORT алгоритма ключа согласования
@@ -686,11 +690,12 @@ bool ProviderCryptography::DecryptSessionKey(
 	else
 	{
 		printf( "Error during CryptSetKeyParam agree key." );
+		MessageBoxW( NULL, L"Ошибка установки параметров ключа", L"Error",
+			MB_OK );
 		return false;
 	}
 	// Чтение зашифрованного ключа из файла
-	// std::wstring path_ = L"C:\\\\Users\\Никита\\Desktop\\key.symkey.encr";
-	HANDLE readF = CreateFileW( senderPublicKeyPath, GENERIC_READ,
+	HANDLE readF = CreateFileW( pathSimKey, GENERIC_READ,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL );
 	if ( readF == INVALID_HANDLE_VALUE )
@@ -700,8 +705,8 @@ bool ProviderCryptography::DecryptSessionKey(
 			L"Error", MB_OK );
 		return false;
 	}
-	BYTE pbKeyBlobSimple[ 76 ];
-	DWORD cbBlobLenSimple = 76;
+	BYTE pbKeyBlobSimple[ 73 ];
+	DWORD cbBlobLenSimple = 73;
 	DWORD BytesRead;
 	bool ReadResult = ReadFile( readF, pbKeyBlobSimple, cbBlobLenSimple,
 		&BytesRead, NULL );
@@ -724,12 +729,11 @@ bool ProviderCryptography::DecryptSessionKey(
 	}
 	else
 	{
+		DWORD err = GetLastError( );
 		MessageBoxW( NULL, L"Ошибка при импорте симметричного ключа в BLOB",
 			L"Error", MB_OK );
 		return false;
 	}
-
-	printf( "CryptSetKeyParam succeeded. \n" );
 	return true;
 }
 

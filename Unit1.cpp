@@ -279,7 +279,7 @@ void __fastcall TmainForm::ipEditKeyPress(
 	}
 }
 
-
+// ---------------------------------------------------------------------------
 void __fastcall TmainForm::btnGenerateKeyPairClick( TObject * Sender )
 {
 	// сделать через всплывающее окошко
@@ -307,20 +307,19 @@ void __fastcall TmainForm::btnDecryptSessionKeyClick( TObject * Sender )
 	// Имя файла - путь до файла зашифрованного симметричного ключа
 	// Имя открытого ключа - открытый ключ отправителя
 	// Имя контейнера - контейнер получателя
-	wchar_t * ske = decrFileEdit->Text.c_str( );
-	wchar_t * pkp = pathSendPubEdit->Text.c_str( );
+	wchar_t * send = pathSendPubEdit->Text.c_str( );
+	wchar_t * pkp = encrSymkeyEdit->Text.c_str( );
 	wchar_t * cn = contRespondEdit->Text.c_str( );
 	// crypt->DecryptSessionKey(L"E:\\new.symkey.encr", L"E:\\MyContainerName.pub", L"Responder");
-	if ( crypt->DecryptSessionKey( pkp, ske, cn ) )
+	if ( crypt->DecryptSessionKey( send, pkp, cn ) )
 	{
 		MessageBoxW( NULL, L"Симметричный ключ успешно расшифрован", L"Info",
 			MB_OK );
+		encryptButton->Enabled = true;
+		decryptButton->Enabled = true;
 	}
 	// сессионный ключ теперь хранится в оперативной памяти
 	// в аргументах ниже - зашифрованный файл, потом расшифрованный
-	// crypt->DecryptFileW(L"E:\\pic.enc", L"E:\\123.jpg");
-	crypt->DecryptFile( encrFileEdit->Text.c_str( ),
-		decrFileEdit->Text.c_str( ) );
 
 }
 // ---------------------------------------------------------------------------

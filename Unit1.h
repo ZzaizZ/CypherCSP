@@ -57,10 +57,6 @@ __published: // IDE-managed Components
 	TLabel *pathEncrSymkeyDecrLabel;
 	TLabel *pathOpenSendLabel;
 	TLabel *contResponderLabel;
-	TEdit *encrFileEdit;
-	TEdit *decrFileEdit;
-	TLabel *pathEncrFileLabel;
-	TLabel *pathDecryptFileLabel;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
