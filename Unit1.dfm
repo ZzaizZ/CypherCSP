@@ -3,8 +3,8 @@ object mainForm: TmainForm
   Top = 0
   BorderStyle = bsDialog
   Caption = #1064#1080#1092#1088#1072#1090#1086#1088'/'#1044#1077#1096#1080#1092#1088#1072#1090#1086#1088
-  ClientHeight = 644
-  ClientWidth = 380
+  ClientHeight = 272
+  ClientWidth = 376
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -42,55 +42,6 @@ object mainForm: TmainForm
     Width = 69
     Height = 13
     Caption = #1055#1086#1088#1090' '#1089#1077#1088#1074#1077#1088#1072
-  end
-  object contSendLabel: TLabel
-    Left = 8
-    Top = 299
-    Width = 151
-    Height = 13
-    Caption = #1048#1084#1103' '#1082#1086#1085#1090#1077#1081#1085#1077#1088#1072' '#1086#1090#1087#1088#1072#1074#1080#1090#1077#1083#1103
-  end
-  object pathOpenRespondLabel: TLabel
-    Left = 8
-    Top = 329
-    Width = 155
-    Height = 13
-    Caption = #1055#1091#1090#1100' '#1086#1090#1082#1088'. '#1082#1083#1102#1095#1072' '#1087#1086#1083#1091#1095#1072#1090#1077#1083#1103
-  end
-  object pathSymkeyLabel: TLabel
-    Left = 8
-    Top = 356
-    Width = 156
-    Height = 13
-    Caption = #1055#1091#1090#1100' '#1076#1086' '#1089#1080#1084#1084#1077#1090#1088#1080#1095#1085#1086#1075#1086' '#1082#1083#1102#1095#1072
-  end
-  object pathEncrSymkeyLabel: TLabel
-    Left = 8
-    Top = 380
-    Width = 171
-    Height = 13
-    Caption = #1055#1091#1090#1100' '#1076#1086' '#1073#1091#1076#1091#1097'. '#1079#1072#1096#1080#1092#1088'. '#1089#1080#1084'. '#1082#1083'.'
-  end
-  object pathEncrSymkeyDecrLabel: TLabel
-    Left = 8
-    Top = 454
-    Width = 147
-    Height = 13
-    Caption = #1055#1091#1090#1100' '#1076#1086' '#1079#1072#1096#1080#1092#1088'. '#1089#1080#1084'. '#1082#1083#1102#1095#1072
-  end
-  object pathOpenSendLabel: TLabel
-    Left = 8
-    Top = 489
-    Width = 177
-    Height = 13
-    Caption = #1055#1091#1090#1100' '#1076#1086' '#1086#1090#1082#1088'. '#1082#1083#1102#1095#1072' '#1086#1090#1087#1088#1072#1074#1080#1090#1077#1083#1103
-  end
-  object contResponderLabel: TLabel
-    Left = 8
-    Top = 516
-    Width = 148
-    Height = 13
-    Caption = #1048#1084#1103' '#1082#1086#1085#1090#1077#1081#1085#1077#1088#1072'  '#1087#1086#1083#1091#1095#1072#1090#1077#1083#1103
   end
   object encryptButton: TButton
     Left = 8
@@ -149,12 +100,12 @@ object mainForm: TmainForm
     OnClick = chooseKeyCheckBoxClick
   end
   object sendButton: TButton
-    Left = 8
-    Top = 222
+    Left = 7
+    Top = 224
     Width = 361
     Height = 33
     Caption = #1055#1077#1088#1077#1076#1072#1090#1100' '#1092#1072#1081#1083
-    TabOrder = 16
+    TabOrder = 6
     OnClick = sendButtonClick
   end
   object serverOnButton: TButton
@@ -163,7 +114,7 @@ object mainForm: TmainForm
     Width = 172
     Height = 33
     Caption = #1047#1072#1087#1091#1089#1090#1080#1090#1100' '#1089#1077#1088#1074#1077#1088
-    TabOrder = 17
+    TabOrder = 7
     OnClick = serverOnButtonClick
   end
   object ipEdit: TEdit
@@ -171,7 +122,7 @@ object mainForm: TmainForm
     Top = 195
     Width = 89
     Height = 21
-    TabOrder = 18
+    TabOrder = 8
     Text = '127.0.0.1'
     OnKeyPress = ipEditKeyPress
   end
@@ -181,7 +132,7 @@ object mainForm: TmainForm
     Width = 89
     Height = 21
     NumbersOnly = True
-    TabOrder = 19
+    TabOrder = 9
     Text = '4444'
   end
   object serverOffButton: TButton
@@ -190,123 +141,27 @@ object mainForm: TmainForm
     Width = 172
     Height = 33
     Caption = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1089#1077#1088#1074#1077#1088
-    TabOrder = 20
+    TabOrder = 10
     Visible = False
     OnClick = serverOffButtonClick
   end
-  object btnGenerateKeyPair: TButton
-    Left = 8
-    Top = 256
-    Width = 360
-    Height = 37
-    Caption = #1043#1077#1085#1077#1088#1072#1094#1080#1103' '#1082#1083#1102#1095#1077#1074#1086#1081' '#1087#1072#1088#1099
-    TabOrder = 6
-    OnClick = btnGenerateKeyPairClick
-  end
-  object btnDecryptSessionKey: TButton
-    Left = 8
-    Top = 535
-    Width = 360
-    Height = 37
-    Caption = #1056#1072#1089#1096#1080#1092#1088#1086#1074#1072#1090#1100' '#1089#1080#1084#1084#1077#1090#1088#1080#1095#1085#1099#1081' '#1082#1083#1102#1095
-    TabOrder = 7
-    OnClick = btnDecryptSessionKeyClick
-  end
-  object btnEncSessionKey: TButton
-    Left = 8
-    Top = 411
-    Width = 360
-    Height = 37
-    Caption = #1064#1080#1092#1088#1086#1074#1072#1085#1080#1077' '#1089#1080#1084#1084#1077#1090#1088#1080#1095#1085#1086#1075#1086' '#1082#1083#1102#1095#1072
-    TabOrder = 8
-    OnClick = btnEncSessionKeyClick
-  end
-  object tedSenderContainerName: TEdit
-    Left = 189
-    Top = 299
-    Width = 179
-    Height = 21
-    TabOrder = 9
-    Text = 'cc_send'
-  end
-  object tedResponderPKPath: TEdit
-    Left = 189
-    Top = 326
-    Width = 179
-    Height = 21
-    TabOrder = 10
-    Text = 'C:\\Users\'#1053#1080#1082#1080#1090#1072'\Desktop\cc_respond.pubkey'
-  end
-  object tedInSessionKey: TEdit
-    Left = 189
-    Top = 353
-    Width = 179
-    Height = 21
-    TabOrder = 11
-    Text = 'C:\\Users\'#1053#1080#1082#1080#1090#1072'\Desktop\key.symkey'
-  end
-  object tedOutSessionKey: TEdit
-    Left = 189
-    Top = 380
-    Width = 179
-    Height = 21
-    TabOrder = 12
-    Text = 'C:\\Users\'#1053#1080#1082#1080#1090#1072'\Desktop\key.symkey.encr'
-  end
-  object encrSymkeyEdit: TEdit
-    Left = 189
-    Top = 454
-    Width = 179
-    Height = 21
-    TabOrder = 13
-    Text = 'C:\\Users\'#1053#1080#1082#1080#1090#1072'\Desktop\key.symkey.encr'
-  end
-  object pathSendPubEdit: TEdit
-    Left = 189
-    Top = 481
-    Width = 179
-    Height = 21
-    TabOrder = 14
-    Text = 'C:\\Users\'#1053#1080#1082#1080#1090#1072'\Desktop\cc_send.pubkey'
-  end
-  object contRespondEdit: TEdit
-    Left = 189
-    Top = 508
-    Width = 179
-    Height = 21
-    TabOrder = 15
-    Text = 'cc_respond'
-  end
-  object Button1: TButton
-    Left = 199
-    Top = 616
-    Width = 124
-    Height = 25
-    Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1083#1102#1095
-    TabOrder = 21
-    OnClick = Button1Click
-  end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083
-    Left = 112
-    Top = 571
+    Left = 56
+    Top = 267
   end
   object outputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1082#1086#1085#1077#1095#1085#1099#1081' '#1092#1072#1081#1083
-    Left = 48
-    Top = 571
+    Left = 32
+    Top = 267
   end
   object keyOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
-    Left = 15
-    Top = 572
+    Left = 7
+    Top = 268
   end
   object sendOpenDialog: TOpenDialog
-    Left = 80
-    Top = 568
-  end
-  object sdPublicKeySave: TOpenDialog
-    Left = 144
-    Top = 568
+    Left = 88
+    Top = 272
   end
 end

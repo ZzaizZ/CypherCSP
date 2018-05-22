@@ -7,8 +7,8 @@
     <Transaction>1899.12.30 00:00:00.000.463,C:\ProjectRAD\CypherTest\ClientThread.h=C:\ProjectRAD\CypherTest\Unit2.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.280,C:\ProjectRAD\CypherTest\CryptoPro.cpp=C:\ProjectRAD\CypherTest\ProviderCryptography.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.233,=C:\ProjectRAD\CypherTest\include\wincspc.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.178,=C:\ProjectRAD\CypherTest\Unit3.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.540,=C:\ProjectRAD\CypherTest\Unit3.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.178,=C:\ProjectRAD\CypherTest\Unit3.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.195,=C:\ProjectRAD\CypherTest\include\cspmm.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.796,=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.071,C:\ProjectRAD\CypherTest\SendFileWindow.h=C:\ProjectRAD\CypherTest\Unit3.h</Transaction>
@@ -28,12 +28,12 @@
     <Transaction>1899.12.30 00:00:00.000.138,=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.474,=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.321,=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.071,C:\ProjectRAD\CypherTest\SendFileWindow.cpp=C:\ProjectRAD\CypherTest\Unit3.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.185,=C:\ProjectRAD\CypherTest\include\cpdrvlib.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.948,C:\ProjectRAD\CypherTest\Unit1.h=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.427,C:\ProjectRAD\CypherTest\ServerThread.cpp=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.687,=C:\ProjectRAD\CypherTest\Communication.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.071,C:\ProjectRAD\CypherTest\SendFileWindow.cpp=C:\ProjectRAD\CypherTest\Unit3.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.868,C:\ProjectRAD\CypherTest\SendFileWindow.cpp=</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.185,=C:\ProjectRAD\CypherTest\include\cpdrvlib.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.384,C:\ProjectRAD\CypherTest\cryptography.h=C:\ProjectRAD\CypherTest\Cryptography_class.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.427,C:\ProjectRAD\CypherTest\ServerThread.h=C:\ProjectRAD\CypherTest\Unit2.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.821,C:\ProjectRAD\CypherTest\cryptography.h=C:\ProjectRAD\CypherTest\CryptoPro.h</Transaction>
@@ -43,8 +43,8 @@
     <Transaction>1899.12.30 00:00:00.000.952,=C:\ProjectRAD\CypherTest\Unit2.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.726,C:\ProjectRAD\CypherTest\Unit2.cpp=C:\ProjectRAD\CypherTest\Cryptography.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.948,C:\ProjectRAD\CypherTest\Unit1.cpp=C:\Users\Никита\Documents\RAD Studio\Projects\Unit1.cpp</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.233,=C:\ProjectRAD\CypherTest\Unit1.cpp</Transaction>
     <Transaction>1899.12.30 00:00:00.000.265,C:\ProjectRAD\CypherTest\Unit1.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.233,=C:\ProjectRAD\CypherTest\Unit1.cpp</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="include"/>
@@ -86,9 +86,5 @@
     <File Path="ClientThread.cpp"/>
     <File Path="ClientThread.cpp"/>
     <File Path="ClientThread.h"/>
-    <File Path="GenerateKeyPairWindow.cpp"/>
-    <File Path="GenerateKeyPairWindow.cpp"/>
-    <File Path="GenerateKeyPairWindow.dfm"/>
-    <File Path="GenerateKeyPairWindow.h"/>
   </ProjectSortOrder>
 </BorlandProject>

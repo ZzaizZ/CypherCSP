@@ -39,25 +39,6 @@ __published: // IDE-managed Components
 	TLabel * portLabel;
 	TEdit * portEdit;
 	TButton *serverOffButton;
-	TButton *btnGenerateKeyPair;
-	TButton *btnDecryptSessionKey;
-	TButton *btnEncSessionKey;
-	TOpenDialog *sdPublicKeySave;
-	TEdit *tedSenderContainerName;
-	TEdit *tedResponderPKPath;
-	TEdit *tedInSessionKey;
-	TEdit *tedOutSessionKey;
-	TLabel *contSendLabel;
-	TLabel *pathOpenRespondLabel;
-	TLabel *pathSymkeyLabel;
-	TLabel *pathEncrSymkeyLabel;
-	TEdit *encrSymkeyEdit;
-	TEdit *pathSendPubEdit;
-	TEdit *contRespondEdit;
-	TLabel *pathEncrSymkeyDecrLabel;
-	TLabel *pathOpenSendLabel;
-	TLabel *contResponderLabel;
-	TButton *Button1;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
@@ -69,10 +50,6 @@ __published: // IDE-managed Components
 	void __fastcall serverOnButtonClick( TObject * Sender );
 	void __fastcall serverOffButtonClick(TObject *Sender);
 	void __fastcall ipEditKeyPress(TObject *Sender, System::WideChar &Key);
-	void __fastcall btnGenerateKeyPairClick(TObject *Sender);
-	void __fastcall btnEncSessionKeyClick(TObject *Sender);
-	void __fastcall btnDecryptSessionKeyClick(TObject *Sender);
-	void __fastcall Button1Click(TObject *Sender);
 
 private: // User declarations
 		public : // User declarations

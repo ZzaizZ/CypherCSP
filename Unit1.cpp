@@ -6,7 +6,6 @@
 #include "Unit1.h"
 
 #include "SaveKeyWindow.h"
-#include "GenerateKeyPairWindow.h"
 #include "include/WinCryptEx.h"
 #include <set>
 // ---------------------------------------------------------------------------
@@ -22,7 +21,7 @@ __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 	checkCryptoProvider( 0 );
 	crypt = new ProviderCryptography( PROV_GOST_2012_256 );
 	passwordEdit->PasswordChar = L'*';
-	// this->Height = 210;
+	this->Height = 310;
 	this->Position = poDesktopCenter;
 	keyOpenDialog->Filter =
 		"Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
@@ -277,59 +276,6 @@ void __fastcall TmainForm::ipEditKeyPress(
 	{
 		Key = '\0';
 	}
-}
 
-// ---------------------------------------------------------------------------
-void __fastcall TmainForm::btnGenerateKeyPairClick( TObject * Sender )
-{
-	// сделать через всплывающее окошко
-	//wchar_t * containerName = L"Responder"; // имя создаваемого контейнера
-	//wchar_t * pkPath = L"E:\\Responder.pub"; // путь сохранения открытого ключа
-
-	TForm3 * generate = new TForm3( Owner );
-	generate->Show( );
-}
-
-// ---------------------------------------------------------------------------
-void __fastcall TmainForm::btnEncSessionKeyClick( TObject * Sender )
-{
-	// Имя контейнера - контейнер отправителя.
-	// Имя открытого ключа - открытый ключ получаеля
-	// crypt->EncryptSessionKey(L"MyContainerName", L"E:\\Responder.pub", L"E:\\new.symkey", L"E:\\new.symkey.encr");
-	crypt->EncryptSessionKey( tedSenderContainerName->Text.c_str( ),
-		tedResponderPKPath->Text.c_str( ), tedInSessionKey->Text.c_str( ),
-		tedOutSessionKey->Text.c_str( ) );
-}
-
-// ---------------------------------------------------------------------------
-void __fastcall TmainForm::btnDecryptSessionKeyClick( TObject * Sender )
-{
-	// Имя файла - путь до файла зашифрованного симметричного ключа
-	// Имя открытого ключа - открытый ключ отправителя
-	// Имя контейнера - контейнер получателя
-	wchar_t * send = pathSendPubEdit->Text.c_str( );
-	wchar_t * pkp = encrSymkeyEdit->Text.c_str( );
-	wchar_t * cn = contRespondEdit->Text.c_str( );
-	// crypt->DecryptSessionKey(L"E:\\new.symkey.encr", L"E:\\MyContainerName.pub", L"Responder");
-	if ( crypt->DecryptSessionKey( send, pkp, cn ) )
-	{
-		MessageBoxW( NULL, L"Симметричный ключ успешно расшифрован", L"Info",
-			MB_OK );
-		encryptButton->Enabled = true;
-		decryptButton->Enabled = true;
-	}
-	// сессионный ключ теперь хранится в оперативной памяти
-	// в аргументах ниже - зашифрованный файл, потом расшифрованный
-
-}
-
-// ---------------------------------------------------------------------------
-void __fastcall TmainForm::Button1Click( TObject * Sender )
-{
-	if ( !keyOpenDialog->Execute( ) )
-	{
-		return;
-	}
-	crypt->SaveKey( keyOpenDialog->FileName.c_str( ) );
 }
 // ---------------------------------------------------------------------------
