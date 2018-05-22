@@ -3,8 +3,8 @@ object mainForm: TmainForm
   Top = 0
   BorderStyle = bsDialog
   Caption = #1064#1080#1092#1088#1072#1090#1086#1088'/'#1044#1077#1096#1080#1092#1088#1072#1090#1086#1088
-  ClientHeight = 579
-  ClientWidth = 376
+  ClientHeight = 644
+  ClientWidth = 380
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -276,6 +276,15 @@ object mainForm: TmainForm
     Height = 21
     TabOrder = 15
     Text = 'cc_respond'
+  end
+  object Button1: TButton
+    Left = 199
+    Top = 616
+    Width = 124
+    Height = 25
+    Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1083#1102#1095
+    TabOrder = 21
+    OnClick = Button1Click
   end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083

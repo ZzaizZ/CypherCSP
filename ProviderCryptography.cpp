@@ -208,6 +208,17 @@ bool ProviderCryptography::SaveKey( std::wstring keyFile )
 {
 	if ( hSessionKey_ )
 	{
+		if ( hCryptProvider_ == NULL )
+		{
+			if ( !CryptAcquireContext( &hCryptProvider_, NULL, NULL, hProvType_,
+				CRYPT_VERIFYCONTEXT ) )
+			{
+				MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера",
+					L"Error", MB_OK );
+				return false;
+			}
+		}
+
 		HCRYPTHASH hHash = 0;
 		if ( !CryptCreateHash( // Создаем объект хэша
 			hCryptProvider_, CALG_GR3411_2012_256, 0, 0, &hHash ) )
@@ -714,7 +725,7 @@ bool ProviderCryptography::DecryptSessionKey(
 	{
 
 		DWORD err = GetLastError( );
-		MessageBoxW( NULL, L"Чтения из файла открытого ключа", L"Error",
+		MessageBoxW( NULL, L"Ошибка чтения файла симметричного ключа", L"Error",
 			MB_OK );
 		return false;
 	}

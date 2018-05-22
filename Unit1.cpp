@@ -283,8 +283,8 @@ void __fastcall TmainForm::ipEditKeyPress(
 void __fastcall TmainForm::btnGenerateKeyPairClick( TObject * Sender )
 {
 	// сделать через всплывающее окошко
-	wchar_t * containerName = L"Responder"; // имя создаваемого контейнера
-	wchar_t * pkPath = L"E:\\Responder.pub"; // путь сохранения открытого ключа
+	//wchar_t * containerName = L"Responder"; // имя создаваемого контейнера
+	//wchar_t * pkPath = L"E:\\Responder.pub"; // путь сохранения открытого ключа
 
 	TForm3 * generate = new TForm3( Owner );
 	generate->Show( );
@@ -321,5 +321,15 @@ void __fastcall TmainForm::btnDecryptSessionKeyClick( TObject * Sender )
 	// сессионный ключ теперь хранится в оперативной памяти
 	// в аргументах ниже - зашифрованный файл, потом расшифрованный
 
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TmainForm::Button1Click( TObject * Sender )
+{
+	if ( !keyOpenDialog->Execute( ) )
+	{
+		return;
+	}
+	crypt->SaveKey( keyOpenDialog->FileName.c_str( ) );
 }
 // ---------------------------------------------------------------------------
