@@ -4,8 +4,9 @@
 #pragma hdrstop
 #include <tchar.h>
 // ---------------------------------------------------------------------------
-USEFORM("SaveKeyWindow.cpp", Form2);
 USEFORM("Unit1.cpp", mainForm);
+USEFORM("SaveKeyWindow.cpp", Form2);
+USEFORM("GenerateKeyPairWindow.cpp", Form3);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(
 	HINSTANCE,
@@ -20,6 +21,7 @@ int WINAPI _tWinMain(
 		Application->CreateForm(__classid(TmainForm), &mainForm);
 		Application->CreateForm(__classid(TForm2), &Form2);
 		Application->CreateForm(__classid(TmainForm), &mainForm);
+		Application->CreateForm(__classid(TForm3), &Form3);
 		Application->Run( );
 	}
 	catch ( Exception & exception )

@@ -6,6 +6,7 @@
 #include "Unit1.h"
 
 #include "SaveKeyWindow.h"
+#include "GenerateKeyPairWindow.h"
 #include "include/WinCryptEx.h"
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -160,19 +161,39 @@ void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
 
 void __fastcall TmainForm::btnGenerateKeyPairClick(TObject *Sender)
 {
-	wchar_t *containerName = L"MyContainerName"; // имя создаваемого контейнера
-	wchar_t *pkPath = L"С:\\MyContainerName.pub"; // путь сохранения открытого ключа
-	crypt->GenKeyPair(containerName, pkPath);
+    // сделать через всплывающее окошко
+	wchar_t *containerName = L"Responder"; // имя создаваемого контейнера
+	wchar_t *pkPath = L"E:\\Responder.pub"; // путь сохранения открытого ключа
+
+	TForm3 *generate = new TForm3(Owner);
+	generate->Show(); 
 }
 //---------------------------------------------------------------------------
-void __fastcall TmainForm::btnLoadKeyPairClick(TObject *Sender)
+void __fastcall TmainForm::btnEncSessionKeyClick(TObject *Sender)
 {
-	crypt->LoadKeyPair(L"KC1_test");
+	// Имя контейнера - контейнер отправителя.
+	// Имя открытого ключа - открытый ключ получаеля
+	//crypt->EncryptSessionKey(L"MyContainerName", L"E:\\Responder.pub", L"E:\\new.symkey", L"E:\\new.symkey.encr");
+	crypt->EncryptSessionKey(tedSenderContainerName->Text.c_str(),
+								tedResponderPKPath->Text.c_str(),
+								tedInSessionKey->Text.c_str(),
+								tedOutSessionKey->Text.c_str());
 }
 //---------------------------------------------------------------------------
-void __fastcall TmainForm::btnLoadResponderKeyClick(TObject *Sender)
+void __fastcall TmainForm::btnDecryptSessionKeyClick(TObject *Sender)
 {
-	crypt->ExportPublicKeyToFile(L"321.pub");
+    // Имя файла - путь до файла зашифрованного симметричного ключа
+	// Имя открытого ключа - открытый ключ отправителя
+	// Имя контейнера - контейнер получателя
+	wchar_t *ske = Edit1->Text.c_str();
+	wchar_t *pkp = Edit2->Text.c_str();
+	wchar_t *cn = Edit3->Text.c_str();
+	//crypt->DecryptSessionKey(L"E:\\new.symkey.encr", L"E:\\MyContainerName.pub", L"Responder");
+	crypt->DecryptSessionKey(ske, pkp, cn);
+	// сессионный ключ теперь хранится в оперативной памяти
+    // в аргументах ниже - зашифрованный файл, потом расшифрованный
+	//crypt->DecryptFileW(L"E:\\pic.enc", L"E:\\123.jpg");
+    crypt->DecryptFileW(Edit4->Text.c_str(), Edit5->Text.c_str());
 }
 //---------------------------------------------------------------------------
 
