@@ -1,10 +1,9 @@
 object mainForm: TmainForm
   Left = 0
   Top = 0
-  BorderStyle = bsDialog
   Caption = #1064#1080#1092#1088#1072#1090#1086#1088'/'#1044#1077#1096#1080#1092#1088#1072#1090#1086#1088
-  ClientHeight = 272
-  ClientWidth = 376
+  ClientHeight = 461
+  ClientWidth = 366
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -144,6 +143,15 @@ object mainForm: TmainForm
     TabOrder = 10
     Visible = False
     OnClick = serverOffButtonClick
+  end
+  object Button1: TButton
+    Left = 152
+    Top = 360
+    Width = 175
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 11
+    OnClick = Button1Click
   end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083

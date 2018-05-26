@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------
 
 #include <vcl.h>
 #pragma hdrstop
@@ -279,3 +279,11 @@ void __fastcall TmainForm::ipEditKeyPress(
 
 }
 // ---------------------------------------------------------------------------
+void __fastcall TmainForm::Button1Click(TObject *Sender)
+{
+    crypt->EncryptSessionKey(L"Sender", L"J:\\Responder.pubkey", L"J:\\session.symkey", L"J:\\session.symkey.encr");
+	crypt->DecryptSessionKey(L"J:\\session.symkey.encr", L"J:\\Sender.pubkey", L"Responder");
+    crypt->DecryptFileW(L"J:\\pic.enc", L"J:\\123.jpg");
+}
+//---------------------------------------------------------------------------
+
