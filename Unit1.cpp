@@ -159,36 +159,3 @@ void __fastcall TmainForm::algorithmComboBoxChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TmainForm::btnGenerateKeyPairClick(TObject *Sender)
-{
-    // сделать через всплывающее окошко
-	wchar_t *containerName = L"Responder"; // имя создаваемого контейнера
-	wchar_t *pkPath = L"E:\\Responder.pub"; // путь сохранения открытого ключа
-
-	TForm3 *generate = new TForm3(Owner);
-	generate->Show();
-}
-//---------------------------------------------------------------------------
-void __fastcall TmainForm::btnEncSessionKeyClick(TObject *Sender)
-{
-	// Имя контейнера - контейнер отправителя.
-	// Имя открытого ключа - открытый ключ получаеля
-	crypt->EncryptSessionKey(L"Sender", L"J:\\Responder.pubkey", L"J:\\session.symkey", L"J:\\session.symkey.encr");
-//	crypt->EncryptSessionKey(tedSenderContainerName->Text.c_str(),
-//								tedResponderPKPath->Text.c_str(),
-//								tedInSessionKey->Text.c_str(),
-//								tedOutSessionKey->Text.c_str());
-}
-//---------------------------------------------------------------------------
-void __fastcall TmainForm::btnDecryptSessionKeyClick(TObject *Sender)
-{
-    // Имя файла - путь до файла зашифрованного симметричного ключа
-	// Имя открытого ключа - открытый ключ отправителя
-	// Имя контейнера - контейнер получателя
-	crypt->DecryptSessionKey(L"J:\\session.symkey.encr", L"J:\\Sender.pubkey", L"Responder");
-	// сессионный ключ теперь хранится в оперативной памяти
-    // в аргументах ниже - зашифрованный файл, потом расшифрованный
-	crypt->DecryptFileW(L"J:\\pic.enc", L"J:\\123.jpg");
-}
-//---------------------------------------------------------------------------
-

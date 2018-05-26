@@ -27,10 +27,6 @@ __published: // IDE-managed Components
 	TComboBox * algorithmComboBox;
 	TCheckBox * chooseKeyCheckBox;
 	TOpenDialog *keyOpenDialog;
-	TButton *btnGenerateKeyPair;
-	TButton *btnDecryptSessionKey;
-	TButton *btnEncSessionKey;
-	TOpenDialog *sdPublicKeySave;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
@@ -38,9 +34,6 @@ __published: // IDE-managed Components
 	void __fastcall encryptButtonClick( TObject * Sender );
 	void __fastcall decryptButtonClick( TObject * Sender );
 	void __fastcall algorithmComboBoxChange(TObject *Sender);
-	void __fastcall btnGenerateKeyPairClick(TObject *Sender);
-	void __fastcall btnEncSessionKeyClick(TObject *Sender);
-	void __fastcall btnDecryptSessionKeyClick(TObject *Sender);
 
 private: // User declarations
 		public : // User declarations

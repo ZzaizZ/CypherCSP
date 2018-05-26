@@ -85,37 +85,10 @@ object mainForm: TmainForm
     TabOrder = 5
     OnClick = chooseKeyCheckBoxClick
   end
-  object btnGenerateKeyPair: TButton
-    Left = 8
-    Top = 256
-    Width = 360
-    Height = 37
-    Caption = #1043#1077#1085#1077#1088#1072#1094#1080#1103' '#1082#1083#1102#1095#1077#1074#1086#1081' '#1087#1072#1088#1099
-    TabOrder = 6
-    OnClick = btnGenerateKeyPairClick
-  end
-  object btnDecryptSessionKey: TButton
-    Left = 8
-    Top = 593
-    Width = 360
-    Height = 37
-    Caption = #1056#1072#1089#1096#1080#1092#1088#1086#1074#1072#1090#1100' '#1089#1080#1084#1084#1077#1090#1088#1080#1095#1085#1099#1081' '#1082#1083#1102#1095' '#1080' '#1088#1072#1089#1096#1080#1092#1088#1086#1074#1072#1090#1100' '#1080#1084' '#1092#1072#1081#1083
-    TabOrder = 7
-    OnClick = btnDecryptSessionKeyClick
-  end
-  object btnEncSessionKey: TButton
-    Left = 8
-    Top = 550
-    Width = 360
-    Height = 37
-    Caption = #1064#1080#1092#1088#1086#1074#1072#1085#1080#1077' '#1089#1080#1084#1084#1077#1090#1088#1080#1095#1085#1086#1075#1086' '#1082#1083#1102#1095#1072
-    TabOrder = 8
-    OnClick = btnEncSessionKeyClick
-  end
   object inputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083
     Left = 128
-    Top = 187
+    Top = 179
   end
   object outputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1082#1086#1085#1077#1095#1085#1099#1081' '#1092#1072#1081#1083
@@ -126,9 +99,5 @@ object mainForm: TmainForm
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1092#1072#1081#1083' '#1082#1083#1102#1095#1072
     Left = 7
     Top = 180
-  end
-  object sdPublicKeySave: TOpenDialog
-    Left = 304
-    Top = 192
   end
 end
