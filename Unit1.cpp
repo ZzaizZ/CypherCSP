@@ -173,11 +173,11 @@ void __fastcall TmainForm::btnEncSessionKeyClick(TObject *Sender)
 {
 	// Имя контейнера - контейнер отправителя.
 	// Имя открытого ключа - открытый ключ получаеля
-	//crypt->EncryptSessionKey(L"MyContainerName", L"E:\\Responder.pub", L"E:\\new.symkey", L"E:\\new.symkey.encr");
-	crypt->EncryptSessionKey(tedSenderContainerName->Text.c_str(),
-								tedResponderPKPath->Text.c_str(),
-								tedInSessionKey->Text.c_str(),
-								tedOutSessionKey->Text.c_str());
+	crypt->EncryptSessionKey(L"Sender", L"J:\\Responder.pubkey", L"J:\\session.symkey", L"J:\\session.symkey.encr");
+//	crypt->EncryptSessionKey(tedSenderContainerName->Text.c_str(),
+//								tedResponderPKPath->Text.c_str(),
+//								tedInSessionKey->Text.c_str(),
+//								tedOutSessionKey->Text.c_str());
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::btnDecryptSessionKeyClick(TObject *Sender)
@@ -185,15 +185,10 @@ void __fastcall TmainForm::btnDecryptSessionKeyClick(TObject *Sender)
     // Имя файла - путь до файла зашифрованного симметричного ключа
 	// Имя открытого ключа - открытый ключ отправителя
 	// Имя контейнера - контейнер получателя
-	wchar_t *ske = Edit1->Text.c_str();
-	wchar_t *pkp = Edit2->Text.c_str();
-	wchar_t *cn = Edit3->Text.c_str();
-	//crypt->DecryptSessionKey(L"E:\\new.symkey.encr", L"E:\\MyContainerName.pub", L"Responder");
-	crypt->DecryptSessionKey(ske, pkp, cn);
+	crypt->DecryptSessionKey(L"J:\\session.symkey.encr", L"J:\\Sender.pubkey", L"Responder");
 	// сессионный ключ теперь хранится в оперативной памяти
     // в аргументах ниже - зашифрованный файл, потом расшифрованный
-	//crypt->DecryptFileW(L"E:\\pic.enc", L"E:\\123.jpg");
-    crypt->DecryptFileW(Edit4->Text.c_str(), Edit5->Text.c_str());
+	crypt->DecryptFileW(L"J:\\pic.enc", L"J:\\123.jpg");
 }
 //---------------------------------------------------------------------------
 

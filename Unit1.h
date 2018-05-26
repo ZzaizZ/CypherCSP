@@ -31,24 +31,6 @@ __published: // IDE-managed Components
 	TButton *btnDecryptSessionKey;
 	TButton *btnEncSessionKey;
 	TOpenDialog *sdPublicKeySave;
-	TEdit *tedSenderContainerName;
-	TEdit *tedResponderPKPath;
-	TEdit *tedInSessionKey;
-	TEdit *tedOutSessionKey;
-	TLabel *Label1;
-	TLabel *Label2;
-	TLabel *Label3;
-	TLabel *Label4;
-	TEdit *Edit1;
-	TEdit *Edit2;
-	TEdit *Edit3;
-	TLabel *Label5;
-	TLabel *Label6;
-	TLabel *Label7;
-	TEdit *Edit4;
-	TEdit *Edit5;
-	TLabel *Label8;
-	TLabel *Label9;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
