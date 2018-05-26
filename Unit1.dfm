@@ -29,6 +29,7 @@ object mainForm: TmainForm
     Height = 13
     Caption = #1040#1083#1075#1086#1088#1080#1090#1084' '#1096#1080#1092#1088#1086#1074#1072#1085#1080#1103
   end
+<<<<<<< HEAD
   object ipLabel: TLabel
     Left = 8
     Top = 176
@@ -43,6 +44,8 @@ object mainForm: TmainForm
     Height = 13
     Caption = #1055#1086#1088#1090' '#1089#1077#1088#1074#1077#1088#1072
   end
+=======
+>>>>>>> netVersion
   object encryptButton: TButton
     Left = 8
     Top = 90
@@ -99,6 +102,7 @@ object mainForm: TmainForm
     TabOrder = 5
     OnClick = chooseKeyCheckBoxClick
   end
+<<<<<<< HEAD
   object sendButton: TButton
     Left = 7
     Top = 224
@@ -149,6 +153,12 @@ object mainForm: TmainForm
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083
     Left = 56
     Top = 267
+=======
+  object inputOpenDialog: TOpenDialog
+    Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1089#1093#1086#1076#1085#1099#1081' '#1092#1072#1081#1083
+    Left = 128
+    Top = 179
+>>>>>>> netVersion
   end
   object outputOpenDialog: TOpenDialog
     Title = #1042#1099#1073#1077#1088#1080#1090#1077' '#1082#1086#1085#1077#1095#1085#1099#1081' '#1092#1072#1081#1083
@@ -160,8 +170,11 @@ object mainForm: TmainForm
     Left = 7
     Top = 268
   end
+<<<<<<< HEAD
   object sendOpenDialog: TOpenDialog
     Left = 88
     Top = 272
   end
+=======
+>>>>>>> netVersion
 end

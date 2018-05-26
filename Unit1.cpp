@@ -165,6 +165,7 @@ void __fastcall TmainForm::algorithmComboBoxChange( TObject * Sender )
 }
 // ---------------------------------------------------------------------------
 
+<<<<<<< HEAD
 void __fastcall TmainForm::sendButtonClick( TObject * Sender )
 {
 	if ( ipEdit->Text.IsEmpty( ) || portEdit->Text.IsEmpty( ) )
@@ -279,3 +280,5 @@ void __fastcall TmainForm::ipEditKeyPress(
 
 }
 // ---------------------------------------------------------------------------
+=======
+>>>>>>> netVersion

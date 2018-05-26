@@ -30,6 +30,7 @@ __published: // IDE-managed Components
 	TLabel * algorithmLabel;
 	TComboBox * algorithmComboBox;
 	TCheckBox * chooseKeyCheckBox;
+<<<<<<< HEAD
 	TOpenDialog * keyOpenDialog;
 	TButton * sendButton;
 	TOpenDialog * sendOpenDialog;
@@ -39,17 +40,24 @@ __published: // IDE-managed Components
 	TLabel * portLabel;
 	TEdit * portEdit;
 	TButton *serverOffButton;
+=======
+	TOpenDialog *keyOpenDialog;
+>>>>>>> netVersion
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
 	void __fastcall passwordEditChange( TObject * Sender );
 	void __fastcall encryptButtonClick( TObject * Sender );
 	void __fastcall decryptButtonClick( TObject * Sender );
+<<<<<<< HEAD
 	void __fastcall algorithmComboBoxChange( TObject * Sender );
 	void __fastcall sendButtonClick( TObject * Sender );
 	void __fastcall serverOnButtonClick( TObject * Sender );
 	void __fastcall serverOffButtonClick(TObject *Sender);
 	void __fastcall ipEditKeyPress(TObject *Sender, System::WideChar &Key);
+=======
+	void __fastcall algorithmComboBoxChange(TObject *Sender);
+>>>>>>> netVersion
 
 private: // User declarations
 		public : // User declarations
