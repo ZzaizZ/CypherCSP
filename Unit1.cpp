@@ -24,7 +24,7 @@ __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 	this->Height = 310;
 	this->Position = poDesktopCenter;
 	keyOpenDialog->Filter =
-		"Файлы симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
+		"пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (*.symkey)|*.SYMKEY|пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (*.*)|*.*";
 }
 // ---------------------------------------------------------------------------
 
@@ -141,15 +141,15 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 void TmainForm::checkCryptoProvider( int index )
 {
 	if ( algorithmComboBox->ItemIndex == index )
-	{ // На первой позиции - КриптоПРО крипропровайдер
-		// делаем тестовое создание контекста криптопровайдера
-		// если создаётся ок, то работа будет дальше, иначе интерфейс неактивен
+	{ // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		HCRYPTPROV hCryptProvider_;
 		if ( !CryptAcquireContext( &hCryptProvider_, NULL, NULL, 80,
 			CRYPT_VERIFYCONTEXT ) )
 		{
 			MessageBoxW( NULL,
-				L"Ошибка инициализации криптопровайдера. Проверьте, установлен ли пакет КриптоПРО CSP 4",
+				L"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ CSP 4",
 				L"Error", MB_OK );
 			saveKeyButton->Enabled = false;
 			chooseKeyCheckBox->Enabled = false;
@@ -165,12 +165,11 @@ void __fastcall TmainForm::algorithmComboBoxChange( TObject * Sender )
 }
 // ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
 void __fastcall TmainForm::sendButtonClick( TObject * Sender )
 {
 	if ( ipEdit->Text.IsEmpty( ) || portEdit->Text.IsEmpty( ) )
 	{
-		MessageBoxW( NULL, L"Ошибка укажите IP адрес и порт сервера", L"Error",
+		MessageBoxW( NULL, L"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", L"Error",
 			MB_OK );
 	}
 	else
@@ -179,14 +178,14 @@ void __fastcall TmainForm::sendButtonClick( TObject * Sender )
 		portEdit->Text.c_str( ) );
 		if ( !testClient->Init( ) )
 		{
-			MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error",
+			MessageBoxW( NULL, L"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Winsock", L"Error",
 			MB_OK );
 			delete testClient;
 		}
 		if ( !testClient->Connect( ) )
 		{
 			MessageBoxW( NULL,
-				L"TCP-сервер недоступен! Убедитесь в правильности указанного IP адреса и номера порта",
+				L"TCP-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ",
 				L"Error", MB_OK );
 			delete testClient;
 		}
@@ -212,21 +211,21 @@ void __fastcall TmainForm::serverOnButtonClick( TObject * Sender )
 {
 	if ( portEdit->Text.IsEmpty( ) )
 	{
-		MessageBoxW( NULL, L"Ошибка укажите номер порта", L"Error", MB_OK );
+		MessageBoxW( NULL, L"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ", L"Error", MB_OK );
 	}
 	else
 	{
 		testServer = new Server( portEdit->Text.c_str( ) );
 		if ( !testServer->Init( ) )
 		{
-			MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error",
+			MessageBoxW( NULL, L"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Winsock", L"Error",
 			MB_OK );
 			delete testServer;
 		}
 		if ( !testServer->Listen( ) )
 		{
 			MessageBoxW( NULL,
-				L"Ошибка при запуске TCP-сервера: невозможно выполнить привязку к указанному порту!",
+				L"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ TCP-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ!",
 				L"Error", MB_OK );
 			delete testServer;
 		}
@@ -235,7 +234,7 @@ void __fastcall TmainForm::serverOnButtonClick( TObject * Sender )
 			testServer->CleanUp( );
 			delete testServer;
 			UnicodeString Dir;
-			SelectDirectory( "Выберетие папку для хранения полученных файлов",
+			SelectDirectory( "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ",
 				"Desktop", Dir,
 				TSelectDirExtOpts( ) << sdNewFolder << sdShowEdit, NULL );
 
@@ -280,5 +279,3 @@ void __fastcall TmainForm::ipEditKeyPress(
 
 }
 // ---------------------------------------------------------------------------
-=======
->>>>>>> netVersion
