@@ -41,7 +41,7 @@ __published: // IDE-managed Components
 	TEdit * portEdit;
 	TButton *serverOffButton;
 	TButton *btnSettings;
-	TPageControl *PageControl1;
+	TPageControl *pcMain;
 	TTabSheet *TabSheet1;
 	TTabSheet *TabSheet2;
 	TOpenDialog *odOpenPubKey;

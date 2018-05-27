@@ -29,6 +29,9 @@ __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 	odOpenPubKey->Filter = "Файл открытого ключа (*.pubkey)|*.PUBKEY|Все файлы (*.*)|*.*";
 	odResponderPubKey->Filter = "Файл открытого ключа (*.pubkey)|*.PUBKEY|Все файлы (*.*)|*.*";
 	odOpenEncFile->Filter = "Зашифрованный файл (*.enc)|*.ENC|Все файлы (*.*)|*.*";
+	pcMain->Pages[0]->Caption = L"Симметричное Шифрование";
+	pcMain->Pages[1]->Caption = L"VPN";
+    pcMain->ActivePageIndex = 0;
 
 }
 // ---------------------------------------------------------------------------
@@ -348,4 +351,5 @@ void __fastcall TmainForm::btnEncryptClick(TObject *Sender)
 	}
 }
 //---------------------------------------------------------------------------
+
 

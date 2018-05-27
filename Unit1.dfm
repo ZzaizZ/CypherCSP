@@ -15,12 +15,12 @@ object mainForm: TmainForm
   Position = poDesigned
   PixelsPerInch = 96
   TextHeight = 13
-  object PageControl1: TPageControl
+  object pcMain: TPageControl
     Left = 8
     Top = 5
     Width = 377
     Height = 228
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'TabSheet1'
