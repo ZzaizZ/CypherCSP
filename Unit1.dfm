@@ -24,8 +24,6 @@ object mainForm: TmainForm
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'TabSheet1'
-      ExplicitWidth = 381
-      ExplicitHeight = 273
       object algorithmLabel: TLabel
         Left = 3
         Top = 7
@@ -100,7 +98,6 @@ object mainForm: TmainForm
     object TabSheet2: TTabSheet
       Caption = 'TabSheet2'
       ImageIndex = 1
-      ExplicitHeight = 150
       object ipLabel: TLabel
         Left = 7
         Top = 46

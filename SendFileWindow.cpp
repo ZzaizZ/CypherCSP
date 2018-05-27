@@ -18,6 +18,6 @@ __fastcall TsendForm::TsendForm( TComponent * Owner ) : TForm( Owner )
 // ---------------------------------------------------------------------------
 void __fastcall TsendForm::connectButtonClick( TObject * Sender )
 {
-	client = new ClientThread(sendOpenDialog-> false );
+	client = new ClientThread(sendOpenDialog->Filename, false );
 }
 // ---------------------------------------------------------------------------

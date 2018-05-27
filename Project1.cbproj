@@ -136,7 +136,7 @@
             <DependentOn>Communication.h</DependentOn>
             <BuildOrder>14</BuildOrder>
         </CppCompile>
-        <CppCompile Include="Cryptography.cpp">
+        <CppCompile Include="cryptography.cpp">
             <DependentOn>Cryptography.h</DependentOn>
             <BuildOrder>11</BuildOrder>
         </CppCompile>
@@ -177,6 +177,12 @@
             <DependentOn>SaveKeyWindow.h</DependentOn>
             <BuildOrder>12</BuildOrder>
         </CppCompile>
+        <CppCompile Include="SendFileWindow.cpp">
+            <Form>sendForm</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>SendFileWindow.h</DependentOn>
+            <BuildOrder>18</BuildOrder>
+        </CppCompile>
         <CppCompile Include="Server.cpp">
             <DependentOn>Server.h</DependentOn>
             <BuildOrder>13</BuildOrder>
@@ -184,6 +190,12 @@
         <CppCompile Include="ServerThread.cpp">
             <DependentOn>ServerThread.h</DependentOn>
             <BuildOrder>16</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="SettingsWindow.cpp">
+            <Form>Form3</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>SettingsWindow.h</DependentOn>
+            <BuildOrder>19</BuildOrder>
         </CppCompile>
         <CppCompile Include="Unit1.cpp">
             <Form>mainForm</Form>
@@ -193,6 +205,8 @@
         </CppCompile>
         <FormResources Include="Unit1.dfm"/>
         <FormResources Include="SaveKeyWindow.dfm"/>
+        <FormResources Include="SendFileWindow.dfm"/>
+        <FormResources Include="SettingsWindow.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

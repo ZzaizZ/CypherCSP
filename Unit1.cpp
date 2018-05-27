@@ -157,7 +157,7 @@ void TmainForm::checkCryptoProvider( int index )
 			CRYPT_VERIFYCONTEXT ) )
 		{
 			MessageBoxW( NULL,
-				L"������ ������������� ����������������. ���������, ���������� �� ����� ��������� CSP 4",
+				L"Ошибка инициализации криптопровайдера!\n Проверьте, установлен ли пакет КриптоПроCSP 4",
 				L"Error", MB_OK );
 			saveKeyButton->Enabled = false;
 			chooseKeyCheckBox->Enabled = false;
@@ -177,7 +177,7 @@ void __fastcall TmainForm::sendButtonClick( TObject * Sender )
 {
 	if ( ipEdit->Text.IsEmpty( ) || portEdit->Text.IsEmpty( ) )
 	{
-		MessageBoxW( NULL, L"������ ������� IP ����� � ���� �������", L"Error",
+		MessageBoxW( NULL, L"Ошибка поле IP-адреса или номера порта не может быть пустым", L"Error",
 			MB_OK );
 	}
 	else
@@ -186,14 +186,14 @@ void __fastcall TmainForm::sendButtonClick( TObject * Sender )
 		portEdit->Text.c_str( ) );
 		if ( !testClient->Init( ) )
 		{
-			MessageBoxW( NULL, L"������ ������������� Winsock", L"Error",
+			MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error",
 			MB_OK );
 			delete testClient;
 		}
 		if ( !testClient->Connect( ) )
 		{
 			MessageBoxW( NULL,
-				L"TCP-������ ����������! ��������� � ������������ ���������� IP ������ � ������ �����",
+				L"TCP-сервер недоступен! Убедитеесь в правильности указанного IP-адреса и номера порта",
 				L"Error", MB_OK );
 			delete testClient;
 		}
@@ -224,21 +224,21 @@ void __fastcall TmainForm::serverOnButtonClick( TObject * Sender )
 {
 	if ( portEdit->Text.IsEmpty( ) )
 	{
-		MessageBoxW( NULL, L"������ ������� ����� �����", L"Error", MB_OK );
+		MessageBoxW( NULL, L"Ошибка номер порта пустой", L"Error", MB_OK );
 	}
 	else
 	{
 		testServer = new Server( portEdit->Text.c_str( ) );
 		if ( !testServer->Init( ) )
 		{
-			MessageBoxW( NULL, L"������ ������������� Winsock", L"Error",
+			MessageBoxW( NULL, L"Ошибка инициализации Winsock", L"Error",
 			MB_OK );
 			delete testServer;
 		}
 		if ( !testServer->Listen( ) )
 		{
 			MessageBoxW( NULL,
-				L"������ ��� ������� TCP-�������: ���������� ��������� �������� � ���������� �����!",
+				L"Ошибка при запуске TCP-сервера: невозможно выполнить привязку к указанному порту!",
 				L"Error", MB_OK );
 			delete testServer;
 		}
