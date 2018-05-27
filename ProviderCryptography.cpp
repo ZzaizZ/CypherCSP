@@ -470,11 +470,11 @@ bool ProviderCryptography::GenKeyPair(
 			return false;
 		}
 	}
-	MessageBoxW( NULL, L"Ключи сгенерированы", L"Error", MB_OK );
+	MessageBoxW( NULL, L"Ключи сгенерированы", L"Info", MB_OK );
 	ExportPublicKeyToFile( pkPath );
 	return true;
 }
-
+// ---------------------------------------------------------------------------
 bool ProviderCryptography::LoadPublicKey(
 	BYTE *    pbBlob,
 	DWORD     pcbBlob,
@@ -492,7 +492,7 @@ bool ProviderCryptography::LoadPublicKey(
 
 	return true;
 }
-
+// ---------------------------------------------------------------------------
 bool ProviderCryptography::EncryptSessionKey(
 	wchar_t *       container_name,
 	wchar_t *       sessionKeyPath,
@@ -615,7 +615,7 @@ bool ProviderCryptography::EncryptSessionKey(
 	CloseHandle( keyPairHandle );
 	return true;
 }
-
+// ---------------------------------------------------------------------------
 bool ProviderCryptography::DecryptSessionKey(
 	const wchar_t * path,
 	wchar_t *       senderPublicKeyPath,
@@ -695,8 +695,7 @@ bool ProviderCryptography::DecryptSessionKey(
 		return false;
 	}
 
-	printf( "CryptSetKeyParam succeeded. \n" );
-	MessageBoxW( NULL, L"Круто", L"Error", MB_OK );
+	MessageBoxW( NULL, L"Расшифрован файл ключа", L"Info", MB_OK );
 	return true;
 }
 
@@ -707,7 +706,6 @@ bool ProviderCryptography::ExportPublicKeyToFile( const wchar_t * path )
 	CryptExportKey( keypair, 0, PUBLICKEYBLOB, 0, NULL, & cbKeyBlob );
 	// указатель на ключевой BLOB
 	BYTE * pbKeyBlob = new BYTE[ cbKeyBlob ];
-	long error = GetLastError( );
 	// Экспортирование открытого ключа в BLOB открытого ключа.
 	if ( !CryptExportKey( keypair, 0, PUBLICKEYBLOB, 0, pbKeyBlob,
 		&cbKeyBlob ) )

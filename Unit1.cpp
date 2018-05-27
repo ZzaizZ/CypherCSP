@@ -152,9 +152,7 @@ void __fastcall TmainForm::decryptButtonClick( TObject * Sender )
 void TmainForm::checkCryptoProvider( int index )
 {
 	if ( algorithmComboBox->ItemIndex == index )
-	{ // �� ������ ������� - ��������� ���������������
-		// ������ �������� �������� ��������� ����������������
-		// ���� �������� ��, �� ������ ����� ������, ����� ��������� ���������
+	{ 
 		HCRYPTPROV hCryptProvider_;
 		if ( !CryptAcquireContext( &hCryptProvider_, NULL, NULL, 80,
 			CRYPT_VERIFYCONTEXT ) )
