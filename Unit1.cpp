@@ -24,7 +24,11 @@ __fastcall TmainForm::TmainForm( TComponent * Owner ) : TForm( Owner )
 	this->Height = 310;
 	this->Position = poDesktopCenter;
 	keyOpenDialog->Filter =
-		"����� ������������� ����� (*.symkey)|*.SYMKEY|��� ����� (*.*)|*.*";
+		"Файл симметричного ключа (*.symkey)|*.SYMKEY|Все файлы (*.*)|*.*";
+	odOpenPubKey->Filter = "Файл открытого ключа (*.pubkey)|*.PUBKEY|Все файлы (*.*)|*.*";
+	odResponderPubKey->Filter = "Файл открытого ключа (*.pubkey)|*.PUBKEY|Все файлы (*.*)|*.*";
+	odOpenEncFile->Filter = "Зашифрованный файл (*.enc)|*.ENC|Все файлы (*.*)|*.*";
+
 }
 // ---------------------------------------------------------------------------
 
@@ -194,12 +198,17 @@ void __fastcall TmainForm::sendButtonClick( TObject * Sender )
 			testClient->Shutdown( );
 			testClient->CleanUp( );
 			delete testClient;
-			if ( !sendOpenDialog->Execute( ) )
+//			if ( !sendOpenDialog->Execute( ) )
+//			{
+//				return;
+//			}
+			if (this->prepareFile())
 			{
-				return;
+				clientThread = new ClientThread( (sendOpenDialog->FileName+".enc").c_str( ),
+					ipEdit->Text.c_str( ), portEdit->Text.c_str( ), false );
+				clientThread = new ClientThread( (keyOpenDialog->FileName+".encr").c_str(),
+					ipEdit->Text.c_str( ), portEdit->Text.c_str( ), false );
 			}
-			clientThread = new ClientThread( sendOpenDialog->FileName.c_str( ),
-				ipEdit->Text.c_str( ), portEdit->Text.c_str( ), false );
 		}
 
 	}
@@ -233,7 +242,7 @@ void __fastcall TmainForm::serverOnButtonClick( TObject * Sender )
 		{
 			testServer->CleanUp( );
 			delete testServer;
-			UnicodeString Dir;
+
 			SelectDirectory( "��������� ����� ��� �������� ���������� ������",
 				"Desktop", Dir,
 				TSelectDirExtOpts( ) << sdNewFolder << sdShowEdit, NULL );
@@ -279,11 +288,60 @@ void __fastcall TmainForm::ipEditKeyPress(
 
 }
 // ---------------------------------------------------------------------------
-void __fastcall TmainForm::Button1Click(TObject *Sender)
+void __fastcall TmainForm::btnSettingsClick(TObject *Sender)
 {
-    crypt->EncryptSessionKey(L"Sender", L"J:\\Responder.pubkey", L"J:\\session.symkey", L"J:\\session.symkey.encr");
-	crypt->DecryptSessionKey(L"J:\\session.symkey.encr", L"J:\\Sender.pubkey", L"Responder");
-    crypt->DecryptFileW(L"J:\\pic.enc", L"J:\\123.jpg");
+	this->prepareFile();
+}
+// ---------------------------------------------------------------------------
+bool TmainForm::prepareFile()
+{
+	// Метод, открывающий файлы перед их отправкой.
+    // шифрует ключевой файл
+    if (tedContainerName->Text == "") {
+        MessageBoxW( NULL,
+				L"Пожалуйста укажите название ключевого контейнера!",
+				L"Error", MB_OK );
+		return false;
+	} else
+	{
+		if (!sendOpenDialog->Execute())
+			return false;
+		if (!odOpenPubKey->Execute())
+			return false;
+		if (!keyOpenDialog->Execute())
+			return false;
+		crypt->EncryptSessionKey(
+			tedContainerName->Text.c_str(),
+			odOpenPubKey->FileName.c_str(),
+			keyOpenDialog->FileName.c_str(),
+			(keyOpenDialog->FileName+".encr").c_str()
+			);
+		crypt->GenerateKey( keyOpenDialog->FileName.c_str( ) );
+		return crypt->EncryptFile( sendOpenDialog->FileName.c_str( ),
+				(sendOpenDialog->FileName+".enc").c_str( ) );
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TmainForm::btnEncryptClick(TObject *Sender)
+{
+	if (tedContainerName->Text == "") {
+        MessageBoxW( NULL,
+				L"Пожалуйста укажите название ключевого контейнера!",
+				L"Error", MB_OK );
+	} else
+	{
+        odOpenEncFile->InitialDir = Dir;
+		if (!odResponderPubKey->Execute())
+			return;
+		if (!odOpenEncFile->Execute())
+			return;
+		crypt->DecryptSessionKey(
+			(Dir+"\\session.symkey.encr").c_str(),
+			odResponderPubKey->FileName.c_str(),
+			tedContainerName->Text.c_str()
+			);
+		crypt->DecryptFileW((odOpenEncFile->FileName).c_str(), (Dir+"\\123.jpg").c_str());
+    }
 }
 //---------------------------------------------------------------------------
 

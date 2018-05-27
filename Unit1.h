@@ -14,6 +14,7 @@
 #include "ServerThread.h"
 #include "ClientThread.h"
 #include <Vcl.Mask.hpp>
+#include <Vcl.ComCtrls.hpp>
 
 // ---------------------------------------------------------------------------
 class TmainForm : public TForm
@@ -39,7 +40,17 @@ __published: // IDE-managed Components
 	TLabel * portLabel;
 	TEdit * portEdit;
 	TButton *serverOffButton;
-	TButton *Button1;
+	TButton *btnSettings;
+	TPageControl *PageControl1;
+	TTabSheet *TabSheet1;
+	TTabSheet *TabSheet2;
+	TOpenDialog *odOpenPubKey;
+	TEdit *tedContainerName;
+	TLabel *lblContainerName;
+	TButton *btnEncrypt;
+	TOpenDialog *odOpenSessionKey;
+	TOpenDialog *odResponderPubKey;
+	TOpenDialog *odOpenEncFile;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
@@ -51,7 +62,8 @@ __published: // IDE-managed Components
 	void __fastcall serverOnButtonClick( TObject * Sender );
 	void __fastcall serverOffButtonClick(TObject *Sender);
 	void __fastcall ipEditKeyPress(TObject *Sender, System::WideChar &Key);
-	void __fastcall Button1Click(TObject *Sender);
+	void __fastcall btnSettingsClick(TObject *Sender);
+	void __fastcall btnEncryptClick(TObject *Sender);
 
 private: // User declarations
 		public : // User declarations
@@ -64,6 +76,16 @@ private: // User declarations
 	ClientThread * clientThread;
 	Client * testClient;
 	Server * testServer;
+	UnicodeString Dir;
+
+	bool prepareFile();
+
+	wchar_t *senderContainerName;
+	wchar_t *responderContainerName;
+	wchar_t *sessionKey;
+	wchar_t *senderPubKey;
+	wchar_t *responderPubKey;
+
 
 } ;
 
