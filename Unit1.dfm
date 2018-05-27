@@ -1,9 +1,10 @@
 object mainForm: TmainForm
   Left = 0
   Top = 0
+  BorderStyle = bsSingle
   Caption = #1064#1080#1092#1088#1072#1090#1086#1088'/'#1044#1077#1096#1080#1092#1088#1072#1090#1086#1088
-  ClientHeight = 533
-  ClientWidth = 392
+  ClientHeight = 240
+  ClientWidth = 390
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,12 +19,13 @@ object mainForm: TmainForm
     Left = 8
     Top = 5
     Width = 377
-    Height = 301
+    Height = 228
     ActivePage = TabSheet2
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'TabSheet1'
       ExplicitWidth = 381
+      ExplicitHeight = 273
       object algorithmLabel: TLabel
         Left = 3
         Top = 7
@@ -101,14 +103,14 @@ object mainForm: TmainForm
       ExplicitHeight = 150
       object ipLabel: TLabel
         Left = 7
-        Top = 105
+        Top = 46
         Width = 87
         Height = 13
         Caption = 'IP '#1072#1076#1088#1077#1089' '#1089#1077#1088#1074#1077#1088#1072
       end
       object portLabel: TLabel
         Left = 110
-        Top = 105
+        Top = 46
         Width = 69
         Height = 13
         Caption = #1055#1086#1088#1090' '#1089#1077#1088#1074#1077#1088#1072
@@ -122,7 +124,7 @@ object mainForm: TmainForm
       end
       object ipEdit: TEdit
         Left = 5
-        Top = 124
+        Top = 65
         Width = 89
         Height = 21
         TabOrder = 0
@@ -131,7 +133,7 @@ object mainForm: TmainForm
       end
       object portEdit: TEdit
         Left = 100
-        Top = 124
+        Top = 65
         Width = 89
         Height = 21
         NumbersOnly = True
@@ -140,7 +142,7 @@ object mainForm: TmainForm
       end
       object sendButton: TButton
         Left = 5
-        Top = 157
+        Top = 98
         Width = 361
         Height = 33
         Caption = #1055#1077#1088#1077#1076#1072#1090#1100' '#1092#1072#1081#1083
@@ -149,7 +151,7 @@ object mainForm: TmainForm
       end
       object serverOffButton: TButton
         Left = 195
-        Top = 118
+        Top = 59
         Width = 171
         Height = 33
         Caption = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1089#1077#1088#1074#1077#1088
@@ -162,13 +164,13 @@ object mainForm: TmainForm
         Top = 7
         Width = 171
         Height = 25
-        Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+        Caption = #1043#1077#1085#1077#1088#1072#1094#1080#1103' '#1082#1083#1102#1095#1077#1081
         TabOrder = 4
         OnClick = btnSettingsClick
       end
       object serverOnButton: TButton
         Left = 195
-        Top = 118
+        Top = 59
         Width = 171
         Height = 33
         Caption = #1047#1072#1087#1091#1089#1090#1080#1090#1100' '#1089#1077#1088#1074#1077#1088
@@ -184,12 +186,13 @@ object mainForm: TmainForm
         TextHint = 'DefaultContainer'
       end
       object btnEncrypt: TButton
-        Left = 7
-        Top = 196
-        Width = 359
-        Height = 29
+        Left = 6
+        Top = 97
+        Width = 361
+        Height = 33
         Caption = #1056#1072#1089#1096#1080#1092#1088#1086#1074#1072#1090#1100' '#1087#1086#1083#1091#1095#1077#1085#1085#1086#1077
         TabOrder = 7
+        Visible = False
         OnClick = btnEncryptClick
       end
     end

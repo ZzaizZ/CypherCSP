@@ -6,6 +6,7 @@
 #include "Unit1.h"
 
 #include "SaveKeyWindow.h"
+#include "GenerateKeys.h"
 #include "include/WinCryptEx.h"
 #include <set>
 // ---------------------------------------------------------------------------
@@ -243,7 +244,7 @@ void __fastcall TmainForm::serverOnButtonClick( TObject * Sender )
 			testServer->CleanUp( );
 			delete testServer;
 
-			SelectDirectory( "��������� ����� ��� �������� ���������� ������",
+			SelectDirectory( "Укажите каталог для хранения принимаемых файлов",
 				"Desktop", Dir,
 				TSelectDirExtOpts( ) << sdNewFolder << sdShowEdit, NULL );
 
@@ -253,6 +254,7 @@ void __fastcall TmainForm::serverOnButtonClick( TObject * Sender )
 					portEdit->Text.c_str( ), false );
 				serverOnButton->Visible = false;
 				serverOffButton->Visible = true;
+                btnEncrypt->Visible = true;
 			}
 		}
 	}
@@ -267,6 +269,7 @@ void __fastcall TmainForm::serverOffButtonClick( TObject * Sender )
 		serverThread->Terminate( );
 		serverOnButton->Visible = true;
 		serverOffButton->Visible = false;
+        btnEncrypt->Visible = false;
 	}
 
 }
@@ -290,7 +293,8 @@ void __fastcall TmainForm::ipEditKeyPress(
 // ---------------------------------------------------------------------------
 void __fastcall TmainForm::btnSettingsClick(TObject *Sender)
 {
-	this->prepareFile();
+	TForm4 *generate = new TForm4( Owner );
+	generate->Show( );
 }
 // ---------------------------------------------------------------------------
 bool TmainForm::prepareFile()
@@ -340,8 +344,8 @@ void __fastcall TmainForm::btnEncryptClick(TObject *Sender)
 			odResponderPubKey->FileName.c_str(),
 			tedContainerName->Text.c_str()
 			);
-		crypt->DecryptFileW((odOpenEncFile->FileName).c_str(), (Dir+"\\123.jpg").c_str());
-    }
+		crypt->DecryptFileW((odOpenEncFile->FileName).c_str(), (odOpenEncFile->FileName).Delete(odOpenEncFile->FileName.Length()-2, 3).c_str());
+	}
 }
 //---------------------------------------------------------------------------
 
