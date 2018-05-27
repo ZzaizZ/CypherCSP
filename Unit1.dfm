@@ -98,6 +98,10 @@ object mainForm: TmainForm
     object TabSheet2: TTabSheet
       Caption = 'TabSheet2'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object ipLabel: TLabel
         Left = 7
         Top = 46
