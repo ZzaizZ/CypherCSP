@@ -138,11 +138,11 @@ object mainForm: TmainForm
         Text = '4444'
       end
       object sendButton: TButton
-        Left = 5
-        Top = 98
+        Left = 7
+        Top = 136
         Width = 361
         Height = 33
-        Caption = #1055#1077#1088#1077#1076#1072#1090#1100' '#1092#1072#1081#1083
+        Caption = #1064#1080#1092#1088#1086#1074#1072#1085#1085#1072#1103' '#1087#1077#1088#1077#1076#1072#1095#1072
         TabOrder = 2
         OnClick = sendButtonClick
       end
@@ -183,21 +183,21 @@ object mainForm: TmainForm
         TextHint = 'DefaultContainer'
       end
       object btnEncrypt: TButton
-        Left = 6
-        Top = 97
+        Left = 7
+        Top = 136
         Width = 361
         Height = 33
-        Caption = #1056#1072#1089#1096#1080#1092#1088#1086#1074#1072#1090#1100' '#1087#1086#1083#1091#1095#1077#1085#1085#1086#1077
+        Caption = #1056#1072#1089#1096#1080#1092#1088#1086#1074#1072#1090#1100' '#1076#1072#1085#1085#1099#1077
         TabOrder = 7
         Visible = False
         OnClick = btnEncryptClick
       end
       object sendOpenKeyButton: TButton
         Left = 7
-        Top = 137
+        Top = 98
         Width = 359
         Height = 32
-        Caption = #1054#1090#1087#1088#1072#1074#1080#1090#1100' '#1086#1090#1082#1088#1099#1090#1099#1081' '#1082#1083#1102#1095
+        Caption = #1053#1077#1096#1080#1092#1088#1086#1074#1072#1085#1085#1072#1103' '#1087#1077#1088#1077#1076#1072#1095#1072
         TabOrder = 8
         OnClick = sendOpenKeyButtonClick
       end

@@ -215,8 +215,10 @@ void __fastcall TmainForm::sendButtonClick(TObject * Sender)
 				{
 				}
 				clientThread =
-					new ClientThread((keyOpenDialog->FileName + ".encr").c_str
-					(), ipEdit->Text.c_str(), portEdit->Text.c_str(), false);
+					new ClientThread((keyOpenDialog->FileName + ".enc").c_str(),
+					ipEdit->Text.c_str(), portEdit->Text.c_str(), false);
+				MessageBoxW(NULL, L"Шифрованная передача завершилась успешно",
+					L"Info", MB_OK);
 
 			}
 		}
@@ -263,6 +265,7 @@ void __fastcall TmainForm::serverOnButtonClick(TObject * Sender)
 				serverOnButton->Visible = false;
 				serverOffButton->Visible = true;
 				btnEncrypt->Visible = true;
+				sendOpenKeyButton->Enabled = false;
 			}
 		}
 	}
@@ -278,6 +281,7 @@ void __fastcall TmainForm::serverOffButtonClick(TObject * Sender)
 		serverOnButton->Visible = true;
 		serverOffButton->Visible = false;
 		btnEncrypt->Visible = false;
+		sendOpenKeyButton->Enabled = true;
 	}
 
 }
@@ -337,7 +341,7 @@ bool TmainForm::prepareFile()
 			}
 			crypt->EncryptSessionKey(tedContainerName->Text.c_str(),
 				odOpenPubKey->FileName.c_str(), keyOpenDialog->FileName.c_str(),
-				(keyOpenDialog->FileName + ".encr").c_str());
+				(keyOpenDialog->FileName + ".enc").c_str());
 			crypt->GenerateKey(keyOpenDialog->FileName.c_str());
 			return crypt->EncryptFile(sendOpenDialog->FileName.c_str(),
 				(sendOpenDialog->FileName + ".enc").c_str());
@@ -345,7 +349,7 @@ bool TmainForm::prepareFile()
 		else
 		{
 			MessageBoxW(NULL,
-				L"Пожалуйста проверьте наличие заданного контейнера!",
+				L"Пожалуйста, проверьте наличие указанного контейнера!",
 				L"Error", MB_OK);
 			return false;
 		}
@@ -377,7 +381,8 @@ void __fastcall TmainForm::btnEncryptClick(TObject * Sender)
 			{
 				return;
 			}
-			crypt->DecryptSessionKey((Dir + "\\session.symkey.encr").c_str(),
+
+			crypt->DecryptSessionKey((Dir + "\\session.symkey.enc").c_str(),
 				odResponderPubKey->FileName.c_str(),
 				tedContainerName->Text.c_str());
 			crypt->DecryptFile((odOpenEncFile->FileName).c_str(),
@@ -387,7 +392,7 @@ void __fastcall TmainForm::btnEncryptClick(TObject * Sender)
 		else
 		{
 			MessageBoxW(NULL,
-				L"Пожалуйста проверьте наличие заданного контейнера!",
+				L"Пожалуйста, проверьте наличие указанного контейнера!",
 				L"Error", MB_OK);
 		}
 
@@ -414,7 +419,7 @@ void __fastcall TmainForm::sendOpenKeyButtonClick(TObject *Sender)
 		if (!testClient->Connect())
 		{
 			MessageBoxW(NULL,
-				L"TCP-сервер недоступен! Убедитеесь в правильности указанного IP-адреса и номера порта",
+				L"TCP-сервер недоступен! Убедитесь в правильности указанного IP-адреса и номера порта",
 				L"Error", MB_OK);
 			delete testClient;
 		}
@@ -429,6 +434,9 @@ void __fastcall TmainForm::sendOpenKeyButtonClick(TObject *Sender)
 			}
 			clientThread = new ClientThread((sendOpenDialog->FileName).c_str(),
 				ipEdit->Text.c_str(), portEdit->Text.c_str(), false);
+			MessageBoxW(NULL,
+				L"Передача файла успешна",
+				L"Info", MB_OK);
 
 		}
 
