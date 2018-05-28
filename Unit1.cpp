@@ -318,24 +318,38 @@ bool TmainForm::prepareFile()
 	}
 	else
 	{
-		if (!sendOpenDialog->Execute())
+		HCRYPTPROV hTest;
+
+		if (CryptAcquireContext(&hTest, tedContainerName->Text.c_str(), NULL,
+			80, CRYPT_VERIFYCONTEXT | CRYPT_SILENT))
 		{
+			if (!sendOpenDialog->Execute())
+			{
+				return false;
+			}
+			if (!odOpenPubKey->Execute())
+			{
+				return false;
+			}
+			if (!keyOpenDialog->Execute())
+			{
+				return false;
+			}
+			crypt->EncryptSessionKey(tedContainerName->Text.c_str(),
+				odOpenPubKey->FileName.c_str(), keyOpenDialog->FileName.c_str(),
+				(keyOpenDialog->FileName + ".encr").c_str());
+			crypt->GenerateKey(keyOpenDialog->FileName.c_str());
+			return crypt->EncryptFile(sendOpenDialog->FileName.c_str(),
+				(sendOpenDialog->FileName + ".enc").c_str());
+		}
+		else
+		{
+			MessageBoxW(NULL,
+				L"Пожалуйста проверьте наличие заданного контейнера!",
+				L"Error", MB_OK);
 			return false;
 		}
-		if (!odOpenPubKey->Execute())
-		{
-			return false;
-		}
-		if (!keyOpenDialog->Execute())
-		{
-			return false;
-		}
-		crypt->EncryptSessionKey(tedContainerName->Text.c_str(),
-			odOpenPubKey->FileName.c_str(), keyOpenDialog->FileName.c_str(),
-			(keyOpenDialog->FileName + ".encr").c_str());
-		crypt->GenerateKey(keyOpenDialog->FileName.c_str());
-		return crypt->EncryptFile(sendOpenDialog->FileName.c_str(),
-			(sendOpenDialog->FileName + ".enc").c_str());
+
 	}
 }
 
@@ -349,21 +363,34 @@ void __fastcall TmainForm::btnEncryptClick(TObject * Sender)
 	}
 	else
 	{
-		odOpenEncFile->InitialDir = Dir;
-		if (!odResponderPubKey->Execute())
+		HCRYPTPROV hTest;
+
+		if (CryptAcquireContext(&hTest, tedContainerName->Text.c_str(), NULL,
+			80, CRYPT_VERIFYCONTEXT | CRYPT_SILENT))
 		{
-			return;
+			odOpenEncFile->InitialDir = Dir;
+			if (!odResponderPubKey->Execute())
+			{
+				return;
+			}
+			if (!odOpenEncFile->Execute())
+			{
+				return;
+			}
+			crypt->DecryptSessionKey((Dir + "\\session.symkey.encr").c_str(),
+				odResponderPubKey->FileName.c_str(),
+				tedContainerName->Text.c_str());
+			crypt->DecryptFile((odOpenEncFile->FileName).c_str(),
+				(odOpenEncFile->FileName).Delete(odOpenEncFile->FileName.Length
+				() - 2, 3).c_str());
 		}
-		if (!odOpenEncFile->Execute())
+		else
 		{
-			return;
+			MessageBoxW(NULL,
+				L"Пожалуйста проверьте наличие заданного контейнера!",
+				L"Error", MB_OK);
 		}
-		crypt->DecryptSessionKey((Dir + "\\session.symkey.encr").c_str(),
-			odResponderPubKey->FileName.c_str(),
-			tedContainerName->Text.c_str());
-		crypt->DecryptFile((odOpenEncFile->FileName).c_str(),
-			(odOpenEncFile->FileName).Delete(odOpenEncFile->FileName.Length() -
-			2, 3).c_str());
+
 	}
 }
 
@@ -400,8 +427,7 @@ void __fastcall TmainForm::sendOpenKeyButtonClick(TObject *Sender)
 			{
 				return;
 			}
-			clientThread =
-				new ClientThread((sendOpenDialog->FileName).c_str(),
+			clientThread = new ClientThread((sendOpenDialog->FileName).c_str(),
 				ipEdit->Text.c_str(), portEdit->Text.c_str(), false);
 
 		}

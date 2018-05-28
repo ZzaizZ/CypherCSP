@@ -54,7 +54,6 @@ void __fastcall ClientThread::Execute()
 	}
 	client_->CleanUp();
 	this->Terminate();
-	MessageBoxW(NULL, L"Файл передан", L"Информация", MB_OK);
 	delete client_;
 
 }
