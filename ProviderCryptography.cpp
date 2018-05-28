@@ -9,7 +9,7 @@
 using namespace std;
 
 // ---------------------------------------------------------------------------
-ProviderCryptography::ProviderCryptography( DWORD hProvType )
+ProviderCryptography::ProviderCryptography(DWORD hProvType)
 {
 	hSessionKey_ = NULL;
 	hCryptProvider_ = NULL;
@@ -18,34 +18,33 @@ ProviderCryptography::ProviderCryptography( DWORD hProvType )
 	destinationHandle_ = 0;
 }
 
-ProviderCryptography::~ProviderCryptography( )
+ProviderCryptography::~ProviderCryptography()
 {
-	if ( hCryptProvider_ )
+	if (hCryptProvider_)
 	{
-		CryptReleaseContext( hCryptProvider_, 0 );
+		CryptReleaseContext(hCryptProvider_, 0);
 	}
-	if ( hSessionKey_ )
+	if (hSessionKey_)
 	{
-		CryptDestroyKey( hSessionKey_ );
+		CryptDestroyKey(hSessionKey_);
 	}
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::Open(
-	std::wstring sourceFile,
-	std::wstring destinationFile )
+bool ProviderCryptography::Open(std::wstring sourceFile,
+	std::wstring destinationFile)
 {
-	sourceHandle_ = CreateFileW( sourceFile.c_str( ), GENERIC_READ,
+	sourceHandle_ = CreateFileW(sourceFile.c_str(), GENERIC_READ,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL, NULL );
-	if ( sourceHandle_ == INVALID_HANDLE_VALUE )
+		FILE_ATTRIBUTE_NORMAL, NULL);
+	if (sourceHandle_ == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
-	destinationHandle_ = CreateFileW( destinationFile.c_str( ), GENERIC_WRITE,
+	destinationHandle_ = CreateFileW(destinationFile.c_str(), GENERIC_WRITE,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL );
-	if ( destinationHandle_ == INVALID_HANDLE_VALUE )
+		FILE_ATTRIBUTE_NORMAL, NULL);
+	if (destinationHandle_ == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
@@ -53,29 +52,27 @@ bool ProviderCryptography::Open(
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::Close( )
+bool ProviderCryptography::Close()
 {
-	CloseHandle( sourceHandle_ );
-	CloseHandle( destinationHandle_ );
+	CloseHandle(sourceHandle_);
+	CloseHandle(destinationHandle_);
 	return true;
 }
 // ---------------------------------------------------------------------------
 
-bool ProviderCryptography::ReadBlock(
-	ULONGLONG numberBlock,
-	DWORD     blockSize,
-	BYTE *    readBuffer )
+bool ProviderCryptography::ReadBlock(ULONGLONG numberBlock, DWORD blockSize,
+	BYTE * readBuffer)
 {
-	if ( sourceHandle_ == 0 || sourceHandle_ == INVALID_HANDLE_VALUE )
+	if (sourceHandle_ == 0 || sourceHandle_ == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
-	DWORD FileSize = GetFileSize( sourceHandle_, NULL );
+	DWORD FileSize = GetFileSize(sourceHandle_, NULL);
 	ULONGLONG StartOffset = blockSize * numberBlock;
 	DWORD BytesToRead;
-	if ( StartOffset + blockSize >= FileSize )
+	if (StartOffset + blockSize >= FileSize)
 	{
-		if ( StartOffset >= FileSize )
+		if (StartOffset >= FileSize)
 		{
 			return false;
 		}
@@ -88,34 +85,33 @@ bool ProviderCryptography::ReadBlock(
 	DWORD BytesRead;
 	LARGE_INTEGER FileOffset;
 	FileOffset.QuadPart = StartOffset;
-	ULONGLONG CurrentPosition = SetFilePointer( sourceHandle_,
-		FileOffset.LowPart, &FileOffset.HighPart, FILE_BEGIN );
-	if ( CurrentPosition != FileOffset.LowPart )
+	ULONGLONG CurrentPosition =
+		SetFilePointer(sourceHandle_, FileOffset.LowPart, &FileOffset.HighPart,
+		FILE_BEGIN);
+	if (CurrentPosition != FileOffset.LowPart)
 	{
 		return false;
 	}
-	memset( readBuffer, 0, blockSize );
-	BYTE * innerBuffer = new BYTE[ BytesToRead ];
-	bool ReadResult = ReadFile( sourceHandle_, innerBuffer, BytesToRead,
-		&BytesRead, NULL );
+	memset(readBuffer, 0, blockSize);
+	BYTE * innerBuffer = new BYTE[BytesToRead];
+	bool ReadResult = ReadFile(sourceHandle_, innerBuffer, BytesToRead,
+		&BytesRead, NULL);
 
-	if ( !ReadResult || BytesRead != BytesToRead )
+	if (!ReadResult || BytesRead != BytesToRead)
 	{
-		delete[ ]innerBuffer;
+		delete[]innerBuffer;
 		return false;
 	}
-	memcpy_s( readBuffer, blockSize, innerBuffer, BytesToRead );
-	delete[ ]innerBuffer;
+	memcpy_s(readBuffer, blockSize, innerBuffer, BytesToRead);
+	delete[]innerBuffer;
 	return true;
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::WriteBlock(
-	ULONGLONG numberBlock,
-	DWORD     blockSize,
-	BYTE *    writeBuffer )
+bool ProviderCryptography::WriteBlock(ULONGLONG numberBlock, DWORD blockSize,
+	BYTE * writeBuffer)
 {
-	if ( destinationHandle_ == 0 || destinationHandle_ == INVALID_HANDLE_VALUE )
+	if (destinationHandle_ == 0 || destinationHandle_ == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
@@ -124,17 +120,17 @@ bool ProviderCryptography::WriteBlock(
 	DWORD BytesWrite;
 	LARGE_INTEGER FileOffset;
 	FileOffset.QuadPart = StartOffset;
-	ULONGLONG CurrentPosition = SetFilePointer( destinationHandle_,
-		FileOffset.LowPart, &FileOffset.HighPart, FILE_BEGIN );
-	if ( CurrentPosition != FileOffset.LowPart )
+	ULONGLONG CurrentPosition = SetFilePointer(destinationHandle_,
+		FileOffset.LowPart, &FileOffset.HighPart, FILE_BEGIN);
+	if (CurrentPosition != FileOffset.LowPart)
 	{
 		return false;
 	}
 
-	bool WriteResult = WriteFile( destinationHandle_, writeBuffer, BytesToWrite,
-		&BytesWrite, NULL );
+	bool WriteResult = WriteFile(destinationHandle_, writeBuffer, BytesToWrite,
+		&BytesWrite, NULL);
 
-	if ( !WriteResult || BytesWrite != BytesToWrite )
+	if (!WriteResult || BytesWrite != BytesToWrite)
 	{
 		return false;
 	}
@@ -142,30 +138,19 @@ bool ProviderCryptography::WriteBlock(
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::EncryptBlock(
-	BYTE * bytes,
-	DWORD  blockSize )
+bool ProviderCryptography::EncryptBlock(BYTE * bytes, DWORD blockSize)
 {
-	BYTE default_IV[ 8 ] =
+	BYTE default_IV[8] =
+	{0, 0, 0, 0, 0, 0, 0, 0};
+	if (!CryptSetKeyParam(hSessionKey_, KP_IV, default_IV, 0))
 	{
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0
-	} ;
-	if ( !CryptSetKeyParam( hSessionKey_, KP_IV, default_IV, 0 ) )
-	{
-		MessageBoxW( NULL, L"Ошибка создания вектора инициализации", L"Error",
-			MB_OK );
+		MessageBoxW(NULL, L"Ошибка создания вектора инициализации",
+			L"Error", MB_OK);
 		return false;
 	}
 	DWORD count = blockSize;
-	if ( !CryptEncrypt( hSessionKey_, 0, true, 0, bytes, &count,
-		blockSize ) ) // Шифрование и вывод результата
+	if (!CryptEncrypt(hSessionKey_, 0, true, 0, bytes, &count, blockSize))
+		// Шифрование и вывод результата
 	{
 		return false;
 	}
@@ -173,29 +158,18 @@ bool ProviderCryptography::EncryptBlock(
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::DecryptBlock(
-	BYTE * enc_bytes,
-	DWORD  blockSize )
+bool ProviderCryptography::DecryptBlock(BYTE * enc_bytes, DWORD blockSize)
 {
-	BYTE default_IV[ 8 ] =
+	BYTE default_IV[8] =
+	{0, 0, 0, 0, 0, 0, 0, 0};
+	if (!CryptSetKeyParam(hSessionKey_, KP_IV, default_IV, 0))
 	{
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0
-	} ;
-	if ( !CryptSetKeyParam( hSessionKey_, KP_IV, default_IV, 0 ) )
-	{
-		MessageBoxW( NULL, L"Ошибка создания вектора инициализации", L"Error",
-			MB_OK );
+		MessageBoxW(NULL, L"Ошибка создания вектора инициализации",
+			L"Error", MB_OK);
 		return false;
 	}
 	DWORD count = blockSize;
-	if ( !CryptDecrypt( hSessionKey_, 0, true, 0, enc_bytes, &count ) )
+	if (!CryptDecrypt(hSessionKey_, 0, true, 0, enc_bytes, &count))
 		// Дешифровка и вывод результата
 	{
 		return false;
@@ -204,144 +178,142 @@ bool ProviderCryptography::DecryptBlock(
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::SaveKey( std::wstring keyFile )
+bool ProviderCryptography::SaveKey(std::wstring keyFile)
 {
-	if ( hSessionKey_ )
+	if (hSessionKey_)
 	{
 		HCRYPTHASH hHash = 0;
-		if ( !CryptCreateHash( // Создаем объект хэша
-			hCryptProvider_, CALG_GR3411_2012_256, 0, 0, &hHash ) )
+		if (!CryptCreateHash( // Создаем объект хэша
+			hCryptProvider_, CALG_GR3411_2012_256, 0, 0, &hHash))
 		{
 			return false;
 		}
-		int length = password_.size( ); // Длина пароля
+		int length = password_.size(); // Длина пароля
 
-		if ( !CryptHashData( // Хэшируем пароль
-			hHash, password_.c_str( ), length, 0 ) )
+		if (!CryptHashData( // Хэшируем пароль
+			hHash, password_.c_str(), length, 0))
 		{
 			return false;
 		}
 
 		BYTE * Hash;
 		DWORD HashLength;
-		if ( !CryptGetHashParam( // Узнаем длину хэша
-			hHash, HP_HASHVAL, NULL, &HashLength, 0 ) )
+		if (!CryptGetHashParam( // Узнаем длину хэша
+			hHash, HP_HASHVAL, NULL, &HashLength, 0))
 		{
 			return false;
 		}
-		Hash = new BYTE[ HashLength ];
-		if ( !CryptGetHashParam( // Читаем значение хэша
-			hHash, HP_HASHVAL, Hash, &HashLength, 0 ) )
+		Hash = new BYTE[HashLength];
+		if (!CryptGetHashParam( // Читаем значение хэша
+			hHash, HP_HASHVAL, Hash, &HashLength, 0))
 		{
 			return false;
 		}
 
 		HANDLE KeyHandle = CreateFileW( // Открываем файл назначения
-			keyFile.c_str( ), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
-			NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
-		if ( KeyHandle == INVALID_HANDLE_VALUE )
+			keyFile.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
+			NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (KeyHandle == INVALID_HANDLE_VALUE)
 		{
 			return false;
 		}
 
 		DWORD BytesWrite = 0;
 
-		bool WriteResult = WriteFile( KeyHandle, Hash, HashLength,
-			&BytesWrite, NULL );
-		if ( !WriteResult || BytesWrite != HashLength )
+		bool WriteResult = WriteFile(KeyHandle, Hash, HashLength,
+			&BytesWrite, NULL);
+		if (!WriteResult || BytesWrite != HashLength)
 		{
 			return false;
 		}
 
-		if ( hHash )
+		if (hHash)
 		{
-			CryptDestroyHash( hHash );
+			CryptDestroyHash(hHash);
 		} // Уничтожаем объект хэша
-		CloseHandle( KeyHandle );
-		delete[ ]Hash;
+		CloseHandle(KeyHandle);
+		delete[]Hash;
 	}
 	return true;
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::GenerateKey( CHAR * password )
+bool ProviderCryptography::GenerateKey(CHAR * password)
 {
 
 	HCRYPTHASH hHash;
-	DWORD dwLength = ( DWORD )strlen( password );
+	DWORD dwLength = (DWORD)strlen(password);
 	password_ = password;
 	// Получение дескриптора контекста криптографического провайдера.
 
-	if ( !CryptAcquireContext( &hCryptProvider_, NULL, NULL, hProvType_,
-		CRYPT_VERIFYCONTEXT ) )
+	if (!CryptAcquireContext(&hCryptProvider_, NULL, NULL, hProvType_,
+		CRYPT_VERIFYCONTEXT))
 	{
-		MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера", L"Error",
-			MB_OK );
+		MessageBoxW(NULL, L"Ошибка инициализации криптопровайдера",
+			L"Error", MB_OK);
 		return false;
 	}
 	// Создание пустого объекта хеширования.
 	// Хеширование алгоритмом ГОСТ Р 34.11-2012
 
-	if ( !CryptCreateHash( hCryptProvider_, CALG_GR3411_2012_256, 0, 0,
-		&hHash ) )
+	if (!CryptCreateHash(hCryptProvider_, CALG_GR3411_2012_256, 0, 0, &hHash))
 	{
-		MessageBoxW( NULL, L"Ошибка создания хэша", L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка создания хэша", L"Error", MB_OK);
 		return false;
 	}
 	// Хеширование строки пароля.
-	if ( !CryptHashData( hHash, ( BYTE * )password, dwLength, 0 ) )
+	if (!CryptHashData(hHash, (BYTE*)password, dwLength, 0))
 	{
-		MessageBoxW( NULL, L"Ошибка хэширования", L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка хэширования", L"Error", MB_OK);
 		return false;
 	}
 	// Создание сессионного ключа, основанного на хеше, полученного из пароля.
 
-	if ( !CryptDeriveKey( hCryptProvider_, CALG_G28147, hHash, CRYPT_EXPORTABLE,
-		&hSessionKey_ ) )
+	if (!CryptDeriveKey(hCryptProvider_, CALG_G28147, hHash, CRYPT_EXPORTABLE,
+		&hSessionKey_))
 	{
-		MessageBoxW( NULL, L"Ошибка создания ключа на основе хэша", L"Error",
-			MB_OK );
+		MessageBoxW(NULL, L"Ошибка создания ключа на основе хэша",
+			L"Error", MB_OK);
 		return false;
 	}
 
-	if ( hHash )
+	if (hHash)
 	{
-		CryptDestroyHash( hHash );
+		CryptDestroyHash(hHash);
 	}
 	return true;
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::GenerateKey( std::wstring keyFile )
+bool ProviderCryptography::GenerateKey(std::wstring keyFile)
 {
 
 	HCRYPTHASH hHash;
-	if ( !CryptAcquireContext( // Создаем контейнер
-		&hCryptProvider_, NULL, NULL, hProvType_, CRYPT_VERIFYCONTEXT ) )
+	if (!CryptAcquireContext( // Создаем контейнер
+		&hCryptProvider_, NULL, NULL, hProvType_, CRYPT_VERIFYCONTEXT))
 	{
-		MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера", L"Error",
-			MB_OK );
+		MessageBoxW(NULL, L"Ошибка инициализации криптопровайдера",
+			L"Error", MB_OK);
 		return false;
 	}
-	if ( !CryptCreateHash( // Создаем объект хэша
-		hCryptProvider_, CALG_GR3411_2012_256, 0, 0, &hHash ) )
+	if (!CryptCreateHash( // Создаем объект хэша
+		hCryptProvider_, CALG_GR3411_2012_256, 0, 0, &hHash))
 	{
-		MessageBoxW( NULL, L"Ошибка создания хэша", L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка создания хэша", L"Error", MB_OK);
 		return false;
 	}
 	DWORD HashLength = 0;
-	if ( !CryptGetHashParam( // Узнаем длину хэша
-		hHash, HP_HASHVAL, NULL, &HashLength, 0 ) )
+	if (!CryptGetHashParam( // Узнаем длину хэша
+		hHash, HP_HASHVAL, NULL, &HashLength, 0))
 	{
-		MessageBoxW( NULL, L"Ошибка распознавания длины хэша", L"Error",
-		MB_OK );
+		MessageBoxW(NULL, L"Ошибка распознавания длины хэша", L"Error", MB_OK);
 		return false;
 	}
 
 	HANDLE KeyHandle = CreateFileW( // Открываем файл источника
-		keyFile.c_str( ), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE,
-		NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
-	if ( KeyHandle == INVALID_HANDLE_VALUE )
+		keyFile.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
+		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (KeyHandle == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
@@ -349,64 +321,63 @@ bool ProviderCryptography::GenerateKey( std::wstring keyFile )
 	LARGE_INTEGER offset; // Смещение в файле источника
 	offset.QuadPart = 0;
 
-	BYTE * Hash = new BYTE[ HashLength ]; // Значение хэша
+	BYTE * Hash = new BYTE[HashLength]; // Значение хэша
 	DWORD BytesRead = 0;
 	bool ReadResult = ReadFile( // Читаем хэш из файла
-		KeyHandle, Hash, HashLength, &BytesRead, NULL );
-	if ( !ReadResult || BytesRead != HashLength )
+		KeyHandle, Hash, HashLength, &BytesRead, NULL);
+	if (!ReadResult || BytesRead != HashLength)
 	{
 		return false;
 	}
-	if ( !CryptSetHashParam( // Устанавливаем хэш
-		hHash, HP_HASHVAL, Hash, 0 ) )
+	if (!CryptSetHashParam( // Устанавливаем хэш
+		hHash, HP_HASHVAL, Hash, 0))
 	{
 		return false;
 	}
-	if ( !CryptDeriveKey( // Создаем ключ на основе хэша пароля
-		hCryptProvider_, CALG_G28147, hHash, CRYPT_EXPORTABLE, &hSessionKey_ ) )
+	if (!CryptDeriveKey( // Создаем ключ на основе хэша пароля
+		hCryptProvider_, CALG_G28147, hHash, CRYPT_EXPORTABLE, &hSessionKey_))
 	{
-		MessageBoxW( NULL, L"Ошибка создания ключа на основе хэша", L"Error",
-			MB_OK );
+		MessageBoxW(NULL, L"Ошибка создания ключа на основе хэша",
+			L"Error", MB_OK);
 		return false;
 	}
-	if ( hHash )
+	if (hHash)
 	{
-		CryptDestroyHash( hHash );
+		CryptDestroyHash(hHash);
 	} // Уничтожаем объект хэша
 
-	delete[ ]Hash;
+	delete[]Hash;
 	return true;
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::EncryptFile(
-	std::wstring sourceFile,
-	std::wstring destinationFile )
+bool ProviderCryptography::EncryptFile(std::wstring sourceFile,
+	std::wstring destinationFile)
 {
-	BYTE buffer[ BLOCK_LENGTH ];
+	BYTE buffer[BLOCK_LENGTH];
 	int i = 0;
 	bool sucsess = true;
-	if ( !Open( sourceFile, destinationFile ) )
+	if (!Open(sourceFile, destinationFile))
 	{
-		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка открытия файла", L"Error", MB_OK);
 		return false;
 	}
 	else
 	{
-		while ( ReadBlock( i, BLOCK_LENGTH, buffer ) )
+		while (ReadBlock(i, BLOCK_LENGTH, buffer))
 		{
-			if ( !EncryptBlock( buffer, BLOCK_LENGTH ) )
+			if (!EncryptBlock(buffer, BLOCK_LENGTH))
 			{
 				sucsess = false;
 				break;
 			}
-			WriteBlock( i, BLOCK_LENGTH, buffer );
-			i++ ;
+			WriteBlock(i, BLOCK_LENGTH, buffer);
+			i++;
 		}
-		Close( );
-		if ( sucsess )
+		Close();
+		if (sucsess)
 		{
-			MessageBoxW( NULL, L"Файл зашифрован", L"Готово", MB_OK );
+			MessageBoxW(NULL, L"Файл зашифрован", L"Готово", MB_OK);
 			return true;
 		}
 	}
@@ -414,34 +385,33 @@ bool ProviderCryptography::EncryptFile(
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::DecryptFile(
-	std::wstring sourceFile,
-	std::wstring destinationFile )
+bool ProviderCryptography::DecryptFile(std::wstring sourceFile,
+	std::wstring destinationFile)
 {
-	BYTE buffer[ BLOCK_LENGTH ];
+	BYTE buffer[BLOCK_LENGTH];
 	int i = 0;
 	bool sucsess = true;
-	if ( !Open( sourceFile, destinationFile ) )
+	if (!Open(sourceFile, destinationFile))
 	{
-		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка открытия файла", L"Error", MB_OK);
 		return false;
 	}
 	else
 	{
-		while ( ReadBlock( i, BLOCK_LENGTH, buffer ) )
+		while (ReadBlock(i, BLOCK_LENGTH, buffer))
 		{
-			if ( !DecryptBlock( buffer, BLOCK_LENGTH ) )
+			if (!DecryptBlock(buffer, BLOCK_LENGTH))
 			{
 				sucsess = false;
 				break;
 			}
-			WriteBlock( i, BLOCK_LENGTH, buffer );
-			i++ ;
+			WriteBlock(i, BLOCK_LENGTH, buffer);
+			i++;
 		}
-		Close( );
-		if ( sucsess )
+		Close();
+		if (sucsess)
 		{
-			MessageBoxW( NULL, L"Файл расшифрован", L"Готово", MB_OK );
+			MessageBoxW(NULL, L"Файл расшифрован", L"Готово", MB_OK);
 			return true;
 		}
 	}
@@ -449,116 +419,110 @@ bool ProviderCryptography::DecryptFile(
 }
 
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::GenKeyPair(
-	const wchar_t * containerName,
-	wchar_t *       pkPath )
+bool ProviderCryptography::GenKeyPair(const wchar_t * containerName,
+	wchar_t * pkPath)
 {
-	if ( !CryptAcquireContext( &keyPairProvider_, containerName, NULL,
-		hProvType_, CRYPT_NEWKEYSET ) )
+	CryptAcquireContext(&keyPairProvider_, containerName, NULL, hProvType_,
+		CRYPT_DELETEKEYSET | CRYPT_SILENT);
+
+	if (!CryptAcquireContext(&keyPairProvider_, containerName, NULL, hProvType_,
+		CRYPT_NEWKEYSET))
 	{
-		MessageBoxW( NULL, L"Ошибка инициализации криптопровайдера", L"Error",
-			MB_OK );
 		return false;
 	}
 	else
 	{
-		if ( !CryptGenKey( keyPairProvider_, AT_KEYEXCHANGE, CRYPT_EXPORTABLE,
-			&keypair ) )
+		if (!CryptGenKey(keyPairProvider_, AT_KEYEXCHANGE, CRYPT_EXPORTABLE,
+			&keypair))
 		{
-			MessageBoxW( NULL, L"Ошибка генерации ключевой пары", L"Error",
-				MB_OK );
 			return false;
 		}
 	}
-	MessageBoxW( NULL, L"Ключи сгенерированы", L"Info", MB_OK );
-	ExportPublicKeyToFile( pkPath );
+	MessageBoxW(NULL, L"Ключи сгенерированы", L"Info", MB_OK);
+	ExportPublicKeyToFile(pkPath);
 	return true;
 }
+
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::LoadPublicKey(
-	BYTE *    pbBlob,
-	DWORD     pcbBlob,
-	wchar_t * szKeyFile )
+bool ProviderCryptography::LoadPublicKey(BYTE * pbBlob, DWORD pcbBlob,
+	wchar_t * szKeyFile)
 {
 	// метод загрузки открытого ключа получателя из файла
 	// Открытие файла, в котором содержится открытый ключ получателя.
 
-	HANDLE readF = CreateFileW( szKeyFile, GENERIC_READ,
+	HANDLE readF = CreateFileW(szKeyFile, GENERIC_READ,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL, NULL );
+		FILE_ATTRIBUTE_NORMAL, NULL);
 	DWORD BytesRead;
-	ReadFile( readF, pbBlob, pcbBlob, & BytesRead, NULL );
-	CloseHandle( readF );
+	ReadFile(readF, pbBlob, pcbBlob, &BytesRead, NULL);
+	CloseHandle(readF);
 
 	return true;
 }
+
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::EncryptSessionKey(
-	wchar_t *       container_name,
-	wchar_t *       sessionKeyPath,
-	std::wstring    keyFile,
-	const wchar_t * path )
+bool ProviderCryptography::EncryptSessionKey(wchar_t * container_name,
+	wchar_t * sessionKeyPath, std::wstring keyFile, const wchar_t * path)
 {
 	// МЕТОД шифрования сессионного ключа на открытом ключе
 	// и запись результата в файл
 
 	// чтение открытого ключа получателя из файла в блоб
-	char pkBlob[ 200 ];
+	char pkBlob[200];
 	DWORD pcsBlob = 200;
-	LoadPublicKey( pkBlob, pcsBlob, sessionKeyPath ); // юзать переменную
+	LoadPublicKey(pkBlob, pcsBlob, sessionKeyPath); // юзать переменную
 
 	// чтение сессионного ключа из уже заранее созданеного файла
-	GenerateKey( keyFile );
+	GenerateKey(keyFile);
 
 	HCRYPTPROV hProv; // Дескриптор CSP
 	HCRYPTKEY hKey; // Дескриптор закрытого ключа
 	HCRYPTKEY hAgreeKey; // Дескриптор ключа согласования
 	// Получение дескриптора контейнера получателя с именем "Sender",
 	// находящегося в рамках провайдера.
-	if ( CryptAcquireContext( &hProv, container_name, NULL,
-		PROV_GOST_2012_256, 0 ) )
+	if (CryptAcquireContext(&hProv, container_name, NULL,
+		PROV_GOST_2012_256, 0))
 	{
-		printf( "The key container \"Sender\" has been acquired. \n" );
+		printf("The key container \"Sender\" has been acquired. \n");
 	}
 	else
 	{
-		printf( "Error during CryptAcquireContext." );
+		printf("Error during CryptAcquireContext.");
 		return false;
 	}
 
 	// Получение дескриптора закрытого ключа отправителя.
-	if ( CryptGetUserKey( hProv, AT_KEYEXCHANGE, &hKey ) )
+	if (CryptGetUserKey(hProv, AT_KEYEXCHANGE, &hKey))
 	{
-		printf( "The private key has been acquired. \n" );
+		printf("The private key has been acquired. \n");
 	}
 	else
 	{
-		MessageBoxW( NULL, L"Ошибка получения закрытого ключа", L"Error",
-		MB_OK );
+		MessageBoxW(NULL, L"Ошибка получения закрытого ключа", L"Error", MB_OK);
 		return false;
 	}
 
 	// Получение ключа согласования импортом открытого ключа получателя
 	// на закрытом ключе отправителя
-	if ( CryptImportKey( hProv, pkBlob, pcsBlob, hKey, 0, &hAgreeKey ) )
+	if (CryptImportKey(hProv, pkBlob, pcsBlob, hKey, 0, &hAgreeKey))
 	{
-		printf( "The responder public key has been imported. \n" );
+		printf("The responder public key has been imported. \n");
 	}
 	else
 	{
-		MessageBoxW( NULL, L"Ошибка при импорте открытого ключа из BLOB'a",
-			L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка при импорте открытого ключа из BLOB'a",
+			L"Error", MB_OK);
 		return false;
 	}
 	ALG_ID ke_alg = CALG_PRO12_EXPORT;
 	// Установление PRO12_EXPORT алгоритма ключа согласования
-	if ( CryptSetKeyParam( hAgreeKey, KP_ALGID, ( LPBYTE ) & ke_alg, 0 ) )
+	if (CryptSetKeyParam(hAgreeKey, KP_ALGID, (LPBYTE) & ke_alg, 0))
 	{
-		printf( "PRO12_EXPORT agree key algorithm has been set. \n" );
+		printf("PRO12_EXPORT agree key algorithm has been set. \n");
 	}
 	else
 	{
-		printf( "Error during CryptSetKeyParam agree key." );
+		printf("Error during CryptSetKeyParam agree key.");
 	}
 
 	// --------------------------------------------------------------------
@@ -568,175 +532,172 @@ bool ProviderCryptography::EncryptSessionKey(
 	// --------------------------------------------------------------------
 	// Определение размера BLOBа сессионного ключа и распределение памяти.
 	DWORD dwBlobLenSimple;
-	if ( CryptExportKey( hSessionKey_, hAgreeKey, SIMPLEBLOB, 0, NULL,
-		&dwBlobLenSimple ) )
+	if (CryptExportKey(hSessionKey_, hAgreeKey, SIMPLEBLOB, 0, NULL,
+		&dwBlobLenSimple))
 	{
-		printf( "Size of the BLOB for the sender session key determined. \n" );
+		printf("Size of the BLOB for the sender session key determined. \n");
 	}
 	else
 	{
-		MessageBoxW( NULL, L"Ошибка при вычислении длины BLOB'a", L"Error",
-			MB_OK );
+		MessageBoxW(NULL, L"Ошибка при вычислении длины BLOB'a",
+		L"Error", MB_OK);
 		return false;
 	}
-	BYTE * pbKeyBlobSimple = new BYTE[ dwBlobLenSimple ];
+	BYTE * pbKeyBlobSimple = new BYTE[dwBlobLenSimple];
 
 	// Зашифрование сессионного ключа на ключе Agree.
 
-	if ( CryptExportKey( hSessionKey_, hAgreeKey, SIMPLEBLOB, 0,
-		pbKeyBlobSimple, &dwBlobLenSimple ) )
+	if (CryptExportKey(hSessionKey_, hAgreeKey, SIMPLEBLOB, 0, pbKeyBlobSimple,
+		&dwBlobLenSimple))
 	{
-		printf( "Contents have been written to the BLOB. \n" );
+		printf("Contents have been written to the BLOB. \n");
 	}
 	else
 	{
-		MessageBoxW( NULL, L"Ошибка при шифровании сессионного ключа", L"Error",
-			MB_OK );
+		MessageBoxW(NULL, L"Ошибка при шифровании сессионного ключа",
+			L"Error", MB_OK);
 		return false;
 	}
-	MessageBoxW( NULL, L"Круто", L"Error", MB_OK );
+	MessageBoxW(NULL, L"Сессионный ключ зашифрован", L"Info", MB_OK);
 
 	// Запись зашифрованного сессионного ключа в файл
 	HANDLE keyPairHandle = 0;
-	if ( !( keyPairHandle = CreateFileW( path, GENERIC_WRITE,
+	if (!(keyPairHandle = CreateFileW(path, GENERIC_WRITE,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL ) ) )
+		FILE_ATTRIBUTE_NORMAL, NULL)))
 	{
-		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка открытия файла", L"Error", MB_OK);
 		return false;
 	}
 
 	DWORD dwBytesWritten;
-	WriteFile( keyPairHandle, // open file handle
+	WriteFile(keyPairHandle, // open file handle
 		pbKeyBlobSimple, // start of data to write
 		dwBlobLenSimple, // number of bytes to write
-		& dwBytesWritten, // number of bytes that were written
-		NULL );
-	CloseHandle( keyPairHandle );
+		&dwBytesWritten, // number of bytes that were written
+		NULL);
+	CloseHandle(keyPairHandle);
 	return true;
 }
+
 // ---------------------------------------------------------------------------
-bool ProviderCryptography::DecryptSessionKey(
-	const wchar_t * path,
-	wchar_t *       senderPublicKeyPath,
-	wchar_t *       responderContainerName )
+bool ProviderCryptography::DecryptSessionKey(const wchar_t * path,
+	wchar_t * senderPublicKeyPath, wchar_t * responderContainerName)
 {
 
 	// Получение дескриптора контейнера получателя с именем "Responder",
 	// находящегося в рамках провайдера.
 
-	BYTE pbKeyBlob[ 200 ]; // Указатель на ключевой BLOB
+	BYTE pbKeyBlob[200]; // Указатель на ключевой BLOB
 	DWORD dwBlobLen = 200; // Длина ключевого BLOBа
-	LoadPublicKey( pbKeyBlob, dwBlobLen, senderPublicKeyPath );
+	LoadPublicKey(pbKeyBlob, dwBlobLen, senderPublicKeyPath);
 
 	HCRYPTPROV hProv = 0; // Дескриптор CSP
 	HCRYPTKEY hKey = 0; // Дескриптор закрытого ключа
 	HCRYPTKEY hAgreeKey = 0; // Дескриптор ключа согласования
 
-	if ( !CryptAcquireContext( &hProv, responderContainerName, NULL,
-		PROV_GOST_2012_256, 0 ) )
+	if (!CryptAcquireContext(&hProv, responderContainerName, NULL,
+		PROV_GOST_2012_256, 0))
 	{
-		printf( "Error during CryptAcquireContext" );
+		printf("Error during CryptAcquireContext");
 		return false;
 	}
 	// Получение дескриптора закрытого ключа получателя.
-	if ( CryptGetUserKey( hProv, AT_KEYEXCHANGE, &hKey ) )
+	if (CryptGetUserKey(hProv, AT_KEYEXCHANGE, &hKey))
 	{
-		printf( "The private key has been acquired. \n" );
+		printf("The private key has been acquired. \n");
 	}
 	else
 	{
-		printf( "Error during CryptGetUserKey private key." );
+		printf("Error during CryptGetUserKey private key.");
 		return false;
 	}
 	// Получение ключа согласования импортом открытого ключа отправителя
 	// на закрытом ключе получателя.
-	if ( CryptImportKey( hProv, pbKeyBlob, dwBlobLen, hKey, 0, &hAgreeKey ) )
+	if (CryptImportKey(hProv, pbKeyBlob, dwBlobLen, hKey, 0, &hAgreeKey))
 	{
-		printf( "The sender public key has been imported. \n" );
+		printf("The sender public key has been imported. \n");
 	}
 	else
 	{
-		printf( "Error during CryptImportKey public key." );
+		printf("Error during CryptImportKey public key.");
 		return false;
 	}
 	// Установление PRO12_EXPORT алгоритма ключа согласования
 	ALG_ID ke_alg = CALG_PRO12_EXPORT;
-	if ( CryptSetKeyParam( hAgreeKey, KP_ALGID, ( LPBYTE ) & ke_alg, 0 ) )
+	if (CryptSetKeyParam(hAgreeKey, KP_ALGID, (LPBYTE) & ke_alg, 0))
 	{
-		printf( "PRO12_EXPORT agree key algorithm has been set. \n" );
+		printf("PRO12_EXPORT agree key algorithm has been set. \n");
 	}
 	else
 	{
-		printf( "Error during CryptSetKeyParam agree key." );
+		printf("Error during CryptSetKeyParam agree key.");
 		return false;
 	}
 	// Чтение зашифрованного ключа из файла
 
-	HANDLE readF = CreateFileW( path, GENERIC_READ,
+	HANDLE readF = CreateFileW(path, GENERIC_READ,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL, NULL );
-	BYTE pbKeyBlobSimple[ 76 ];
+		FILE_ATTRIBUTE_NORMAL, NULL);
+	BYTE pbKeyBlobSimple[76];
 	DWORD cbBlobLenSimple = 76;
 	DWORD BytesRead;
-	ReadFile( readF, pbKeyBlobSimple, cbBlobLenSimple, & BytesRead, NULL );
-	CloseHandle( readF );
+	ReadFile(readF, pbKeyBlobSimple, cbBlobLenSimple, &BytesRead, NULL);
+	CloseHandle(readF);
 
 	// Получение сессионного ключа импортом зашифрованного сессионного ключа
 	// на ключе Agree.
-	if ( CryptImportKey( hProv, pbKeyBlobSimple, cbBlobLenSimple, hAgreeKey, 0,
-		&hSessionKey_ ) )
+	if (CryptImportKey(hProv, pbKeyBlobSimple, cbBlobLenSimple, hAgreeKey, 0,
+		&hSessionKey_))
 	{
-		printf( "The session key has been imported. \n" );
+		printf("The session key has been imported. \n");
 	}
 	else
 	{
-		printf( "Error during CryptImportKey session key." );
+		printf("Error during CryptImportKey session key.");
 		return false;
 	}
 
-	MessageBoxW( NULL, L"Расшифрован файл ключа", L"Info", MB_OK );
+	MessageBoxW(NULL, L"Расшифрован файл ключа", L"Info", MB_OK);
 	return true;
 }
 
-bool ProviderCryptography::ExportPublicKeyToFile( const wchar_t * path )
+bool ProviderCryptography::ExportPublicKeyToFile(const wchar_t * path)
 {
 	// Определение размера BLOBа открытого ключа и распределение памяти.
 	DWORD cbKeyBlob;
-	CryptExportKey( keypair, 0, PUBLICKEYBLOB, 0, NULL, & cbKeyBlob );
+	CryptExportKey(keypair, 0, PUBLICKEYBLOB, 0, NULL, &cbKeyBlob);
 	// указатель на ключевой BLOB
-	BYTE * pbKeyBlob = new BYTE[ cbKeyBlob ];
+	BYTE * pbKeyBlob = new BYTE[cbKeyBlob];
 	// Экспортирование открытого ключа в BLOB открытого ключа.
-	if ( !CryptExportKey( keypair, 0, PUBLICKEYBLOB, 0, pbKeyBlob,
-		&cbKeyBlob ) )
+	if (!CryptExportKey(keypair, 0, PUBLICKEYBLOB, 0, pbKeyBlob, &cbKeyBlob))
 	{
-		MessageBoxW( NULL, L"Ошибка при экспорте открытого ключа в BLOB",
-			L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка при экспорте открытого ключа в BLOB",
+			L"Error", MB_OK);
 		return false;
 	}
 	HANDLE keyPairHandle = 0;
-	if ( !( keyPairHandle = CreateFileW( path, GENERIC_WRITE,
+	if (!(keyPairHandle = CreateFileW(path, GENERIC_WRITE,
 		FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL ) ) )
+		FILE_ATTRIBUTE_NORMAL, NULL)))
 	{
-		MessageBoxW( NULL, L"Ошибка открытия файла", L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка открытия файла", L"Error", MB_OK);
 		return false;
 	}
 
 	DWORD dwBytesWritten;
-	if ( !WriteFile( keyPairHandle, // open file handle
+	if (!WriteFile(keyPairHandle, // open file handle
 		pbKeyBlob, // start of data to write
 		cbKeyBlob, // number of bytes to write
 		&dwBytesWritten, // number of bytes that were written
-		NULL ) )
+		NULL))
 	{
-		MessageBoxW( NULL, L"Ошибка записи открытого ключа в файл", L"Error",
-			MB_OK );
+		MessageBoxW(NULL, L"Ошибка записи открытого ключа в файл",
+			L"Error", MB_OK);
 		return false;
 	}
-	CloseHandle( keyPairHandle );
-	MessageBoxW( NULL, L"Открытый ключ экспортирован успешно!", L"Error",
-		MB_OK );
+	CloseHandle(keyPairHandle);
+	MessageBoxW(NULL, L"Открытый ключ экспортирован успешно!", L"Error", MB_OK);
 	return true;
 }
 // ---------------------------------------------------------------------------

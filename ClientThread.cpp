@@ -20,12 +20,9 @@
 // }
 // ---------------------------------------------------------------------------
 
-__fastcall ClientThread::ClientThread(
-	std::wstring sourceFile,
-	std::wstring ipaddr,
-	std::wstring port,
-	bool         CreateSuspended ) : TThread(
-	             CreateSuspended )
+__fastcall ClientThread::ClientThread(std::wstring sourceFile,
+	std::wstring ipaddr, std::wstring port, bool CreateSuspended)
+	: TThread(CreateSuspended)
 {
 	FreeOnTerminate = true;
 	sourceFile_ = sourceFile;
@@ -34,31 +31,30 @@ __fastcall ClientThread::ClientThread(
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall ClientThread::Execute( )
+void __fastcall ClientThread::Execute()
 {
 	// ---- Place thread code here ----
-	client_ = new Client( ipaddr_, port_ );
-	if ( !client_->Init( ) )
+	client_ = new Client(ipaddr_, port_);
+	if (!client_->Init())
 	{
-		MessageBoxW( NULL,
-			L"Ошибка инициализации Winsock",
-			L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка инициализации Winsock", L"Error", MB_OK);
 		return;
 	}
-	if ( !client_->Connect( ) )
+	if (!client_->Connect())
 	{
-		MessageBoxW( NULL,
+		MessageBoxW(NULL,
 			L"Ошибка подключения к серверу, убедитесь что он запущен или доступен",
-			L"Error", MB_OK );
+			L"Error", MB_OK);
 		return;
 	}
-	if ( !client_->SendFile( sourceFile_ ) )
+	if (!client_->SendFile(sourceFile_))
 	{
-		MessageBoxW( NULL, L"Ошибка отправки файла", L"Error", MB_OK );
+		MessageBoxW(NULL, L"Ошибка отправки файла", L"Error", MB_OK);
 		return;
 	}
-	client_->CleanUp( );
-	MessageBoxW( NULL, L"Файл передан", L"Информация", MB_OK );
+	client_->CleanUp();
+	this->Terminate();
+	MessageBoxW(NULL, L"Файл передан", L"Информация", MB_OK);
 	delete client_;
 
 }

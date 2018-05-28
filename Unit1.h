@@ -51,6 +51,7 @@ __published: // IDE-managed Components
 	TOpenDialog *odOpenSessionKey;
 	TOpenDialog *odResponderPubKey;
 	TOpenDialog *odOpenEncFile;
+	TButton *sendOpenKeyButton;
 
 	void __fastcall chooseKeyCheckBoxClick( TObject * Sender );
 	void __fastcall saveKeyButtonClick( TObject * Sender );
@@ -64,6 +65,7 @@ __published: // IDE-managed Components
 	void __fastcall ipEditKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall btnSettingsClick(TObject *Sender);
 	void __fastcall btnEncryptClick(TObject *Sender);
+	void __fastcall sendOpenKeyButtonClick(TObject *Sender);
 
 private: // User declarations
 		public : // User declarations

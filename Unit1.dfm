@@ -20,7 +20,7 @@ object mainForm: TmainForm
     Top = 5
     Width = 377
     Height = 228
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'TabSheet1'
@@ -98,10 +98,6 @@ object mainForm: TmainForm
     object TabSheet2: TTabSheet
       Caption = 'TabSheet2'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ipLabel: TLabel
         Left = 7
         Top = 46
@@ -195,6 +191,15 @@ object mainForm: TmainForm
         TabOrder = 7
         Visible = False
         OnClick = btnEncryptClick
+      end
+      object sendOpenKeyButton: TButton
+        Left = 7
+        Top = 137
+        Width = 359
+        Height = 32
+        Caption = #1054#1090#1087#1088#1072#1074#1080#1090#1100' '#1086#1090#1082#1088#1099#1090#1099#1081' '#1082#1083#1102#1095
+        TabOrder = 8
+        OnClick = sendOpenKeyButtonClick
       end
     end
   end
