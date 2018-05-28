@@ -214,8 +214,12 @@ void __fastcall TmainForm::sendButtonClick(TObject * Sender)
 				while (!clientThread->Finished)
 				{
 				}
+				wchar_t tmpPath[50];
+				wchar_t *encSessionkeyName = L"session.symkey.enc";
+				GetTempPath(50, tmpPath);
+				std::wstring encSymkeyPath = (std::wstring(tmpPath)+std::wstring(encSessionkeyName));
 				clientThread =
-					new ClientThread((keyOpenDialog->FileName + ".enc").c_str(),
+					new ClientThread(encSymkeyPath.c_str(),
 					ipEdit->Text.c_str(), portEdit->Text.c_str(), false);
 				MessageBoxW(NULL, L"Шифрованная передача завершилась успешно",
 					L"Info", MB_OK);
@@ -335,14 +339,19 @@ bool TmainForm::prepareFile()
 			{
 				return false;
 			}
-			if (!keyOpenDialog->Execute())
-			{
-				return false;
-			}
+			// получение пути временной директории
+			wchar_t tmpPath[50];
+			wchar_t *sessionkeyName = L"session.symkey";
+			wchar_t *encSessionkeyName = L"session.symkey.enc";
+			GetTempPath(50, tmpPath);
+			std::wstring symkeyPath = (std::wstring(tmpPath)+std::wstring(sessionkeyName));
+			std::wstring encSymkeyPath = (std::wstring(tmpPath)+std::wstring(encSessionkeyName));
+
+			crypt->GenerateKey("qwe123");
+			crypt->SaveKey(symkeyPath);
 			crypt->EncryptSessionKey(tedContainerName->Text.c_str(),
-				odOpenPubKey->FileName.c_str(), keyOpenDialog->FileName.c_str(),
-				(keyOpenDialog->FileName + ".enc").c_str());
-			crypt->GenerateKey(keyOpenDialog->FileName.c_str());
+				odOpenPubKey->FileName.c_str(), symkeyPath,
+				encSymkeyPath.c_str());
 			return crypt->EncryptFile(sendOpenDialog->FileName.c_str(),
 				(sendOpenDialog->FileName + ".enc").c_str());
 		}
@@ -356,7 +365,6 @@ bool TmainForm::prepareFile()
 
 	}
 }
-
 // ---------------------------------------------------------------------------
 void __fastcall TmainForm::btnEncryptClick(TObject * Sender)
 {
@@ -443,3 +451,6 @@ void __fastcall TmainForm::sendOpenKeyButtonClick(TObject *Sender)
 	}
 }
 // ---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+
