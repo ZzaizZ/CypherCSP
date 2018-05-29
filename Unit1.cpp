@@ -347,7 +347,16 @@ bool TmainForm::prepareFile()
 			std::wstring symkeyPath = (std::wstring(tmpPath)+std::wstring(sessionkeyName));
 			std::wstring encSymkeyPath = (std::wstring(tmpPath)+std::wstring(encSessionkeyName));
 
-			crypt->GenerateKey("qwe123");
+			wstring str;
+			int i=0;
+			for (i=0; i<10; i++)
+			{
+			int x= 65+ rand() %25;
+			wchar_t a[1];
+			a[0]=x;
+			str+=std::wstring(a);
+			}
+			crypt->GenerateKey(str.c_str());
 			crypt->SaveKey(symkeyPath);
 			crypt->EncryptSessionKey(tedContainerName->Text.c_str(),
 				odOpenPubKey->FileName.c_str(), symkeyPath,
