@@ -1,9 +1,10 @@
 object Form2: TForm2
   Left = 0
   Top = 0
+  BorderStyle = bsDialog
   Caption = #1057#1086#1093#1088#1072#1085#1077#1085#1080#1077' '#1082#1083#1102#1095#1072' '#1074' '#1092#1072#1081#1083
-  ClientHeight = 105
-  ClientWidth = 298
+  ClientHeight = 115
+  ClientWidth = 308
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
